@@ -1,4 +1,4 @@
-// Scroll animations and main functionality
+// Scroll animations and main functionality for new centered design
 document.addEventListener('DOMContentLoaded', function() {
     // Navbar scroll effect
     const navbar = document.querySelector('.navbar');
@@ -11,47 +11,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Throttle scroll events for performance
-    let scrollTimer;
-    window.addEventListener('scroll', function() {
-        if (!scrollTimer) {
-            scrollTimer = setTimeout(function() {
-                scrollTimer = null;
-                handleNavbarScroll();
-            }, 10);
-        }
-    });
-
-    // Initial navbar state
+    window.addEventListener('scroll', handleNavbarScroll);
     handleNavbarScroll();
-
-    // Scroll reveal animations
-    const scrollReveal = function() {
-        const elements = document.querySelectorAll('.scroll-reveal');
-        
-        elements.forEach(element => {
-            const elementTop = element.getBoundingClientRect().top;
-            const windowHeight = window.innerHeight;
-            
-            if (elementTop < windowHeight - 100) {
-                element.classList.add('revealed');
-            }
-        });
-    };
-
-    // Initial check
-    scrollReveal();
-    
-    // Check on scroll with throttle
-    let revealTimer;
-    window.addEventListener('scroll', function() {
-        if (!revealTimer) {
-            revealTimer = setTimeout(function() {
-                revealTimer = null;
-                scrollReveal();
-            }, 10);
-        }
-    });
 
     // Smooth scrolling for navigation links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -59,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function() {
             e.preventDefault();
             const target = document.querySelector(this.getAttribute('href'));
             if (target) {
-                const targetPosition = target.offsetTop - 80; // Offset for navbar
+                const targetPosition = target.offsetTop - 80;
                 window.scrollTo({
                     top: targetPosition,
                     behavior: 'smooth'
@@ -68,112 +29,71 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Add active class to navigation links based on scroll position
-    const sections = document.querySelectorAll('section[id]');
-    
-    function updateActiveNav() {
-        let current = '';
-        const scrollPosition = window.scrollY + 100;
-
-        sections.forEach(section => {
-            const sectionTop = section.offsetTop;
-            const sectionHeight = section.clientHeight;
-            
-            if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
-                current = section.getAttribute('id');
+    // Animated counter for stats
+    function animateCounter(element) {
+        const target = parseInt(element.getAttribute('data-count'));
+        const duration = 2000;
+        const step = target / (duration / 16);
+        let current = 0;
+        
+        const timer = setInterval(() => {
+            current += step;
+            if (current >= target) {
+                element.textContent = target + (element.textContent.includes('%') ? '%' : '');
+                clearInterval(timer);
+            } else {
+                element.textContent = Math.floor(current) + (element.textContent.includes('%') ? '%' : '');
             }
-        });
-
-        document.querySelectorAll('.navbar-nav .nav-link').forEach(link => {
-            link.classList.remove('active');
-            if (link.getAttribute('href') === `#${current}`) {
-                link.classList.add('active');
-            }
-        });
+        }, 16);
     }
 
-    // Throttle active nav updates
-    let activeNavTimer;
-    window.addEventListener('scroll', function() {
-        if (!activeNavTimer) {
-            activeNavTimer = setTimeout(function() {
-                activeNavTimer = null;
-                updateActiveNav();
-            }, 50);
-        }
-    });
-
-    // Initial active nav state
-    updateActiveNav();
-
-    // Counter animation for stats
-    const statNumbers = document.querySelectorAll('.stat-number');
-    const observer = new IntersectionObserver((entries) => {
+    // Intersection Observer for counters
+    const counterObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                const target = entry.target;
-                const finalValue = parseFloat(target.textContent);
-                let currentValue = 0;
-                const duration = 2000;
-                const increment = finalValue / (duration / 16);
-                
-                const timer = setInterval(() => {
-                    currentValue += increment;
-                    if (currentValue >= finalValue) {
-                        target.textContent = finalValue + (target.textContent.includes('%') ? '%' : '');
-                        clearInterval(timer);
-                    } else {
-                        target.textContent = Math.floor(currentValue) + (target.textContent.includes('%') ? '%' : '');
-                    }
-                }, 16);
-                
-                observer.unobserve(target);
+                const counter = entry.target.querySelector('.stat-number');
+                if (counter && counter.getAttribute('data-count')) {
+                    animateCounter(counter);
+                }
+                counterObserver.unobserve(entry.target);
             }
         });
-    }, { 
-        threshold: 0.5,
-        rootMargin: '0px 0px -50px 0px'
+    }, { threshold: 0.5 });
+
+    document.querySelectorAll('.stat-modern').forEach(stat => {
+        counterObserver.observe(stat);
     });
 
-    statNumbers.forEach(stat => observer.observe(stat));
+    // Parallax effect for hero background
+    function updateParallax() {
+        const scrolled = window.pageYOffset;
+        const hero = document.querySelector('.hero-centered');
+        if (hero) {
+            const orbits = hero.querySelectorAll('.orbit-circle');
+            orbits.forEach((orbit, index) => {
+                const speed = 0.02 * (index + 1);
+                orbit.style.transform = `translate(-50%, -50%) rotate(${scrolled * speed}deg)`;
+            });
+        }
+    }
 
-    // Add loading animation to buttons
-    document.querySelectorAll('.btn').forEach(button => {
-        button.addEventListener('click', function(e) {
-            if (this.getAttribute('href') === '#' || this.classList.contains('btn-outline-light')) {
-                return; // Don't show loading for demo buttons
-            }
-            
-            const originalText = this.innerHTML;
-            this.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Carregando...';
-            this.disabled = true;
-            
-            setTimeout(() => {
-                this.innerHTML = originalText;
-                this.disabled = false;
-            }, 2000);
-        });
-    });
+    window.addEventListener('scroll', updateParallax);
 
-    // Add hover effects to feature cards
-    document.querySelectorAll('.feature-card').forEach(card => {
-        card.addEventListener('mouseenter', function() {
-            this.style.transform = 'translateY(-10px) scale(1.02)';
-        });
-        
-        card.addEventListener('mouseleave', function() {
-            this.style.transform = 'translateY(0) scale(1)';
-        });
-    });
-
-    // Remove parallax effect that was causing issues
-    // Add confetti effect on CTA button click
+    // Loading animation for buttons
     document.querySelectorAll('.btn-primary').forEach(button => {
         if (button.getAttribute('href') === '/register') {
             button.addEventListener('click', function(e) {
                 if (!this.disabled) {
                     e.preventDefault();
+                    
+                    // Show loading state
+                    const originalText = this.innerHTML;
+                    this.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Redirecionando...';
+                    this.disabled = true;
+                    
+                    // Create confetti effect
                     createConfetti();
+                    
                     // Redirect after animation
                     setTimeout(() => {
                         window.location.href = '/register';
@@ -183,34 +103,51 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    // Confetti effect
     function createConfetti() {
         const colors = ['#10b981', '#34d399', '#86efac', '#059669', '#22c55e'];
-        for (let i = 0; i < 50; i++) {
+        const confettiContainer = document.createElement('div');
+        confettiContainer.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+        `;
+        document.body.appendChild(confettiContainer);
+
+        for (let i = 0; i < 100; i++) {
             const confetti = document.createElement('div');
-            confetti.className = 'confetti';
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            const size = Math.random() * 10 + 5;
+            
             confetti.style.cssText = `
-                position: fixed;
-                width: 10px;
-                height: 10px;
-                background: ${colors[Math.floor(Math.random() * colors.length)]};
-                top: 0;
+                position: absolute;
+                width: ${size}px;
+                height: ${size}px;
+                background: ${color};
+                top: -20px;
                 left: ${Math.random() * 100}vw;
+                border-radius: ${Math.random() > 0.5 ? '50%' : '2px'};
                 opacity: 0;
-                pointer-events: none;
-                border-radius: 2px;
-                animation: confetti-fall ${Math.random() * 3 + 2}s linear forwards;
-                z-index: 1000;
+                animation: confetti-fall ${Math.random() * 3 + 2}s ease-in forwards;
             `;
-            document.body.appendChild(confetti);
+            
+            confettiContainer.appendChild(confetti);
             
             setTimeout(() => {
-                if (confetti.parentNode) {
-                    confetti.parentNode.removeChild(confetti);
-                }
+                confetti.remove();
             }, 5000);
         }
-        
-        // Add animation style if not already present
+
+        // Remove container after animation
+        setTimeout(() => {
+            confettiContainer.remove();
+        }, 5000);
+
+        // Add animation style if not present
         if (!document.querySelector('#confetti-styles')) {
             const style = document.createElement('style');
             style.id = 'confetti-styles';
@@ -230,7 +167,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Mobile menu improvements
+    // Mobile menu handling
     const navbarToggler = document.querySelector('.navbar-toggler');
     const navbarCollapse = document.querySelector('.navbar-collapse');
     
@@ -249,13 +186,24 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Handle resize events
+    // Add hover effects to interactive elements
+    document.querySelectorAll('.orbital-card, .stat-modern, .tech-item').forEach(element => {
+        element.addEventListener('mouseenter', function() {
+            this.style.transform = this.style.transform.replace(/scale\([^)]*\)/, 'scale(1.05)');
+        });
+        
+        element.addEventListener('mouseleave', function() {
+            this.style.transform = this.style.transform.replace(/scale\([^)]*\)/, 'scale(1)');
+        });
+    });
+
+    // Performance optimization
     let resizeTimer;
     window.addEventListener('resize', function() {
         clearTimeout(resizeTimer);
         resizeTimer = setTimeout(function() {
-            scrollReveal();
-            updateActiveNav();
+            // Recalculate any layout-dependent animations
+            updateParallax();
         }, 250);
     });
 });
@@ -265,16 +213,7 @@ window.addEventListener('load', function() {
     const loadTime = performance.timing.domContentLoadedEventEnd - performance.timing.navigationStart;
     console.log(`PGFlow loaded in ${loadTime}ms`);
     
-    // Send to analytics (placeholder)
     if (loadTime < 1000) {
         console.log('🚀 Excellent performance!');
     }
-    
-    // Remove loading states if any
-    document.querySelectorAll('.btn').forEach(button => {
-        button.disabled = false;
-        if (button.innerHTML.includes('fa-spinner')) {
-            button.innerHTML = button.innerHTML.replace('<i class="fas fa-spinner fa-spin me-2"></i>Carregando...', 'Original Text');
-        }
-    });
 });
