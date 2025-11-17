@@ -1,4 +1,3 @@
-// models/post.js
 const mongoose = require('mongoose');
 
 const postSchema = new mongoose.Schema({
@@ -20,9 +19,22 @@ const postSchema = new mongoose.Schema({
   timestamps: true
 });
 
-// Métodos estáticos (equivalente aos seus métodos)
+// Métodos estáticos
 postSchema.statics.findByUserId = function(userId) {
-  return this.find({ author: userId }).populate('author', 'name email');
+  return this.find({ author: userId })
+    .populate('author', 'name')
+    .sort({ createdAt: -1 });
+};
+
+postSchema.statics.findAll = function() {
+  return this.find()
+    .populate('author', 'name')
+    .sort({ createdAt: -1 });
+};
+
+postSchema.statics.findById = function(id) {
+  return this.findOne({ _id: id })
+    .populate('author', 'name');
 };
 
 const Post = mongoose.model('Post', postSchema);

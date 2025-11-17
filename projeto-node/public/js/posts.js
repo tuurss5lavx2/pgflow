@@ -80,7 +80,8 @@ function displayPosts(posts) {
     const user = JSON.parse(localStorage.getItem('user'));
     
     posts.forEach(post => {
-        const isOwner = user && post.user_id === user.id;
+        // Verificar se o usuário é o autor (comparando IDs)
+        const isOwner = user && post.author === user.name;
         
         const postElement = document.createElement('div');
         postElement.className = 'post-card fade-in';
@@ -89,10 +90,10 @@ function displayPosts(posts) {
                 <h5 class="post-title mb-0">${post.title}</h5>
                 ${isOwner ? `
                 <div class="btn-group">
-                    <button class="btn btn-sm btn-outline-primary edit-post" data-id="${post.id}">
+                    <button class="btn btn-sm btn-outline-primary edit-post" data-id="${post._id}">
                         <i class="fas fa-edit"></i>
                     </button>
-                    <button class="btn btn-sm btn-outline-danger delete-post" data-id="${post.id}">
+                    <button class="btn btn-sm btn-outline-danger delete-post" data-id="${post._id}">
                         <i class="fas fa-trash"></i>
                     </button>
                 </div>
@@ -104,9 +105,9 @@ function displayPosts(posts) {
             <p class="post-content">${post.content}</p>
             <div class="post-date">
                 <i class="fas fa-calendar me-1"></i>
-                Criado em: ${new Date(post.created_at).toLocaleDateString('pt-BR')}
-                ${post.created_at !== post.updated_at ? 
-                ` • <i class="fas fa-sync-alt me-1"></i>Editado em: ${new Date(post.updated_at).toLocaleDateString('pt-BR')}` : ''}
+                Criado em: ${new Date(post.createdAt).toLocaleDateString('pt-BR')}
+                ${post.createdAt !== post.updatedAt ? 
+                ` • <i class="fas fa-sync-alt me-1"></i>Editado em: ${new Date(post.updatedAt).toLocaleDateString('pt-BR')}` : ''}
             </div>
         `;
         
