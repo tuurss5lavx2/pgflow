@@ -3,105 +3,84 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PGFlow - Sistema Completo de Gestão</title>
+    <title>PGFlow - Sistema Avançado de Gestão de Conteúdo</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="/css/style.css" rel="stylesheet">
 
-    <!-- Favicon PGFlow Verde -->
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90' fill='%2310b981'>⚡</text></svg>" type="image/svg+xml">
+    <!-- Favicon em SVG (inline) -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90' fill='%236464ff'>🚀</text></svg>" type="image/svg+xml">
+    
+    <!-- Favicon alternativo para navegadores que não suportam SVG -->
+    <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0OCIgZmlsbD0iIzY0NjRmZiIvPjxwYXRoIGQ9Ik0zMCAzMEg3MFY3MEgzMHoiIGZpbGw9IiNmZmYiLz48Y2lyY2xlIGN4PSI1MCIgY3k9IjQwIiByPSI4IiBmaWxsPSIjNjQ2NGZmIi8+PHBhdGggZD0iTTQwIDU1IEg2MCBMNTAgNzAgWiIgZmlsbD0iIzY0NjRmZiIvPjwvc3ZnPg==" type="image/svg+xml">
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container">
             <a class="navbar-brand" href="/">
-                <i class="fas fa-bolt me-2"></i>PGFlow
+                <i class="fas fa-rocket me-2"></i>PGFlow
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="#home">Início</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#features">Recursos</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#about">Sobre</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/login">Login</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link btn btn-primary text-white px-4" href="/register">
-                            <i class="fas fa-rocket me-1"></i>Começar
-                        </a>
-                    </li>
-                </ul>
+                <div class="navbar-nav ms-auto">
+                    <a class="nav-link" href="#features">
+                        <i class="fas fa-star me-1"></i>Recursos
+                    </a>
+                    <a class="nav-link" href="#how-it-works">
+                        <i class="fas fa-play-circle me-1"></i>Como Funciona
+                    </a>
+                    <a class="nav-link" href="/login">
+                        <i class="fas fa-sign-in-alt me-1"></i>Login
+                    </a>
+                    <a class="nav-link" href="/register">
+                        <i class="fas fa-user-plus me-1"></i>Registrar
+                    </a>
+                </div>
             </div>
         </div>
     </nav>
 
-    <!-- Hero Section - COMPLETAMENTE NOVA -->
-    <section id="home" class="hero">
-        <div class="hero-bg"></div>
-        
-        <div class="floating-elements">
-            <div class="floating-element floating-1">
-                <i class="fas fa-database"></i>
-            </div>
-            <div class="floating-element floating-2">
-                <i class="fas fa-chart-line"></i>
-            </div>
-            <div class="floating-element floating-3">
-                <i class="fas fa-users"></i>
-            </div>
-        </div>
-        
+    <section class="hero">
         <div class="container">
-            <div class="row align-items-center min-vh-100">
+            <div class="row align-items-center">
                 <div class="col-lg-6">
                     <div class="hero-content">
-                        <h1 class="hero-title">
-                            Transforme sua Gestão com 
-                            <span class="gradient-text">PGFlow</span>
-                        </h1>
-                        <p class="hero-subtitle">
-                            Sistema completo de autenticação, gestão de conteúdos e análise de dados. 
-                            Desenvolvido com tecnologias modernas para revolucionar seu workflow.
+                        <h1 class="hero-title fade-in">PGFlow</h1>
+                        <p class="hero-subtitle fade-in" style="animation-delay: 0.2s;">
+                            Sistema completo de gestão de conteúdo e autenticação. Crie, edite e gerencie posts com segurança, performance e facilidade.
                         </p>
-                        <div class="hero-buttons">
-                            <a href="/register" class="btn btn-primary">
+                        <div class="hero-buttons mt-4">
+                            <a href="/register" class="btn btn-primary me-3 fade-in" style="animation-delay: 0.4s;">
                                 <i class="fas fa-rocket me-2"></i>Começar Agora
                             </a>
-                            <a href="#features" class="btn btn-outline-light">
-                                <i class="fas fa-play-circle me-2"></i>Ver Recursos
+                            <a href="#features" class="btn btn-outline-light fade-in" style="animation-delay: 0.6s;">
+                                <i class="fas fa-play-circle me-2"></i>Ver Demo
                             </a>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-6">
-                    <div class="hero-visual">
-                        <div class="hero-dashboard">
-                            <div class="dashboard-mockup">
-                                <div class="dashboard-header">
-                                    <h6 class="mb-0 text-dark fw-bold">Dashboard PGFlow</h6>
-                                    <div class="dashboard-dots">
-                                        <span></span>
-                                        <span></span>
-                                        <span></span>
-                                    </div>
-                                </div>
-                                <div class="dashboard-content">
-                                    <div class="dashboard-item"></div>
-                                    <div class="dashboard-item"></div>
-                                    <div class="dashboard-item"></div>
-                                    <div class="dashboard-item"></div>
-                                </div>
+                    <div class="custom-illustration">
+                        <div class="illustration-container">
+                            <div class="user-icon">
+                                <i class="fas fa-user-shield"></i>
+                            </div>
+                            <div class="data-flow data-flow-1">
+                                <i class="fas fa-database"></i>
+                            </div>
+                            <div class="data-flow data-flow-2">
+                                <i class="fas fa-server"></i>
+                            </div>
+                            <div class="flow-line flow-line-1"></div>
+                            <div class="flow-line flow-line-2"></div>
+                            <div class="post-card post-card-1">
+                                <i class="fas fa-file-alt"></i>
+                            </div>
+                            <div class="post-card post-card-2">
+                                <i class="fas fa-chart-line"></i>
                             </div>
                         </div>
                     </div>
@@ -110,176 +89,251 @@
         </div>
     </section>
 
-    <!-- Features Section -->
-    <section id="features" class="features">
+    <section class="stats">
         <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Recursos Avançados</h2>
-                <p class="section-subtitle">
-                    Tecnologia de ponta para otimizar seu workflow e impulsionar sua produtividade
-                </p>
-            </div>
-            
-            <div class="features-grid">
-                <!-- Card 1 -->
-                <div class="feature-card scroll-reveal">
-                    <div class="feature-icon-wrapper">
-                        <div class="feature-icon-bg"></div>
-                        <div class="feature-icon">
-                            <i class="fas fa-shield-alt"></i>
-                        </div>
+            <div class="row text-center">
+                <div class="col-md-3 col-6 mb-4">
+                    <div class="stat-card fade-in">
+                        <div class="stat-number">99.9%</div>
+                        <div class="stat-label">Uptime</div>
                     </div>
-                    <h5>Segurança Máxima</h5>
-                    <p>
-                        Autenticação JWT avançada, criptografia de ponta a ponta e proteção 
-                        contra vulnerabilidades modernas.
-                    </p>
-                    <span class="feature-badge">Enterprise</span>
                 </div>
-
-                <!-- Card 2 -->
-                <div class="feature-card scroll-reveal" style="animation-delay: 0.1s;">
-                    <div class="feature-icon-wrapper">
-                        <div class="feature-icon-bg"></div>
-                        <div class="feature-icon">
-                            <i class="fas fa-bolt"></i>
-                        </div>
+                <div class="col-md-3 col-6 mb-4">
+                    <div class="stat-card fade-in" style="animation-delay: 0.1s;">
+                        <div class="stat-number">256-bit</div>
+                        <div class="stat-label">Criptografia</div>
                     </div>
-                    <h5>Performance Incrível</h5>
-                    <p>
-                        Otimizado com MongoDB Atlas e Node.js, garantindo tempos de resposta 
-                        ultrarrápidos mesmo sob alta carga.
-                    </p>
-                    <span class="feature-badge">High Speed</span>
                 </div>
-
-                <!-- Card 3 -->
-                <div class="feature-card scroll-reveal" style="animation-delay: 0.2s;">
-                    <div class="feature-icon-wrapper">
-                        <div class="feature-icon-bg"></div>
-                        <div class="feature-icon">
-                            <i class="fas fa-mobile-alt"></i>
-                        </div>
+                <div class="col-md-3 col-6 mb-4">
+                    <div class="stat-card fade-in" style="animation-delay: 0.2s;">
+                        <div class="stat-number">+10K</div>
+                        <div class="stat-label">Posts/Dia</div>
                     </div>
-                    <h5>Design Responsivo</h5>
-                    <p>
-                        Interface adaptável que proporciona experiência perfeita em todos os 
-                        dispositivos, do mobile ao desktop.
-                    </p>
-                    <span class="feature-badge">Mobile First</span>
                 </div>
-
-                <!-- Card 4 -->
-                <div class="feature-card scroll-reveal" style="animation-delay: 0.3s;">
-                    <div class="feature-icon-wrapper">
-                        <div class="feature-icon-bg"></div>
-                        <div class="feature-icon">
-                            <i class="fas fa-chart-bar"></i>
-                        </div>
+                <div class="col-md-3 col-6 mb-4">
+                    <div class="stat-card fade-in" style="animation-delay: 0.3s;">
+                        <div class="stat-number">&lt;100ms</div>
+                        <div class="stat-label">Resposta</div>
                     </div>
-                    <h5>Analytics em Tempo Real</h5>
-                    <p>
-                        Dashboard completo com métricas detalhadas e relatórios em tempo real 
-                        para tomada de decisões inteligentes.
-                    </p>
-                    <span class="feature-badge">Data Driven</span>
-                </div>
-
-                <!-- Card 5 -->
-                <div class="feature-card scroll-reveal" style="animation-delay: 0.4s;">
-                    <div class="feature-icon-wrapper">
-                        <div class="feature-icon-bg"></div>
-                        <div class="feature-icon">
-                            <i class="fas fa-code"></i>
-                        </div>
-                    </div>
-                    <h5>API RESTful</h5>
-                    <p>
-                        API completa e bem documentada para integração fácil com outros sistemas 
-                        e desenvolvimento de aplicações customizadas.
-                    </p>
-                    <span class="feature-badge">Developer Friendly</span>
-                </div>
-
-                <!-- Card 6 -->
-                <div class="feature-card scroll-reveal" style="animation-delay: 0.5s;">
-                    <div class="feature-icon-wrapper">
-                        <div class="feature-icon-bg"></div>
-                        <div class="feature-icon">
-                            <i class="fas fa-cloud"></i>
-                        </div>
-                    </div>
-                    <h5>Cloud Native</h5>
-                    <p>
-                        Arquitetura nativa em nuvem com escalabilidade automática, alta 
-                        disponibilidade e backup contínuo dos dados.
-                    </p>
-                    <span class="feature-badge">Scalable</span>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="footer">
+    <section id="features" class="features">
         <div class="container">
-            <div class="row">
-                <div class="col-lg-4 mb-4">
-                    <div class="footer-brand">PGFlow</div>
-                    <p class="text-light mb-4">
-                        Sistema completo de gestão desenvolvido com as melhores tecnologias 
-                        para otimizar seu workflow e produtividade.
+            <div class="row justify-content-center mb-5">
+                <div class="col-lg-8 text-center">
+                    <h2 class="section-title fade-in">Recursos do PGFlow</h2>
+                    <p class="section-subtitle fade-in" style="animation-delay: 0.2s;">
+                        Uma plataforma completa com tudo que você precisa para gerenciar conteúdos com segurança e eficiência
                     </p>
-                    <div class="social-links">
-                        <a href="#" class="social-link">
-                            <i class="fab fa-github"></i>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="feature-card fade-in">
+                        <div class="feature-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h5>Segurança Máxima</h5>
+                        <p>Autenticação JWT, criptografia AES-256 e proteção contra ataques comuns. Seus dados estão sempre protegidos.</p>
+                        <a href="#" class="feature-link">
+                            Saiba mais <i class="fas fa-arrow-right ms-1"></i>
                         </a>
-                        <a href="#" class="social-link">
-                            <i class="fab fa-twitter"></i>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="feature-card fade-in" style="animation-delay: 0.1s;">
+                        <div class="feature-icon">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <h5>Alta Performance</h5>
+                        <p>Arquitetura otimizada com cache Redis, CDN integrado e resposta em menos de 100ms para melhor experiência.</p>
+                        <a href="#" class="feature-link">
+                            Saiba mais <i class="fas fa-arrow-right ms-1"></i>
                         </a>
-                        <a href="#" class="social-link">
-                            <i class="fab fa-linkedin"></i>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="feature-card fade-in" style="animation-delay: 0.2s;">
+                        <div class="feature-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <h5>Totalmente Responsivo</h5>
+                        <p>Interface adaptável que funciona perfeitamente em desktop, tablet e mobile. Acesse de qualquer dispositivo.</p>
+                        <a href="#" class="feature-link">
+                            Saiba mais <i class="fas fa-arrow-right ms-1"></i>
                         </a>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-4 mb-4">
-                    <h6 class="text-white mb-3">Produto</h6>
-                    <div class="footer-links">
-                        <a href="#features">Recursos</a>
-                        <a href="#about">Tecnologias</a>
-                        <a href="#">Documentação</a>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-4 mb-4">
-                    <h6 class="text-white mb-3">Desenvolvedor</h6>
-                    <div class="footer-links">
-                        <a href="/login">Login</a>
-                        <a href="/register">Registrar</a>
-                        <a href="/dashboard">Dashboard</a>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-4 mb-4">
-                    <h6 class="text-white mb-3">Empresa</h6>
-                    <div class="footer-links">
-                        <a href="#about">Sobre</a>
-                        <a href="#">Contato</a>
-                    </div>
-                </div>
-                <div class="col-lg-2 mb-4">
-                    <h6 class="text-white mb-3">Legal</h6>
-                    <div class="footer-links">
-                        <a href="#">Privacidade</a>
-                        <a href="#">Termos</a>
                     </div>
                 </div>
             </div>
-            <hr class="border-secondary my-4">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="feature-card fade-in" style="animation-delay: 0.3s;">
+                        <div class="feature-icon">
+                            <i class="fas fa-database"></i>
+                        </div>
+                        <h5>Banco de Dados MySQL</h5>
+                        <p>Armazenamento robusto e confiável com backup automático e recuperação de dados garantida.</p>
+                        <a href="#" class="feature-link">
+                            Saiba mais <i class="fas fa-arrow-right ms-1"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="feature-card fade-in" style="animation-delay: 0.4s;">
+                        <div class="feature-icon">
+                            <i class="fas fa-chart-bar"></i>
+                        </div>
+                        <h5>Analytics em Tempo Real</h5>
+                        <p>Dashboard completo com métricas de engajamento, visualizações e desempenho dos seus conteúdos.</p>
+                        <a href="#" class="feature-link">
+                            Saiba mais <i class="fas fa-arrow-right ms-1"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="feature-card fade-in" style="animation-delay: 0.5s;">
+                        <div class="feature-icon">
+                            <i class="fas fa-users-cog"></i>
+                        </div>
+                        <h5>Gestão de Usuários</h5>
+                        <p>Controle de permissões, roles personalizados e gestão completa de acessos para sua equipe.</p>
+                        <a href="#" class="feature-link">
+                            Saiba mais <i class="fas fa-arrow-right ms-1"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="how-it-works" class="how-it-works">
+        <div class="container">
+            <div class="row justify-content-center mb-5">
+                <div class="col-lg-8 text-center">
+                    <h2 class="section-title fade-in">Como Funciona</h2>
+                    <p class="section-subtitle fade-in" style="animation-delay: 0.2s;">
+                        Em apenas 3 passos simples, você começa a gerenciar seus conteúdos
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="step-card fade-in">
+                        <div class="step-number">1</div>
+                        <h5>Crie sua Conta</h5>
+                        <p>Registre-se em menos de 1 minuto com email e senha. Confirmação instantânea.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="step-card fade-in" style="animation-delay: 0.2s;">
+                        <div class="step-number">2</div>
+                        <h5>Configure seu Perfil</h5>
+                        <p>Personalize suas preferências e ajuste as configurações do seu workspace.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="step-card fade-in" style="animation-delay: 0.4s;">
+                        <div class="step-number">3</div>
+                        <h5>Comece a Publicar</h5>
+                        <p>Crie seu primeiro post e aproveite todas as funcionalidades do PGFlow.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta">
+        <div class="container">
+            <div class="row justify-content-center text-center">
+                <div class="col-lg-8">
+                    <h2 class="fade-in">Pronto para Começar?</h2>
+                    <p class="fade-in" style="animation-delay: 0.2s;">
+                        Junte-se a milhares de usuários que já estão usando o PGFlow para gerenciar seus conteúdos
+                    </p>
+                    <div class="mt-4 fade-in" style="animation-delay: 0.4s;">
+                        <a href="/register" class="btn btn-light btn-lg me-3">
+                            <i class="fas fa-rocket me-2"></i>Criar Conta Gratuita
+                        </a>
+                        <a href="/login" class="btn btn-outline-light btn-lg">
+                            <i class="fas fa-sign-in-alt me-2"></i>Fazer Login
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4 mb-lg-0">
+                    <h5 class="footer-title">PGFlow</h5>
+                    <p class="footer-description">
+                        Sistema completo de autenticação e gestão de conteúdos. 
+                        Desenvolvido com as melhores tecnologias do mercado para performance e segurança.
+                    </p>
+                    <div class="footer-links">
+                        <a href="#"><i class="fab fa-github"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                        <a href="#"><i class="fab fa-discord"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4 mb-4 mb-md-0">
+                    <h6 class="footer-subtitle">Navegação</h6>
+                    <ul class="footer-list">
+                        <li><a href="/">Início</a></li>
+                        <li><a href="#features">Recursos</a></li>
+                        <li><a href="#how-it-works">Como Funciona</a></li>
+                        <li><a href="/login">Login</a></li>
+                        <li><a href="/register">Registrar</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-4 mb-4 mb-md-0">
+                    <h6 class="footer-subtitle">Recursos</h6>
+                    <ul class="footer-list">
+                        <li><a href="#">Autenticação</a></li>
+                        <li><a href="#">CRUD de Posts</a></li>
+                        <li><a href="#">Dashboard</a></li>
+                        <li><a href="#">API</a></li>
+                        <li><a href="#">Documentação</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4 col-md-4">
+                    <h6 class="footer-subtitle">Tecnologias</h6>
+                    <div class="tech-badges">
+                        <span class="tech-badge">Node.js</span>
+                        <span class="tech-badge">Express</span>
+                        <span class="tech-badge">MySQL</span>
+                        <span class="tech-badge">JWT</span>
+                        <span class="tech-badge">Redis</span>
+                        <span class="tech-badge">Bootstrap 5</span>
+                    </div>
+                    <div class="mt-3">
+                        <h6 class="footer-subtitle">Suporte</h6>
+                        <p class="footer-description mb-2">
+                            <i class="fas fa-envelope me-2"></i>suporte@pgflow.com
+                        </p>
+                        <p class="footer-description">
+                            <i class="fas fa-clock me-2"></i>24/7
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <hr class="footer-divider">
             <div class="row align-items-center">
                 <div class="col-md-6">
-                    <p class="text-light mb-0">&copy; 2024 PGFlow. Todos os direitos reservados.</p>
+                    <p class="footer-copyright">© 2024 PGFlow. Todos os direitos reservados.</p>
                 </div>
                 <div class="col-md-6 text-md-end">
-                    <p class="text-light mb-0">Desenvolvido com ❤️ por Pablo Gomes</p>
+                    <div class="footer-legal">
+                        <a href="#">Política de Privacidade</a>
+                        <a href="#">Termos de Uso</a>
+                        <a href="#">Cookies</a>
+                    </div>
                 </div>
             </div>
         </div>
