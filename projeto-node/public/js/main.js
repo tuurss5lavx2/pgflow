@@ -2,13 +2,28 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Navbar scroll effect
     const navbar = document.querySelector('.navbar');
-    window.addEventListener('scroll', function() {
+    
+    function handleNavbarScroll() {
         if (window.scrollY > 100) {
             navbar.classList.add('scrolled');
         } else {
             navbar.classList.remove('scrolled');
         }
+    }
+
+    // Throttle scroll events for performance
+    let scrollTimer;
+    window.addEventListener('scroll', function() {
+        if (!scrollTimer) {
+            scrollTimer = setTimeout(function() {
+                scrollTimer = null;
+                handleNavbarScroll();
+            }, 10);
+        }
     });
+
+    // Initial navbar state
+    handleNavbarScroll();
 
     // Scroll reveal animations
     const scrollReveal = function() {
@@ -27,8 +42,16 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initial check
     scrollReveal();
     
-    // Check on scroll
-    window.addEventListener('scroll', scrollReveal);
+    // Check on scroll with throttle
+    let revealTimer;
+    window.addEventListener('scroll', function() {
+        if (!revealTimer) {
+            revealTimer = setTimeout(function() {
+                revealTimer = null;
+                scrollReveal();
+            }, 10);
+        }
+    });
 
     // Smooth scrolling for navigation links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -36,9 +59,10 @@ document.addEventListener('DOMContentLoaded', function() {
             e.preventDefault();
             const target = document.querySelector(this.getAttribute('href'));
             if (target) {
-                target.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
+                const targetPosition = target.offsetTop - 80; // Offset for navbar
+                window.scrollTo({
+                    top: targetPosition,
+                    behavior: 'smooth'
                 });
             }
         });
@@ -46,12 +70,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Add active class to navigation links based on scroll position
     const sections = document.querySelectorAll('section[id]');
-    window.addEventListener('scroll', function() {
+    
+    function updateActiveNav() {
         let current = '';
+        const scrollPosition = window.scrollY + 100;
+
         sections.forEach(section => {
             const sectionTop = section.offsetTop;
             const sectionHeight = section.clientHeight;
-            if (scrollY >= sectionTop - 200) {
+            
+            if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
                 current = section.getAttribute('id');
             }
         });
@@ -62,7 +90,21 @@ document.addEventListener('DOMContentLoaded', function() {
                 link.classList.add('active');
             }
         });
+    }
+
+    // Throttle active nav updates
+    let activeNavTimer;
+    window.addEventListener('scroll', function() {
+        if (!activeNavTimer) {
+            activeNavTimer = setTimeout(function() {
+                activeNavTimer = null;
+                updateActiveNav();
+            }, 50);
+        }
     });
+
+    // Initial active nav state
+    updateActiveNav();
 
     // Counter animation for stats
     const statNumbers = document.querySelectorAll('.stat-number');
@@ -88,15 +130,18 @@ document.addEventListener('DOMContentLoaded', function() {
                 observer.unobserve(target);
             }
         });
-    }, { threshold: 0.5 });
+    }, { 
+        threshold: 0.5,
+        rootMargin: '0px 0px -50px 0px'
+    });
 
     statNumbers.forEach(stat => observer.observe(stat));
 
     // Add loading animation to buttons
     document.querySelectorAll('.btn').forEach(button => {
         button.addEventListener('click', function(e) {
-            if (this.getAttribute('href') === '#') {
-                e.preventDefault();
+            if (this.getAttribute('href') === '#' || this.classList.contains('btn-outline-light')) {
+                return; // Don't show loading for demo buttons
             }
             
             const originalText = this.innerHTML;
@@ -121,25 +166,19 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Parallax effect for hero section
-    window.addEventListener('scroll', function() {
-        const scrolled = window.pageYOffset;
-        const hero = document.querySelector('.hero');
-        if (hero) {
-            hero.style.transform = `translateY(${scrolled * 0.5}px)`;
-        }
-    });
-
+    // Remove parallax effect that was causing issues
     // Add confetti effect on CTA button click
     document.querySelectorAll('.btn-primary').forEach(button => {
         if (button.getAttribute('href') === '/register') {
             button.addEventListener('click', function(e) {
-                e.preventDefault();
-                createConfetti();
-                // Redirect after animation
-                setTimeout(() => {
-                    window.location.href = '/register';
-                }, 1500);
+                if (!this.disabled) {
+                    e.preventDefault();
+                    createConfetti();
+                    // Redirect after animation
+                    setTimeout(() => {
+                        window.location.href = '/register';
+                    }, 1500);
+                }
             });
         }
     });
@@ -164,23 +203,31 @@ document.addEventListener('DOMContentLoaded', function() {
             `;
             document.body.appendChild(confetti);
             
-            setTimeout(() => confetti.remove(), 5000);
+            setTimeout(() => {
+                if (confetti.parentNode) {
+                    confetti.parentNode.removeChild(confetti);
+                }
+            }, 5000);
         }
         
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes confetti-fall {
-                0% {
-                    transform: translateY(0) rotate(0deg);
-                    opacity: 1;
+        // Add animation style if not already present
+        if (!document.querySelector('#confetti-styles')) {
+            const style = document.createElement('style');
+            style.id = 'confetti-styles';
+            style.textContent = `
+                @keyframes confetti-fall {
+                    0% {
+                        transform: translateY(0) rotate(0deg);
+                        opacity: 1;
+                    }
+                    100% {
+                        transform: translateY(100vh) rotate(360deg);
+                        opacity: 0;
+                    }
                 }
-                100% {
-                    transform: translateY(100vh) rotate(360deg);
-                    opacity: 0;
-                }
-            }
-        `;
-        document.head.appendChild(style);
+            `;
+            document.head.appendChild(style);
+        }
     }
 
     // Mobile menu improvements
@@ -201,6 +248,16 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     }
+
+    // Handle resize events
+    let resizeTimer;
+    window.addEventListener('resize', function() {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(function() {
+            scrollReveal();
+            updateActiveNav();
+        }, 250);
+    });
 });
 
 // Performance monitoring
@@ -212,4 +269,12 @@ window.addEventListener('load', function() {
     if (loadTime < 1000) {
         console.log('🚀 Excellent performance!');
     }
+    
+    // Remove loading states if any
+    document.querySelectorAll('.btn').forEach(button => {
+        button.disabled = false;
+        if (button.innerHTML.includes('fa-spinner')) {
+            button.innerHTML = button.innerHTML.replace('<i class="fas fa-spinner fa-spin me-2"></i>Carregando...', 'Original Text');
+        }
+    });
 });
