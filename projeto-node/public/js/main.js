@@ -64,37 +64,29 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
+    // REMOVED: Typing effect for hero title (causing delay)
+    // Hero elements now appear immediately with CSS
+
     // Counter animation for stats
     const statNumbers = document.querySelectorAll('.stat-number');
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 const target = entry.target;
-                const text = target.textContent;
-                const hasPercent = text.includes('%');
-                const hasMs = text.includes('ms');
-                const hasBit = text.includes('bit');
-                const hasSlash = text.includes('/');
+                const finalValue = parseFloat(target.textContent);
+                let currentValue = 0;
+                const duration = 2000;
+                const increment = finalValue / (duration / 16);
                 
-                // Only animate numeric values
-                if (!hasMs && !hasBit && !hasSlash) {
-                    const finalValue = parseFloat(text);
-                    if (!isNaN(finalValue)) {
-                        let currentValue = 0;
-                        const duration = 2000;
-                        const increment = finalValue / (duration / 16);
-                        
-                        const timer = setInterval(() => {
-                            currentValue += increment;
-                            if (currentValue >= finalValue) {
-                                target.textContent = finalValue + (hasPercent ? '%' : '');
-                                clearInterval(timer);
-                            } else {
-                                target.textContent = Math.floor(currentValue) + (hasPercent ? '%' : '');
-                            }
-                        }, 16);
+                const timer = setInterval(() => {
+                    currentValue += increment;
+                    if (currentValue >= finalValue) {
+                        target.textContent = finalValue + (target.textContent.includes('%') ? '%' : '');
+                        clearInterval(timer);
+                    } else {
+                        target.textContent = Math.floor(currentValue) + (target.textContent.includes('%') ? '%' : '');
                     }
-                }
+                }, 16);
                 
                 observer.unobserve(target);
             }
@@ -102,6 +94,24 @@ document.addEventListener('DOMContentLoaded', function() {
     }, { threshold: 0.5 });
 
     statNumbers.forEach(stat => observer.observe(stat));
+
+    // Add loading animation to buttons
+    document.querySelectorAll('.btn').forEach(button => {
+        button.addEventListener('click', function(e) {
+            if (this.getAttribute('href') === '#') {
+                e.preventDefault();
+            }
+            
+            const originalText = this.innerHTML;
+            this.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Carregando...';
+            this.disabled = true;
+            
+            setTimeout(() => {
+                this.innerHTML = originalText;
+                this.disabled = false;
+            }, 2000);
+        });
+    });
 
     // Add hover effects to feature cards
     document.querySelectorAll('.feature-card').forEach(card => {
@@ -114,30 +124,24 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Parallax effect for hero section (disabled on mobile for performance)
-    if (window.innerWidth > 768) {
-        window.addEventListener('scroll', function() {
-            const scrolled = window.pageYOffset;
-            const hero = document.querySelector('.hero');
-            if (hero) {
-                hero.style.transform = `translateY(${scrolled * 0.5}px)`;
-            }
-        });
-    }
+    // Parallax effect for hero section
+    window.addEventListener('scroll', function() {
+        const scrolled = window.pageYOffset;
+        const hero = document.querySelector('.hero');
+        if (hero) {
+            hero.style.transform = `translateY(${scrolled * 0.5}px)`;
+        }
+    });
 
     // Add confetti effect on CTA button click
     document.querySelectorAll('.btn-primary').forEach(button => {
-        button.addEventListener('click', function(e) {
-            // Only create confetti if it's not a real navigation
-            if (this.getAttribute('href') === '#') {
-                e.preventDefault();
-                createConfetti();
-            }
+        button.addEventListener('click', function() {
+            createConfetti();
         });
     });
 
     function createConfetti() {
-        const colors = ['#10b981', '#34d399', '#6ee7b7', '#a7f3d0'];
+        const colors = ['#667eea', '#764ba2', '#f093fb', '#4facfe'];
         for (let i = 0; i < 50; i++) {
             const confetti = document.createElement('div');
             confetti.className = 'confetti';
@@ -159,38 +163,21 @@ document.addEventListener('DOMContentLoaded', function() {
             setTimeout(() => confetti.remove(), 5000);
         }
         
-        // Add animation style if not exists
-        if (!document.getElementById('confetti-style')) {
-            const style = document.createElement('style');
-            style.id = 'confetti-style';
-            style.textContent = `
-                @keyframes confetti-fall {
-                    0% {
-                        transform: translateY(0) rotate(0deg);
-                        opacity: 1;
-                    }
-                    100% {
-                        transform: translateY(100vh) rotate(360deg);
-                        opacity: 0;
-                    }
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes confetti-fall {
+                0% {
+                    transform: translateY(0) rotate(0deg);
+                    opacity: 1;
                 }
-            `;
-            document.head.appendChild(style);
-        }
-    }
-
-    // Mobile menu close on link click
-    const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
-    const navbarCollapse = document.querySelector('.navbar-collapse');
-    
-    navLinks.forEach(link => {
-        link.addEventListener('click', function() {
-            if (window.innerWidth < 992 && navbarCollapse.classList.contains('show')) {
-                const bsCollapse = new bootstrap.Collapse(navbarCollapse);
-                bsCollapse.hide();
+                100% {
+                    transform: translateY(100vh) rotate(360deg);
+                    opacity: 0;
+                }
             }
-        });
-    });
+        `;
+        document.head.appendChild(style);
+    }
 });
 
 // Performance monitoring
