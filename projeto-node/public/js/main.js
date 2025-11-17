@@ -1,10 +1,10 @@
-// Scroll animations and main functionality for new centered design
+// Main functionality for minimalist design
 document.addEventListener('DOMContentLoaded', function() {
     // Navbar scroll effect
     const navbar = document.querySelector('.navbar');
     
     function handleNavbarScroll() {
-        if (window.scrollY > 100) {
+        if (window.scrollY > 50) {
             navbar.classList.add('scrolled');
         } else {
             navbar.classList.remove('scrolled');
@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function() {
     window.addEventListener('scroll', handleNavbarScroll);
     handleNavbarScroll();
 
-    // Smooth scrolling for navigation links
+    // Smooth scrolling
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             e.preventDefault();
@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Animated counter for stats
+    // Animated counter
     function animateCounter(element) {
         const target = parseInt(element.getAttribute('data-count'));
         const duration = 2000;
@@ -60,114 +60,28 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }, { threshold: 0.5 });
 
-    document.querySelectorAll('.stat-modern').forEach(stat => {
+    document.querySelectorAll('.stat-item').forEach(stat => {
         counterObserver.observe(stat);
     });
 
-    // Parallax effect for hero background
-    function updateParallax() {
-        const scrolled = window.pageYOffset;
-        const hero = document.querySelector('.hero-centered');
-        if (hero) {
-            const orbits = hero.querySelectorAll('.orbit-circle');
-            orbits.forEach((orbit, index) => {
-                const speed = 0.02 * (index + 1);
-                orbit.style.transform = `translate(-50%, -50%) rotate(${scrolled * speed}deg)`;
-            });
-        }
-    }
+    // Feature cards animation on scroll
+    const featureObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+            }
+        });
+    }, { threshold: 0.1 });
 
-    window.addEventListener('scroll', updateParallax);
-
-    // Loading animation for buttons
-    document.querySelectorAll('.btn-primary').forEach(button => {
-        if (button.getAttribute('href') === '/register') {
-            button.addEventListener('click', function(e) {
-                if (!this.disabled) {
-                    e.preventDefault();
-                    
-                    // Show loading state
-                    const originalText = this.innerHTML;
-                    this.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Redirecionando...';
-                    this.disabled = true;
-                    
-                    // Create confetti effect
-                    createConfetti();
-                    
-                    // Redirect after animation
-                    setTimeout(() => {
-                        window.location.href = '/register';
-                    }, 1500);
-                }
-            });
-        }
+    document.querySelectorAll('.feature-card').forEach((card, index) => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(20px)';
+        card.style.transition = `opacity 0.6s ease ${index * 0.1}s, transform 0.6s ease ${index * 0.1}s`;
+        featureObserver.observe(card);
     });
 
-    // Confetti effect
-    function createConfetti() {
-        const colors = ['#10b981', '#34d399', '#86efac', '#059669', '#22c55e'];
-        const confettiContainer = document.createElement('div');
-        confettiContainer.style.cssText = `
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 9999;
-        `;
-        document.body.appendChild(confettiContainer);
-
-        for (let i = 0; i < 100; i++) {
-            const confetti = document.createElement('div');
-            const color = colors[Math.floor(Math.random() * colors.length)];
-            const size = Math.random() * 10 + 5;
-            
-            confetti.style.cssText = `
-                position: absolute;
-                width: ${size}px;
-                height: ${size}px;
-                background: ${color};
-                top: -20px;
-                left: ${Math.random() * 100}vw;
-                border-radius: ${Math.random() > 0.5 ? '50%' : '2px'};
-                opacity: 0;
-                animation: confetti-fall ${Math.random() * 3 + 2}s ease-in forwards;
-            `;
-            
-            confettiContainer.appendChild(confetti);
-            
-            setTimeout(() => {
-                confetti.remove();
-            }, 5000);
-        }
-
-        // Remove container after animation
-        setTimeout(() => {
-            confettiContainer.remove();
-        }, 5000);
-
-        // Add animation style if not present
-        if (!document.querySelector('#confetti-styles')) {
-            const style = document.createElement('style');
-            style.id = 'confetti-styles';
-            style.textContent = `
-                @keyframes confetti-fall {
-                    0% {
-                        transform: translateY(0) rotate(0deg);
-                        opacity: 1;
-                    }
-                    100% {
-                        transform: translateY(100vh) rotate(360deg);
-                        opacity: 0;
-                    }
-                }
-            `;
-            document.head.appendChild(style);
-        }
-    }
-
-    // Mobile menu handling
+    // Mobile menu
     const navbarToggler = document.querySelector('.navbar-toggler');
     const navbarCollapse = document.querySelector('.navbar-collapse');
     
@@ -176,7 +90,6 @@ document.addEventListener('DOMContentLoaded', function() {
             navbarCollapse.classList.toggle('show');
         });
         
-        // Close mobile menu when clicking on a link
         document.querySelectorAll('.navbar-nav .nav-link').forEach(link => {
             link.addEventListener('click', function() {
                 if (navbarCollapse.classList.contains('show')) {
@@ -186,25 +99,23 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Add hover effects to interactive elements
-    document.querySelectorAll('.orbital-card, .stat-modern, .tech-item').forEach(element => {
-        element.addEventListener('mouseenter', function() {
-            this.style.transform = this.style.transform.replace(/scale\([^)]*\)/, 'scale(1.05)');
-        });
-        
-        element.addEventListener('mouseleave', function() {
-            this.style.transform = this.style.transform.replace(/scale\([^)]*\)/, 'scale(1)');
-        });
-    });
-
-    // Performance optimization
-    let resizeTimer;
-    window.addEventListener('resize', function() {
-        clearTimeout(resizeTimer);
-        resizeTimer = setTimeout(function() {
-            // Recalculate any layout-dependent animations
-            updateParallax();
-        }, 250);
+    // Button loading states
+    document.querySelectorAll('.btn-primary').forEach(button => {
+        if (button.getAttribute('href') === '/register') {
+            button.addEventListener('click', function(e) {
+                if (!this.disabled) {
+                    e.preventDefault();
+                    
+                    const originalText = this.innerHTML;
+                    this.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Carregando...';
+                    this.disabled = true;
+                    
+                    setTimeout(() => {
+                        window.location.href = '/register';
+                    }, 1000);
+                }
+            });
+        }
     });
 });
 
@@ -212,8 +123,4 @@ document.addEventListener('DOMContentLoaded', function() {
 window.addEventListener('load', function() {
     const loadTime = performance.timing.domContentLoadedEventEnd - performance.timing.navigationStart;
     console.log(`PGFlow loaded in ${loadTime}ms`);
-    
-    if (loadTime < 1000) {
-        console.log('🚀 Excellent performance!');
-    }
 });
