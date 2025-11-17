@@ -9,8 +9,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="/css/style.css" rel="stylesheet">
 
-    <!-- Favicon PGFlow -->
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90' fill='%23667eea'>⚡</text></svg>" type="image/svg+xml">
+    <!-- Favicon PGFlow Verde -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90' fill='%2310b981'>⚡</text></svg>" type="image/svg+xml">
 </head>
 <body>
     <!-- Navigation -->
@@ -65,27 +65,41 @@
                     <div class="hero-content">
                         <h1 class="hero-title fade-in-up">
                             Transforme sua Gestão com 
-                            <span style="display: block;">PGFlow</span>
+                            <span style="display: block; background: linear-gradient(135deg, #ffffff 0%, #86efac 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">PGFlow</span>
                         </h1>
                         <p class="hero-subtitle fade-in-up" style="animation-delay: 0.2s;">
                             Sistema completo de autenticação, gestão de conteúdos e análise de dados. 
-                            Desenvolvido com as melhores tecnologias para otimizar seu workflow.
+                            Desenvolvido com tecnologias modernas para otimizar seu workflow.
                         </p>
                         <div class="hero-buttons fade-in-up" style="animation-delay: 0.4s;">
-                            <a href="/register" class="btn btn-primary">
+                            <a href="/register" class="btn btn-primary me-3">
                                 <i class="fas fa-rocket me-2"></i>Começar Agora
                             </a>
                             <a href="#features" class="btn btn-outline-light">
-                                <i class="fas fa-play-circle me-2"></i>Ver Demo
+                                <i class="fas fa-play-circle me-2"></i>Ver Recursos
                             </a>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-6">
                     <div class="text-center fade-in-up" style="animation-delay: 0.6s;">
-                        <div class="hero-illustration">
-                            <img src="data:image/svg+xml,%3Csvg width='400' height='300' viewBox='0 0 400 300' xmlns='http://www.w3.org/2000/svg'%3E%3Crect x='50' y='50' width='300' height='200' rx='20' fill='%23667eea' opacity='0.8'/%3E%3Ccircle cx='100' cy='100' r='30' fill='white'/%3E%3Crect x='150' y='80' width='150' height='20' rx='10' fill='white'/%3E%3Crect x='150' y='110' width='120' height='15' rx='7' fill='white' opacity='0.7'/%3E%3Crect x='150' y='135' width='100' height='15' rx='7' fill='white' opacity='0.5'/%3E%3C/svg%3E" 
-                                 alt="PGFlow Dashboard" class="img-fluid">
+                        <div class="hero-visual">
+                            <div class="dashboard-preview">
+                                <div class="preview-card">
+                                    <div class="preview-header">
+                                        <div class="preview-dots">
+                                            <span></span>
+                                            <span></span>
+                                            <span></span>
+                                        </div>
+                                    </div>
+                                    <div class="preview-content">
+                                        <div class="preview-item"></div>
+                                        <div class="preview-item"></div>
+                                        <div class="preview-item"></div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -162,19 +176,19 @@
                 <div class="col-md-3 col-6 mb-4">
                     <div class="stat-item">
                         <div class="stat-number">500ms</div>
-                        <div class="stat-label">Response Time</div>
+                        <div class="stat-label">Tempo de Resposta</div>
                     </div>
                 </div>
                 <div class="col-md-3 col-6 mb-4">
                     <div class="stat-item">
                         <div class="stat-number">256-bit</div>
-                        <div class="stat-label">Encryption</div>
+                        <div class="stat-label">Criptografia</div>
                     </div>
                 </div>
                 <div class="col-md-3 col-6 mb-4">
                     <div class="stat-item">
                         <div class="stat-number">24/7</div>
-                        <div class="stat-label">Support</div>
+                        <div class="stat-label">Suporte</div>
                     </div>
                 </div>
             </div>
@@ -182,14 +196,14 @@
     </section>
 
     <!-- About Section -->
-    <section id="about" class="features" style="background: #f8fafc;">
+    <section id="about" class="features" style="background: #f0fdf4;">
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-6">
                     <h2 class="section-title text-start">Sobre o PGFlow</h2>
                     <p class="lead mb-4">
                         O PGFlow é mais que um sistema de gestão - é uma solução completa desenvolvida 
-                        com as melhores práticas de desenvolvimento moderno.
+                        com as melhores práticas de desenvolvimento moderno e foco em performance.
                     </p>
                     <div class="row">
                         <div class="col-6">
@@ -213,12 +227,12 @@
                         <div class="card-body p-4">
                             <h5 class="card-title">Tecnologias Utilizadas</h5>
                             <div class="tech-stack">
-                                <span class="badge bg-primary me-2 mb-2 p-2">Node.js</span>
-                                <span class="badge bg-success me-2 mb-2 p-2">Express</span>
+                                <span class="badge bg-success me-2 mb-2 p-2">Node.js</span>
+                                <span class="badge bg-primary me-2 mb-2 p-2">Express</span>
                                 <span class="badge bg-info me-2 mb-2 p-2">MongoDB</span>
                                 <span class="badge bg-warning me-2 mb-2 p-2">JWT</span>
-                                <span class="badge bg-danger me-2 mb-2 p-2">Bootstrap 5</span>
-                                <span class="badge bg-secondary me-2 mb-2 p-2">Render</span>
+                                <span class="badge bg-secondary me-2 mb-2 p-2">Bootstrap 5</span>
+                                <span class="badge bg-dark me-2 mb-2 p-2">Render</span>
                             </div>
                             <p class="mt-3 text-muted">
                                 Stack moderna e escalável para aplicações de alto desempenho.
@@ -250,9 +264,6 @@
                         <a href="#" class="social-link">
                             <i class="fab fa-linkedin"></i>
                         </a>
-                        <a href="#" class="social-link">
-                            <i class="fab fa-youtube"></i>
-                        </a>
                     </div>
                 </div>
                 <div class="col-lg-2 col-md-4 mb-4">
@@ -260,25 +271,21 @@
                     <div class="footer-links">
                         <a href="#features">Recursos</a>
                         <a href="#about">Tecnologias</a>
-                        <a href="#">Preços</a>
-                        <a href="#">Updates</a>
+                        <a href="#">Documentação</a>
                     </div>
                 </div>
                 <div class="col-lg-2 col-md-4 mb-4">
-                    <h6 class="text-white mb-3">Suporte</h6>
+                    <h6 class="text-white mb-3">Desenvolvedor</h6>
                     <div class="footer-links">
-                        <a href="#">Documentação</a>
-                        <a href="#">Guias</a>
-                        <a href="#">API</a>
-                        <a href="#">Status</a>
+                        <a href="/login">Login</a>
+                        <a href="/register">Registrar</a>
+                        <a href="/dashboard">Dashboard</a>
                     </div>
                 </div>
                 <div class="col-lg-2 col-md-4 mb-4">
                     <h6 class="text-white mb-3">Empresa</h6>
                     <div class="footer-links">
-                        <a href="#">Sobre</a>
-                        <a href="#">Blog</a>
-                        <a href="#">Carreiras</a>
+                        <a href="#about">Sobre</a>
                         <a href="#">Contato</a>
                     </div>
                 </div>
@@ -287,8 +294,6 @@
                     <div class="footer-links">
                         <a href="#">Privacidade</a>
                         <a href="#">Termos</a>
-                        <a href="#">Segurança</a>
-                        <a href="#">Cookies</a>
                     </div>
                 </div>
             </div>
