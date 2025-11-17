@@ -1,141 +1,126 @@
+// controllers/postController.js
 const Post = require('../models/post');
 
 const postController = {
-  create: (req, res) => {
-    const { title, content } = req.body;
-    const userId = req.user.id;
-    
-    if (!title || !content) {
-      return res.status(400).json({ message: 'Título e conteúdo são obrigatórios' });
-    }
-    
-    Post.create({ title, content, user_id: userId }, (err, results) => {
-      if (err) {
-        return res.status(500).json({ message: 'Erro ao criar post' });
+  create: async (req, res) => {
+    try {
+      const { title, content } = req.body;
+      const userId = req.user.id;
+      
+      if (!title || !content) {
+        return res.status(400).json({ message: 'Título e conteúdo são obrigatórios' });
       }
+      
+      const post = await Post.create({ 
+        title, 
+        content, 
+        author: userId 
+      });
+      
+      // Popula o autor para retornar
+      await post.populate('author', 'name');
       
       res.status(201).json({ 
         message: 'Post criado com sucesso',
-        postId: results.insertId 
+        post: post
       });
-    });
-  },
-  
-  getAll: (req, res) => {
-    Post.findAll((err, results) => {
-      if (err) {
-        return res.status(500).json({ message: 'Erro ao buscar posts' });
-      }
-      
-      res.json(results);
-    });
-  },
-  
-  getById: (req, res) => {
-    const postId = req.params.id;
-    
-    Post.findById(postId, (err, results) => {
-      if (err) {
-        return res.status(500).json({ message: 'Erro ao buscar post' });
-      }
-      
-      if (results.length === 0) {
-        return res.status(404).json({ message: 'Post não encontrado' });
-      }
-      
-      res.json(results[0]);
-    });
-  },
-  
-  update: (req, res) => {
-    const postId = req.params.id;
-    const { title, content } = req.body;
-    const userId = req.user.id;
-    
-    if (!title || !content) {
-      return res.status(400).json({ message: 'Título e conteúdo são obrigatórios' });
+    } catch (error) {
+      res.status(500).json({ message: 'Erro ao criar post' });
     }
-    
-    // Primeiro verifica se o post pertence ao usuário
-    Post.findById(postId, (err, results) => {
-      if (err) {
-        return res.status(500).json({ message: 'Erro ao buscar post' });
-      }
+  },
+  
+  getAll: async (req, res) => {
+    try {
+      const posts = await Post.find()
+        .populate('author', 'name')
+        .sort({ createdAt: -1 });
       
-      if (results.length === 0) {
+      res.json(posts);
+    } catch (error) {
+      res.status(500).json({ message: 'Erro ao buscar posts' });
+    }
+  },
+  
+  getById: async (req, res) => {
+    try {
+      const postId = req.params.id;
+      
+      const post = await Post.findById(postId).populate('author', 'name');
+      if (!post) {
         return res.status(404).json({ message: 'Post não encontrado' });
       }
       
-      const post = results[0];
+      res.json(post);
+    } catch (error) {
+      res.status(500).json({ message: 'Erro ao buscar post' });
+    }
+  },
+  
+  update: async (req, res) => {
+    try {
+      const postId = req.params.id;
+      const { title, content } = req.body;
+      const userId = req.user.id;
       
-      if (post.user_id !== userId) {
+      if (!title || !content) {
+        return res.status(400).json({ message: 'Título e conteúdo são obrigatórios' });
+      }
+      
+      const post = await Post.findById(postId);
+      if (!post) {
+        return res.status(404).json({ message: 'Post não encontrado' });
+      }
+      
+      // Verifica se o usuário é o autor
+      if (post.author.toString() !== userId) {
         return res.status(403).json({ message: 'Você não tem permissão para editar este post' });
       }
       
-      Post.update(postId, { title, content }, (err, results) => {
-        if (err) {
-          return res.status(500).json({ message: 'Erro ao atualizar post' });
-        }
-        
-        res.json({ message: 'Post atualizado com sucesso' });
-      });
-    });
+      post.title = title;
+      post.content = content;
+      await post.save();
+      
+      res.json({ message: 'Post atualizado com sucesso' });
+    } catch (error) {
+      res.status(500).json({ message: 'Erro ao atualizar post' });
+    }
   },
   
-  delete: (req, res) => {
-    const postId = req.params.id;
-    const userId = req.user.id;
-    
-    // Primeiro verifica se o post pertence ao usuário
-    Post.findById(postId, (err, results) => {
-      if (err) {
-        return res.status(500).json({ message: 'Erro ao buscar post' });
-      }
+  delete: async (req, res) => {
+    try {
+      const postId = req.params.id;
+      const userId = req.user.id;
       
-      if (results.length === 0) {
+      const post = await Post.findById(postId);
+      if (!post) {
         return res.status(404).json({ message: 'Post não encontrado' });
       }
       
-      const post = results[0];
-      
-      if (post.user_id !== userId) {
+      if (post.author.toString() !== userId) {
         return res.status(403).json({ message: 'Você não tem permissão para excluir este post' });
       }
       
-      Post.delete(postId, (err, results) => {
-        if (err) {
-          return res.status(500).json({ message: 'Erro ao excluir post' });
-        }
-        
-        res.json({ message: 'Post excluído com sucesso' });
-      });
-    });
+      await Post.findByIdAndDelete(postId);
+      
+      res.json({ message: 'Post excluído com sucesso' });
+    } catch (error) {
+      res.status(500).json({ message: 'Erro ao excluir post' });
+    }
   },
   
-  getByUser: (req, res) => {
-    const userId = req.user.id;
-    
-    Post.findByUserId(userId, (err, results) => {
-      if (err) {
-        return res.status(500).json({ message: 'Erro ao buscar posts' });
-      }
+  getByUser: async (req, res) => {
+    try {
+      const userId = req.user.id;
       
-      res.json(results);
-    });
+      const posts = await Post.find({ author: userId })
+        .populate('author', 'name')
+        .sort({ createdAt: -1 });
+      
+      res.json(posts);
+    } catch (error) {
+      res.status(500).json({ message: 'Erro ao buscar posts' });
+    }
   }
 };
-
-// No postController.js, adicione esta função se não existir:
-getByUser: (req, res) => {
-    const userId = req.user.id;
-    
-    Post.findByUserId(userId, (err, results) => {
-        if (err) {
-            return res.status(500).json({ message: 'Erro ao buscar posts' });
-        }
-        
-        res.json(results);
-    });
-}
 
 module.exports = postController;

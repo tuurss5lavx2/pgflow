@@ -1,25 +1,40 @@
-const db = require('../config/database');
+// models/user.js
+const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 
-const User = {
-  create: (userData, callback) => {
-    bcrypt.hash(userData.password, 10, (err, hash) => {
-      if (err) return callback(err);
-      
-      const sql = 'INSERT INTO users (name, email, password) VALUES (?, ?, ?)';
-      db.query(sql, [userData.name, userData.email, hash], callback);
-    });
+const userSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+    trim: true
   },
-  
-  findByEmail: (email, callback) => {
-    const sql = 'SELECT * FROM users WHERE email = ?';
-    db.query(sql, [email], callback);
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+    lowercase: true
   },
-  
-  findById: (id, callback) => {
-    const sql = 'SELECT id, name, email, created_at FROM users WHERE id = ?';
-    db.query(sql, [id], callback);
+  password: {
+    type: String,
+    required: true,
+    minlength: 6
   }
+}, {
+  timestamps: true // Cria created_at e updated_at automaticamente
+});
+
+// Hash da senha antes de salvar
+userSchema.pre('save', async function(next) {
+  if (!this.isModified('password')) return next();
+  this.password = await bcrypt.hash(this.password, 10);
+  next();
+});
+
+// Método para comparar senha
+userSchema.methods.comparePassword = async function(password) {
+  return await bcrypt.compare(password, this.password);
 };
+
+const User = mongoose.model('User', userSchema);
 
 module.exports = User;

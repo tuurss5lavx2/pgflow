@@ -1,82 +1,73 @@
+// controllers/authController.js
 const User = require('../models/user');
-const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 const authController = {
-  register: (req, res) => {
-    const { name, email, password } = req.body;
-    
-    // Validações básicas
-    if (!name || !email || !password) {
-      return res.status(400).json({ message: 'Todos os campos são obrigatórios' });
-    }
-    
-    User.findByEmail(email, (err, results) => {
-      if (err) {
-        return res.status(500).json({ message: 'Erro interno do servidor' });
+  register: async (req, res) => {
+    try {
+      const { name, email, password } = req.body;
+      
+      if (!name || !email || !password) {
+        return res.status(400).json({ message: 'Todos os campos são obrigatórios' });
       }
       
-      if (results.length > 0) {
+      // Verifica se usuário já existe
+      const existingUser = await User.findOne({ email });
+      if (existingUser) {
         return res.status(409).json({ message: 'Email já cadastrado' });
       }
       
-      User.create({ name, email, password }, (err, results) => {
-        if (err) {
-          return res.status(500).json({ message: 'Erro ao criar usuário' });
-        }
-        
-        res.status(201).json({ 
-          message: 'Usuário criado com sucesso',
-          userId: results.insertId 
-        });
+      // Cria usuário (a senha é hasheada automaticamente)
+      const user = await User.create({ name, email, password });
+      
+      res.status(201).json({ 
+        message: 'Usuário criado com sucesso',
+        userId: user._id 
       });
-    });
+    } catch (error) {
+      res.status(500).json({ message: 'Erro ao criar usuário' });
+    }
   },
   
-  login: (req, res) => {
-    const { email, password } = req.body;
-    
-    if (!email || !password) {
-      return res.status(400).json({ message: 'Email e senha são obrigatórios' });
-    }
-    
-    User.findByEmail(email, (err, results) => {
-      if (err) {
-        return res.status(500).json({ message: 'Erro interno do servidor' });
+  login: async (req, res) => {
+    try {
+      const { email, password } = req.body;
+      
+      if (!email || !password) {
+        return res.status(400).json({ message: 'Email e senha são obrigatórios' });
       }
       
-      if (results.length === 0) {
+      // Busca usuário
+      const user = await User.findOne({ email });
+      if (!user) {
         return res.status(401).json({ message: 'Credenciais inválidas' });
       }
       
-      const user = results[0];
+      // Compara senha
+      const isMatch = await user.comparePassword(password);
+      if (!isMatch) {
+        return res.status(401).json({ message: 'Credenciais inválidas' });
+      }
       
-      bcrypt.compare(password, user.password, (err, isMatch) => {
-        if (err) {
-          return res.status(500).json({ message: 'Erro interno do servidor' });
+      // Gera token
+      const token = jwt.sign(
+        { id: user._id, email: user.email },
+        process.env.JWT_SECRET,
+        { expiresIn: '24h' }
+      );
+      
+      res.json({
+        message: 'Login realizado com sucesso',
+        token,
+        user: {
+          id: user._id,
+          name: user.name,
+          email: user.email
         }
-        
-        if (!isMatch) {
-          return res.status(401).json({ message: 'Credenciais inválidas' });
-        }
-        
-        const token = jwt.sign(
-          { id: user.id, email: user.email },
-          process.env.JWT_SECRET,
-          { expiresIn: '24h' }
-        );
-        
-        res.json({
-          message: 'Login realizado com sucesso',
-          token,
-          user: {
-            id: user.id,
-            name: user.name,
-            email: user.email
-          }
-        });
       });
-    });
+    } catch (error) {
+      res.status(500).json({ message: 'Erro interno do servidor' });
+    }
   }
 };
 
