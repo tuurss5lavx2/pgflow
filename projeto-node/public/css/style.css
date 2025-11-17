@@ -112,6 +112,7 @@ body {
     position: relative;
     background: var(--gradient);
     overflow: hidden;
+    padding: 80px 0 60px;
 }
 
 .hero::before {
@@ -133,21 +134,30 @@ body {
 }
 
 .hero-title {
-    font-size: 3.5rem;
+    font-size: clamp(2rem, 5vw, 3.5rem);
     font-weight: 800;
     margin-bottom: 1.5rem;
     background: linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    line-height: 1.1;
+    line-height: 1.2;
+}
+
+.hero-brand {
+    display: block;
+    background: linear-gradient(135deg, #ffffff 0%, #86efac 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 .hero-subtitle {
-    font-size: 1.3rem;
-    margin-bottom: 2.5rem;
+    font-size: clamp(1rem, 2.5vw, 1.3rem);
+    margin-bottom: 2rem;
     color: rgba(255, 255, 255, 0.9);
     font-weight: 400;
+    line-height: 1.6;
 }
 
 .hero-buttons {
@@ -157,7 +167,7 @@ body {
 }
 
 .btn {
-    padding: 1rem 2.5rem;
+    padding: 1rem 2rem;
     border-radius: 50px;
     font-weight: 600;
     text-decoration: none;
@@ -169,6 +179,7 @@ body {
     cursor: pointer;
     position: relative;
     overflow: hidden;
+    white-space: nowrap;
 }
 
 .btn-primary {
@@ -180,6 +191,7 @@ body {
 .btn-primary:hover {
     transform: translateY(-5px);
     box-shadow: 0 20px 40px rgba(255, 255, 255, 0.4);
+    color: var(--primary);
 }
 
 .btn-outline-light {
@@ -197,13 +209,14 @@ body {
 /* Hero Visual - Dashboard Preview */
 .hero-visual {
     position: relative;
-    padding: 2rem;
+    padding: 1rem;
 }
 
 .dashboard-preview {
     position: relative;
     max-width: 400px;
     margin: 0 auto;
+    width: 100%;
 }
 
 .preview-card {
@@ -330,7 +343,7 @@ body {
 }
 
 .section-title {
-    font-size: 3rem;
+    font-size: clamp(2rem, 4vw, 3rem);
     font-weight: 800;
     text-align: center;
     margin-bottom: 1rem;
@@ -343,13 +356,13 @@ body {
 .section-subtitle {
     text-align: center;
     color: var(--gray);
-    font-size: 1.2rem;
+    font-size: clamp(1rem, 2vw, 1.2rem);
     margin-bottom: 4rem;
 }
 
 .feature-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 2rem;
 }
 
@@ -422,16 +435,17 @@ body {
 
 .stat-item {
     text-align: center;
+    padding: 1rem;
 }
 
 .stat-number {
-    font-size: 3rem;
+    font-size: clamp(2rem, 4vw, 3rem);
     font-weight: 800;
     margin-bottom: 0.5rem;
 }
 
 .stat-label {
-    font-size: 1.1rem;
+    font-size: clamp(0.9rem, 2vw, 1.1rem);
     opacity: 0.9;
 }
 
@@ -688,26 +702,50 @@ body {
 }
 
 /* Responsive Design */
-@media (max-width: 768px) {
+@media (max-width: 991px) {
+    .hero {
+        padding: 100px 0 60px;
+    }
+    
     .hero-title {
-        font-size: 2.5rem;
+        margin-bottom: 1.2rem;
+    }
+    
+    .hero-subtitle {
+        margin-bottom: 1.5rem;
+    }
+    
+    .dashboard-preview {
+        max-width: 350px;
+    }
+}
+
+@media (max-width: 768px) {
+    .hero {
+        padding: 90px 0 50px;
     }
     
     .section-title {
-        font-size: 2.2rem;
+        margin-bottom: 0.8rem;
+    }
+    
+    .section-subtitle {
+        margin-bottom: 3rem;
     }
     
     .hero-buttons {
-        flex-direction: column;
+        flex-direction: row;
+        justify-content: flex-start;
     }
     
     .btn {
-        width: 100%;
-        justify-content: center;
+        padding: 0.9rem 1.8rem;
+        font-size: 0.95rem;
     }
     
     .feature-grid {
         grid-template-columns: 1fr;
+        gap: 1.5rem;
     }
     
     .floating-element {
@@ -716,6 +754,7 @@ body {
     
     .preview-card {
         transform: none;
+        padding: 1.2rem;
     }
     
     .navbar-nav {
@@ -726,15 +765,49 @@ body {
     .navbar-nav .nav-link {
         margin: 0.2rem 0;
     }
+    
+    .features {
+        padding: 4rem 0;
+    }
+    
+    .stats {
+        padding: 3rem 0;
+    }
+    
+    .footer {
+        padding: 3rem 0 1.5rem;
+    }
+    
+    .dashboard-preview {
+        max-width: 300px;
+    }
 }
 
 @media (max-width: 576px) {
-    .hero-title {
-        font-size: 2rem;
+    .hero {
+        padding: 80px 0 40px;
+    }
+    
+    .hero-content {
+        text-align: center;
+    }
+    
+    .hero-buttons {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .btn {
+        width: 100%;
+        padding: 1rem 1.5rem;
+    }
+    
+    .hero-buttons .btn {
+        margin-right: 0 !important;
     }
     
     .feature-card {
-        padding: 1.5rem;
+        padding: 2rem 1.5rem;
     }
     
     .feature-icon {
@@ -750,12 +823,35 @@ body {
         padding: 1.5rem;
     }
     
-    .section-title {
+    .stat-item {
+        padding: 0.5rem;
+    }
+    
+    .dashboard-preview {
+        max-width: 280px;
+    }
+    
+    .preview-card {
+        padding: 1rem;
+    }
+    
+    .navbar-brand {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 400px) {
+    .hero-title {
         font-size: 1.8rem;
     }
     
-    .stat-number {
-        font-size: 2rem;
+    .btn {
+        padding: 0.9rem 1.2rem;
+        font-size: 0.9rem;
+    }
+    
+    .dashboard-preview {
+        max-width: 250px;
     }
 }
 
