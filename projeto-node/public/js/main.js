@@ -64,9 +64,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // REMOVED: Typing effect for hero title (causing delay)
-    // Hero elements now appear immediately with CSS
-
     // Counter animation for stats
     const statNumbers = document.querySelectorAll('.stat-number');
     const observer = new IntersectionObserver((entries) => {
@@ -124,6 +121,17 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
+    // Add hover effects to stat cards
+    document.querySelectorAll('.stat-card').forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-10px)';
+        });
+        
+        card.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0)';
+        });
+    });
+
     // Parallax effect for hero section
     window.addEventListener('scroll', function() {
         const scrolled = window.pageYOffset;
@@ -135,13 +143,20 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Add confetti effect on CTA button click
     document.querySelectorAll('.btn-primary').forEach(button => {
-        button.addEventListener('click', function() {
-            createConfetti();
-        });
+        if (button.getAttribute('href') === '/register') {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                createConfetti();
+                // Redirect after animation
+                setTimeout(() => {
+                    window.location.href = '/register';
+                }, 1500);
+            });
+        }
     });
 
     function createConfetti() {
-        const colors = ['#667eea', '#764ba2', '#f093fb', '#4facfe'];
+        const colors = ['#10b981', '#34d399', '#86efac', '#059669', '#22c55e'];
         for (let i = 0; i < 50; i++) {
             const confetti = document.createElement('div');
             confetti.className = 'confetti';
@@ -177,6 +192,25 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         `;
         document.head.appendChild(style);
+    }
+
+    // Mobile menu improvements
+    const navbarToggler = document.querySelector('.navbar-toggler');
+    const navbarCollapse = document.querySelector('.navbar-collapse');
+    
+    if (navbarToggler && navbarCollapse) {
+        navbarToggler.addEventListener('click', function() {
+            navbarCollapse.classList.toggle('show');
+        });
+        
+        // Close mobile menu when clicking on a link
+        document.querySelectorAll('.navbar-nav .nav-link').forEach(link => {
+            link.addEventListener('click', function() {
+                if (navbarCollapse.classList.contains('show')) {
+                    navbarCollapse.classList.remove('show');
+                }
+            });
+        });
     }
 });
 

@@ -7,452 +7,10 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary: #10b981;
-            --primary-dark: #059669;
-            --primary-light: #34d399;
-            --secondary: #06b6d4;
-            --accent: #22c55e;
-            --success: #10b981;
-            --warning: #f59e0b;
-            --danger: #ef4444;
-            --light: #f8fafc;
-            --dark: #1e293b;
-            --gray: #64748b;
-            --gradient: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            --gradient-accent: linear-gradient(135deg, var(--accent) 0%, var(--secondary) 100%);
-            --shadow: 0 10px 30px rgba(16, 185, 129, 0.1);
-            --shadow-lg: 0 25px 50px rgba(16, 185, 129, 0.15);
-            --radius: 16px;
-            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
+    <link href="/css/style.css" rel="stylesheet">
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #f8fafc 0%, #f0fdf4 100%);
-            color: var(--dark);
-            line-height: 1.7;
-            overflow-x: hidden;
-        }
-
-        /* Navbar */
-        .navbar {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            box-shadow: 0 4px 30px rgba(16, 185, 129, 0.1);
-            padding: 1rem 0;
-            transition: var(--transition);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .navbar.scrolled {
-            padding: 0.7rem 0;
-            background: rgba(255, 255, 255, 0.98);
-        }
-
-        .navbar-brand {
-            font-weight: 800;
-            font-size: 1.8rem;
-            background: var(--gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            transition: var(--transition);
-        }
-
-        .navbar-brand:hover {
-            transform: scale(1.05);
-        }
-
-        .navbar-nav .nav-link {
-            font-weight: 600;
-            padding: 0.7rem 1.2rem;
-            border-radius: 50px;
-            transition: var(--transition);
-            color: var(--dark);
-            position: relative;
-            margin: 0 0.2rem;
-        }
-
-        .navbar-nav .nav-link:hover {
-            background: var(--gradient);
-            color: white;
-            transform: translateY(-2px);
-        }
-
-        .navbar-nav .nav-link.active {
-            background: var(--gradient);
-            color: white;
-        }
-
-        /* Hero Section - Design Modernizado */
-        .hero {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            position: relative;
-            background: linear-gradient(135deg, #0f766e 0%, #059669 50%, #10b981 100%);
-            overflow: hidden;
-            padding: 80px 0 40px;
-        }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: 
-                radial-gradient(circle at 20% 80%, rgba(16, 185, 129, 0.4) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(52, 211, 153, 0.3) 0%, transparent 50%),
-                radial-gradient(circle at 40% 40%, rgba(34, 197, 94, 0.2) 0%, transparent 50%);
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 2;
-        }
-
-        .hero-title {
-            font-size: clamp(2.5rem, 5vw, 4rem);
-            font-weight: 800;
-            margin-bottom: 1.5rem;
-            line-height: 1.1;
-            color: white;
-        }
-
-        .hero-title-highlight {
-            display: inline-block;
-            background: linear-gradient(135deg, #86efac 0%, #f0fdf4 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            position: relative;
-        }
-
-        .hero-title-highlight::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 100%;
-            height: 3px;
-            background: linear-gradient(90deg, #86efac, #f0fdf4);
-            border-radius: 2px;
-        }
-
-        .hero-subtitle {
-            font-size: clamp(1.1rem, 2.5vw, 1.4rem);
-            margin-bottom: 2.5rem;
-            color: rgba(255, 255, 255, 0.9);
-            font-weight: 400;
-            line-height: 1.6;
-            max-width: 600px;
-        }
-
-        .hero-buttons {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }
-
-        .btn {
-            padding: 1rem 2rem;
-            border-radius: 50px;
-            font-weight: 600;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            transition: var(--transition);
-            border: none;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-            font-size: 1rem;
-            min-width: 160px;
-        }
-
-        .btn-primary {
-            background: white;
-            color: var(--primary);
-            box-shadow: 0 10px 30px rgba(255, 255, 255, 0.3);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(255, 255, 255, 0.4);
-        }
-
-        .btn-outline-light {
-            background: transparent;
-            color: white;
-            border: 2px solid white;
-        }
-
-        .btn-outline-light:hover {
-            background: white;
-            color: var(--primary);
-            transform: translateY(-5px);
-        }
-
-        /* Hero Visual - Dashboard Preview Modernizado */
-        .hero-visual {
-            position: relative;
-            padding: 2rem;
-        }
-
-        .dashboard-preview {
-            position: relative;
-            max-width: 500px;
-            margin: 0 auto;
-        }
-
-        .preview-card {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
-            padding: 2rem;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            transform: perspective(1000px) rotateY(-5deg) rotateX(5deg);
-            transition: var(--transition);
-            overflow: hidden;
-        }
-
-        .preview-card:hover {
-            transform: perspective(1000px) rotateY(0) rotateX(0);
-        }
-
-        .preview-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-        }
-
-        .preview-dots {
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        .preview-dots span {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-        }
-
-        .preview-dots span:nth-child(1) { background: #10b981; }
-        .preview-dots span:nth-child(2) { background: #34d399; }
-        .preview-dots span:nth-child(3) { background: #6ee7b7; }
-
-        .preview-content {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-        }
-
-        .preview-row {
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-        }
-
-        .preview-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #10b981, #34d399);
-        }
-
-        .preview-text {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-
-        .preview-item {
-            height: 8px;
-            background: linear-gradient(90deg, #10b981, #34d399);
-            border-radius: 4px;
-            opacity: 0.7;
-            animation: pulse 2s infinite;
-        }
-
-        .preview-item:nth-child(1) { width: 100%; animation-delay: 0s; }
-        .preview-item:nth-child(2) { width: 80%; animation-delay: 0.5s; }
-        .preview-item:nth-child(3) { width: 60%; animation-delay: 1s; }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 0.7; }
-            50% { opacity: 1; }
-        }
-
-        /* Floating Elements */
-        .floating-elements {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-        }
-
-        .floating-element {
-            position: absolute;
-            background: rgba(255, 255, 255, 0.15);
-            border-radius: 20px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            animation: float 6s ease-in-out infinite;
-            box-shadow: 0 10px 30px rgba(255, 255, 255, 0.2);
-        }
-
-        .floating-element i {
-            font-size: 2rem;
-            color: white;
-        }
-
-        .floating-1 {
-            top: 20%;
-            left: 10%;
-            width: 80px;
-            height: 80px;
-            animation-delay: 0s;
-        }
-
-        .floating-2 {
-            top: 60%;
-            right: 15%;
-            width: 60px;
-            height: 60px;
-            animation-delay: 2s;
-        }
-
-        .floating-3 {
-            bottom: 20%;
-            left: 20%;
-            width: 100px;
-            height: 100px;
-            animation-delay: 4s;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(5deg); }
-        }
-
-        /* Stats Cards */
-        .stats-cards {
-            position: relative;
-            z-index: 3;
-            margin-top: -50px;
-        }
-
-        .stat-card {
-            background: white;
-            border-radius: var(--radius);
-            padding: 2rem;
-            text-align: center;
-            box-shadow: var(--shadow-lg);
-            transition: var(--transition);
-            border: 1px solid #f1f5f9;
-            height: 100%;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-10px);
-        }
-
-        .stat-icon {
-            width: 70px;
-            height: 70px;
-            background: var(--gradient);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 1.5rem;
-        }
-
-        .stat-icon i {
-            font-size: 1.8rem;
-            color: white;
-        }
-
-        .stat-card h5 {
-            font-weight: 700;
-            margin-bottom: 1rem;
-            color: var(--dark);
-        }
-
-        .stat-card p {
-            color: var(--gray);
-            font-size: 0.9rem;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .hero {
-                padding: 100px 0 60px;
-                text-align: center;
-            }
-            
-            .hero-content {
-                text-align: center;
-            }
-            
-            .hero-buttons {
-                justify-content: center;
-            }
-            
-            .btn {
-                width: 100%;
-                max-width: 280px;
-            }
-            
-            .preview-card {
-                transform: none;
-                margin-top: 2rem;
-            }
-            
-            .floating-element {
-                display: none;
-            }
-            
-            .stats-cards {
-                margin-top: 0;
-            }
-        }
-
-        @media (max-width: 576px) {
-            .hero-title {
-                font-size: 2.2rem;
-            }
-            
-            .hero-subtitle {
-                font-size: 1.1rem;
-            }
-            
-            .preview-card {
-                padding: 1.5rem;
-            }
-        }
-    </style>
+    <!-- Favicon PGFlow Verde -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90' fill='%2310b981'>⚡</text></svg>" type="image/svg+xml">
 </head>
 <body>
     <!-- Navigation -->
@@ -479,7 +37,7 @@
                         <a class="nav-link" href="/login">Login</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link btn btn-primary text-white px-3" href="/register">
+                        <a class="nav-link btn btn-primary text-white px-3 ms-2" href="/register">
                             <i class="fas fa-rocket me-1"></i>Começar
                         </a>
                     </li>
@@ -610,31 +168,209 @@
         </div>
     </section>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // Navbar scroll effect
-        const navbar = document.querySelector('.navbar');
-        window.addEventListener('scroll', function() {
-            if (window.scrollY > 100) {
-                navbar.classList.add('scrolled');
-            } else {
-                navbar.classList.remove('scrolled');
-            }
-        });
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <div class="container">
+            <div class="row justify-content-center mb-5">
+                <div class="col-lg-8 text-center">
+                    <h2 class="section-title scroll-reveal">Recursos Avançados</h2>
+                    <p class="section-subtitle scroll-reveal">Tudo que você precisa em uma plataforma moderna</p>
+                </div>
+            </div>
+            <div class="feature-grid">
+                <div class="feature-card scroll-reveal">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h5>Segurança Máxima</h5>
+                    <p>Autenticação JWT, criptografia avançada e proteção contra ataques. Sua segurança é nossa prioridade.</p>
+                </div>
+                <div class="feature-card scroll-reveal" style="animation-delay: 0.2s;">
+                    <div class="feature-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h5>Performance Incrível</h5>
+                    <p>Otimizado para alta performance com MongoDB Atlas e Node.js. Carregamento ultrarrápido.</p>
+                </div>
+                <div class="feature-card scroll-reveal" style="animation-delay: 0.4s;">
+                    <div class="feature-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h5>Totalmente Responsivo</h5>
+                    <p>Interface adaptável que funciona perfeitamente em todos os dispositivos e tamanhos de tela.</p>
+                </div>
+                <div class="feature-card scroll-reveal" style="animation-delay: 0.6s;">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <h5>Análises em Tempo Real</h5>
+                    <p>Dashboard com métricas e analytics para acompanhar o desempenho da sua aplicação.</p>
+                </div>
+                <div class="feature-card scroll-reveal" style="animation-delay: 0.8s;">
+                    <div class="feature-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <h5>API RESTful</h5>
+                    <p>API completa e documentada para integração com outros sistemas e aplicações.</p>
+                </div>
+                <div class="feature-card scroll-reveal" style="animation-delay: 1s;">
+                    <div class="feature-icon">
+                        <i class="fas fa-cloud"></i>
+                    </div>
+                    <h5>Cloud Native</h5>
+                    <p>Hospedagem em nuvem com escalabilidade automática e alta disponibilidade.</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-        // Smooth scrolling for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
-    </script>
+    <!-- Stats Section -->
+    <section class="stats">
+        <div class="container">
+            <div class="row text-center">
+                <div class="col-md-3 col-6 mb-4">
+                    <div class="stat-item">
+                        <div class="stat-number">99.9%</div>
+                        <div class="stat-label">Uptime</div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6 mb-4">
+                    <div class="stat-item">
+                        <div class="stat-number">500ms</div>
+                        <div class="stat-label">Tempo de Resposta</div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6 mb-4">
+                    <div class="stat-item">
+                        <div class="stat-number">256-bit</div>
+                        <div class="stat-label">Criptografia</div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6 mb-4">
+                    <div class="stat-item">
+                        <div class="stat-number">24/7</div>
+                        <div class="stat-label">Suporte</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="features" style="background: #f0fdf4;">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <h2 class="section-title text-start">Sobre o PGFlow</h2>
+                    <p class="lead mb-4">
+                        O PGFlow é mais que um sistema de gestão - é uma solução completa desenvolvida 
+                        com as melhores práticas de desenvolvimento moderno e foco em performance.
+                    </p>
+                    <div class="row">
+                        <div class="col-6">
+                            <ul class="list-unstyled">
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Node.js & Express</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>MongoDB Atlas</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>JWT Authentication</li>
+                            </ul>
+                        </div>
+                        <div class="col-6">
+                            <ul class="list-unstyled">
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>RESTful API</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Responsive Design</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Cloud Deployment</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="card border-0 shadow-lg">
+                        <div class="card-body p-4">
+                            <h5 class="card-title">Tecnologias Utilizadas</h5>
+                            <div class="tech-stack">
+                                <span class="badge bg-success me-2 mb-2 p-2">Node.js</span>
+                                <span class="badge bg-primary me-2 mb-2 p-2">Express</span>
+                                <span class="badge bg-info me-2 mb-2 p-2">MongoDB</span>
+                                <span class="badge bg-warning me-2 mb-2 p-2">JWT</span>
+                                <span class="badge bg-secondary me-2 mb-2 p-2">Bootstrap 5</span>
+                                <span class="badge bg-dark me-2 mb-2 p-2">Render</span>
+                            </div>
+                            <p class="mt-3 text-muted">
+                                Stack moderna e escalável para aplicações de alto desempenho.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4">
+                    <div class="footer-brand">PGFlow</div>
+                    <p class="text-light mb-4">
+                        Sistema completo de gestão desenvolvido com as melhores tecnologias 
+                        para otimizar seu workflow e produtividade.
+                    </p>
+                    <div class="social-links">
+                        <a href="#" class="social-link">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4 mb-4">
+                    <h6 class="text-white mb-3">Produto</h6>
+                    <div class="footer-links">
+                        <a href="#features">Recursos</a>
+                        <a href="#about">Tecnologias</a>
+                        <a href="#">Documentação</a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4 mb-4">
+                    <h6 class="text-white mb-3">Desenvolvedor</h6>
+                    <div class="footer-links">
+                        <a href="/login">Login</a>
+                        <a href="/register">Registrar</a>
+                        <a href="/dashboard">Dashboard</a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4 mb-4">
+                    <h6 class="text-white mb-3">Empresa</h6>
+                    <div class="footer-links">
+                        <a href="#about">Sobre</a>
+                        <a href="#">Contato</a>
+                    </div>
+                </div>
+                <div class="col-lg-2 mb-4">
+                    <h6 class="text-white mb-3">Legal</h6>
+                    <div class="footer-links">
+                        <a href="#">Privacidade</a>
+                        <a href="#">Termos</a>
+                    </div>
+                </div>
+            </div>
+            <hr class="border-secondary my-4">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <p class="text-light mb-0">&copy; 2024 PGFlow. Todos os direitos reservados.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p class="text-light mb-0">Desenvolvido com ❤️ por Pablo Gomes</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/main.js"></script>
 </body>
 </html>
