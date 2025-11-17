@@ -296,7 +296,7 @@ body {
 }
 
 .stat-number {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     font-weight: 700;
     color: var(--primary);
     margin-bottom: 0.25rem;
@@ -496,7 +496,7 @@ body {
 }
 
 .stat-number {
-    font-size: 2rem;
+    font-size: 1.5rem;
     font-weight: 700;
     color: var(--dark);
     margin-bottom: 0.5rem;
