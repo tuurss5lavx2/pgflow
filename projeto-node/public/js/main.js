@@ -1,4 +1,4 @@
-// Main functionality for minimalist design
+// Main functionality for UserFlow Landing Page
 document.addEventListener('DOMContentLoaded', function() {
     // Navbar scroll effect
     const navbar = document.querySelector('.navbar');
@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function() {
     window.addEventListener('scroll', handleNavbarScroll);
     handleNavbarScroll();
 
-    // Smooth scrolling
+    // Smooth scrolling for navigation links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             e.preventDefault();
@@ -27,41 +27,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
             }
         });
-    });
-
-    // Animated counter
-    function animateCounter(element) {
-        const target = parseInt(element.getAttribute('data-count'));
-        const duration = 2000;
-        const step = target / (duration / 16);
-        let current = 0;
-        
-        const timer = setInterval(() => {
-            current += step;
-            if (current >= target) {
-                element.textContent = target + (element.textContent.includes('%') ? '%' : '');
-                clearInterval(timer);
-            } else {
-                element.textContent = Math.floor(current) + (element.textContent.includes('%') ? '%' : '');
-            }
-        }, 16);
-    }
-
-    // Intersection Observer for counters
-    const counterObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const counter = entry.target.querySelector('.stat-number');
-                if (counter && counter.getAttribute('data-count')) {
-                    animateCounter(counter);
-                }
-                counterObserver.unobserve(entry.target);
-            }
-        });
-    }, { threshold: 0.5 });
-
-    document.querySelectorAll('.stat-item').forEach(stat => {
-        counterObserver.observe(stat);
     });
 
     // Feature cards animation on scroll
@@ -81,7 +46,24 @@ document.addEventListener('DOMContentLoaded', function() {
         featureObserver.observe(card);
     });
 
-    // Mobile menu
+    // Stats items animation
+    const statsObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+            }
+        });
+    }, { threshold: 0.2 });
+
+    document.querySelectorAll('.stat-item').forEach((item, index) => {
+        item.style.opacity = '0';
+        item.style.transform = 'translateY(30px)';
+        item.style.transition = `opacity 0.6s ease ${index * 0.1}s, transform 0.6s ease ${index * 0.1}s`;
+        statsObserver.observe(item);
+    });
+
+    // Mobile menu handling
     const navbarToggler = document.querySelector('.navbar-toggler');
     const navbarCollapse = document.querySelector('.navbar-collapse');
     
@@ -90,6 +72,7 @@ document.addEventListener('DOMContentLoaded', function() {
             navbarCollapse.classList.toggle('show');
         });
         
+        // Close mobile menu when clicking on a link
         document.querySelectorAll('.navbar-nav .nav-link').forEach(link => {
             link.addEventListener('click', function() {
                 if (navbarCollapse.classList.contains('show')) {
@@ -99,7 +82,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Button loading states
+    // Button loading states for register
     document.querySelectorAll('.btn-primary').forEach(button => {
         if (button.getAttribute('href') === '/register') {
             button.addEventListener('click', function(e) {
@@ -107,7 +90,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     e.preventDefault();
                     
                     const originalText = this.innerHTML;
-                    this.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Carregando...';
+                    this.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Redirecionando...';
                     this.disabled = true;
                     
                     setTimeout(() => {
@@ -117,10 +100,29 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
     });
+
+    // Add hover effects to tech stack items
+    document.querySelectorAll('.tech-item').forEach(item => {
+        item.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-5px)';
+        });
+        
+        item.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0)';
+        });
+    });
 });
 
 // Performance monitoring
 window.addEventListener('load', function() {
     const loadTime = performance.timing.domContentLoadedEventEnd - performance.timing.navigationStart;
-    console.log(`PGFlow loaded in ${loadTime}ms`);
+    console.log(`UserFlow loaded in ${loadTime}ms`);
+    
+    // Remove loading states if any
+    document.querySelectorAll('.btn').forEach(button => {
+        button.disabled = false;
+        if (button.innerHTML.includes('fa-spinner')) {
+            button.innerHTML = button.innerHTML.replace('<i class="fas fa-spinner fa-spin me-2"></i>Redirecionando...', 'Original Text');
+        }
+    });
 });
