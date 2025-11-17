@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', function() {
         sections.forEach(section => {
             const sectionTop = section.offsetTop;
             const sectionHeight = section.clientHeight;
-            if (scrollY >= sectionTop - 200) {
+            if (scrollY >= sectionTop - 100) {
                 current = section.getAttribute('id');
             }
         });
@@ -64,24 +64,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Typing effect for hero title
-    const heroTitle = document.querySelector('.hero-title');
-    if (heroTitle) {
-        const text = heroTitle.textContent;
-        heroTitle.textContent = '';
-        let i = 0;
-        
-        function typeWriter() {
-            if (i < text.length) {
-                heroTitle.textContent += text.charAt(i);
-                i++;
-                setTimeout(typeWriter, 50);
-            }
-        }
-        
-        // Start typing after a delay
-        setTimeout(typeWriter, 1000);
-    }
+    // REMOVIDO: Efeito de digitação - título já aparece completo
+    // O título agora aparece instantaneamente
 
     // Counter animation for stats
     const statNumbers = document.querySelectorAll('.stat-number');
@@ -111,98 +95,90 @@ document.addEventListener('DOMContentLoaded', function() {
 
     statNumbers.forEach(stat => observer.observe(stat));
 
-    // Add loading animation to buttons
-    document.querySelectorAll('.btn').forEach(button => {
-        button.addEventListener('click', function(e) {
-            if (this.getAttribute('href') === '#') {
-                e.preventDefault();
-            }
-            
-            const originalText = this.innerHTML;
-            this.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Carregando...';
-            this.disabled = true;
-            
-            setTimeout(() => {
-                this.innerHTML = originalText;
-                this.disabled = false;
-            }, 2000);
-        });
-    });
-
-    // Add hover effects to feature cards
-    document.querySelectorAll('.feature-card').forEach(card => {
-        card.addEventListener('mouseenter', function() {
-            this.style.transform = 'translateY(-10px) scale(1.02)';
-        });
-        
-        card.addEventListener('mouseleave', function() {
-            this.style.transform = 'translateY(0) scale(1)';
-        });
-    });
-
-    // Parallax effect for hero section
-    window.addEventListener('scroll', function() {
-        const scrolled = window.pageYOffset;
-        const hero = document.querySelector('.hero');
-        if (hero) {
-            hero.style.transform = `translateY(${scrolled * 0.5}px)`;
-        }
-    });
-
-    // Add confetti effect on CTA button click
-    document.querySelectorAll('.btn-primary').forEach(button => {
-        button.addEventListener('click', function() {
-            createConfetti();
-        });
-    });
-
-    function createConfetti() {
-        const colors = ['#667eea', '#764ba2', '#f093fb', '#4facfe'];
-        for (let i = 0; i < 50; i++) {
-            const confetti = document.createElement('div');
-            confetti.className = 'confetti';
-            confetti.style.cssText = `
-                position: fixed;
-                width: 10px;
-                height: 10px;
-                background: ${colors[Math.floor(Math.random() * colors.length)]};
-                top: 0;
-                left: ${Math.random() * 100}vw;
-                opacity: 0;
-                pointer-events: none;
-                border-radius: 2px;
-                animation: confetti-fall ${Math.random() * 3 + 2}s linear forwards;
-                z-index: 1000;
-            `;
-            document.body.appendChild(confetti);
-            
-            setTimeout(() => confetti.remove(), 5000);
-        }
-        
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes confetti-fall {
-                0% {
-                    transform: translateY(0) rotate(0deg);
-                    opacity: 1;
-                }
-                100% {
-                    transform: translateY(100vh) rotate(360deg);
-                    opacity: 0;
-                }
-            }
-        `;
-        document.head.appendChild(style);
-    }
-});
-
-// Performance monitoring
-window.addEventListener('load', function() {
-    const loadTime = performance.timing.domContentLoadedEventEnd - performance.timing.navigationStart;
-    console.log(`PGFlow loaded in ${loadTime}ms`);
+    // Mobile menu improvements
+    const navbarToggler = document.querySelector('.navbar-toggler');
+    const navbarCollapse = document.querySelector('.navbar-collapse');
     
-    // Send to analytics (placeholder)
-    if (loadTime < 1000) {
-        console.log('🚀 Excellent performance!');
+    if (navbarToggler && navbarCollapse) {
+        navbarToggler.addEventListener('click', function() {
+            navbarCollapse.classList.toggle('show');
+        });
+        
+        // Close mobile menu when clicking on a link
+        document.querySelectorAll('.navbar-nav .nav-link').forEach(link => {
+            link.addEventListener('click', function() {
+                if (navbarCollapse.classList.contains('show')) {
+                    navbarToggler.click();
+                }
+            });
+        });
     }
+
+    // Performance monitoring
+    window.addEventListener('load', function() {
+        const loadTime = performance.timing.domContentLoadedEventEnd - performance.timing.navigationStart;
+        console.log(`PGFlow loaded in ${loadTime}ms`);
+        
+        if (loadTime < 1000) {
+            console.log('🚀 Excellent performance!');
+        }
+    });
+
+    // Add loading states to forms
+    document.querySelectorAll('form').forEach(form => {
+        form.addEventListener('submit', function(e) {
+            const submitButton = this.querySelector('button[type="submit"]');
+            if (submitButton) {
+                const originalText = submitButton.innerHTML;
+                submitButton.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Processando...';
+                submitButton.disabled = true;
+                
+                // Revert after 5 seconds if still processing
+                setTimeout(() => {
+                    submitButton.innerHTML = originalText;
+                    submitButton.disabled = false;
+                }, 5000);
+            }
+        });
+    });
+
+    // Touch device optimizations
+    if ('ontouchstart' in window) {
+        document.body.classList.add('touch-device');
+    }
+
+    // Lazy loading for images
+    const images = document.querySelectorAll('img[data-src]');
+    const imageObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const img = entry.target;
+                img.src = img.dataset.src;
+                img.classList.remove('lazy');
+                imageObserver.unobserve(img);
+            }
+        });
+    });
+
+    images.forEach(img => imageObserver.observe(img));
 });
+
+// Utility functions
+function debounce(func, wait, immediate) {
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            timeout = null;
+            if (!immediate) func(...args);
+        };
+        const callNow = immediate && !timeout;
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+        if (callNow) func(...args);
+    };
+}
+
+// Export for use in other files
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = { debounce };
+}
