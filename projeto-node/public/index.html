@@ -3,523 +3,89 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UserFlow - Sistema de Autenticação e CRUD</title>
+    <title>PGFlow - Sistema Completo de Gestão</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Favicon em SVG (inline) -->
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90' fill='%236464ff'>📝</text></svg>" type="image/svg+xml">
-    
-    <!-- Favicon alternativo para navegadores que não suportam SVG -->
-    <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0OCIgZmlsbD0iIzY0NjRmZiIvPjxwYXRoIGQ9Ik0zMCAzMEg3MFY3MEgzMHoiIGZpbGw9IiNmZmYiLz48Y2lyY2xlIGN4PSI1MCIgY3k9IjQwIiByPSI4IiBmaWxsPSIjNjQ2NGZmIi8+PHBhdGggZD0iTTQwIDU1IEg2MCBMNTAgNzAgWiIgZmlsbD0iIzY0NjRmZiIvPjwvc3ZnPg==" type="image/svg+xml">
-    
-    <style>
-        :root {
-            --primary: #6464ff;
-            --primary-dark: #3459dd;
-            --secondary: #ff6a6e;
-            --light: #f8f9fa;
-            --dark: #212529;
-            --gray: #6c757d;
-            --gradient: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            --radius: 12px;
-        }
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #f0f5ff;
-            color: #333;
-            line-height: 1.6;
-        }
-
-        /* Navbar */
-        .navbar {
-            background-color: rgb(255, 255, 255);
-            box-shadow: var(--shadow);
-            padding: 0.8rem 0;
-        }
-
-        .navbar-brand {
-            font-weight: 700;
-            font-size: 1.5rem;
-            color:#3459dd;
-        }
-        .navbar-brand:hover {
-            color: black;
-        }
-
-        .navbar-nav .nav-link {
-            font-weight: 500;
-            padding: 0.5rem 1rem;
-            border-radius: 50px;
-            transition: all 0.3s ease;
-            color:#3459dd;
-        }
-
-        .navbar-nav .nav-link:hover {
-            background:#6464ff44;
-        }
-
-        /* Hero Section */
-        .hero {
-            min-height: 80vh;
-            display: flex;
-            align-items: center;
-            padding: 3rem 0;
-            background: var(--gradient);
-            color: white;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -50%;
-            width: 100%;
-            height: 200%;
-            background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ffffff' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E");
-            opacity: 0.5;
-        }
-
-        .hero-title {
-            font-size: 3.5rem;
-            font-weight: 800;
-            margin-bottom: 1.5rem;
-        }
-
-        .hero-subtitle {
-            font-size: 1.25rem;
-            margin-bottom: 2rem;
-            opacity: 0.9;
-        }
-
-        .hero-buttons .btn {
-            padding: 0.75rem 2rem;
-            border-radius: 50px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-
-        .hero-buttons .btn-primary {
-            background: white;
-            color: var(--primary);
-            border: none;
-        }
-
-        .hero-buttons .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
-        }
-
-        .hero-buttons .btn-outline-light:hover {
-            background: white;
-            color: var(--primary);
-        }
-
-        /* Custom Illustration */
-        .custom-illustration {
-            position: relative;
-            height: 300px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .illustration-container {
-            position: relative;
-            width: 100%;
-            height: 100%;
-        }
-
-        .user-icon {
-            position: absolute;
-            top: 30%;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 80px;
-            background: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: var(--shadow);
-            z-index: 3;
-        }
-
-        .user-icon i {
-            font-size: 2.5rem;
-            color: var(--primary);
-        }
-
-        .data-flow {
-            position: absolute;
-            width: 220px;
-            height: 120px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 20px;
-            backdrop-filter: blur(5px);
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 2;
-        }
-
-        .data-flow::before {
-            content: '';
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            background: white;
-            border-radius: 50%;
-            animation: pulse 2s infinite;
-        }
-
-        .data-flow-1 {
-            top: 20%;
-            left: 10%;
-            transform: rotate(-5deg);
-        }
-
-        .data-flow-2 {
-            bottom: 20%;
-            right: 10%;
-            transform: rotate(5deg);
-        }
-
-        .flow-line {
-            position: absolute;
-            height: 3px;
-            background: white;
-            transform-origin: left center;
-        }
-
-        .flow-line-1 {
-            top: 55%;
-            left: 30%;
-            width: 80px;
-            transform: rotate(20deg);
-        }
-
-        .flow-line-2 {
-            top: 55%;
-            right: 30%;
-            width: 80px;
-            transform: rotate(-20deg);
-        }
-
-        .post-card {
-            position: absolute;
-            width: 100px;
-            height: 70px;
-            background: white;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: var(--shadow);
-            z-index: 1;
-            animation: float 6s ease-in-out infinite;
-        }
-
-        .post-card i {
-            color: var(--primary);
-            font-size: 1.5rem;
-        }
-
-        .post-card-1 {
-            top: 40%;
-            left: 25%;
-            animation-delay: 0s;
-        }
-
-        .post-card-2 {
-            top: 60%;
-            right: 25%;
-            animation-delay: 1s;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-15px) rotate(5deg); }
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.7; transform: scale(1.2); }
-        }
-
-        /* Features Section */
-        .features {
-            background: white;
-            padding: 5rem 0;
-        }
-
-        .section-title {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: var(--dark);
-            margin-bottom: 1rem;
-        }
-
-        .section-subtitle {
-            color: var(--gray);
-            font-size: 1.1rem;
-        }
-
-        .feature-card {
-            background: white;
-            border-radius: var(--radius);
-            padding: 2rem;
-            text-align: center;
-            height: 100%;
-            box-shadow: var(--shadow);
-            transition: all 0.3s ease;
-        }
-
-        .feature-card:hover {
-            transform: translateY(-10px);
-        }
-
-        .feature-icon {
-            width: 80px;
-            height: 80px;
-            background: var(--gradient);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 1.5rem;
-        }
-
-        .feature-icon i {
-            font-size: 2rem;
-            color: white;
-        }
-
-        .feature-card h5 {
-            font-weight: 600;
-            margin-bottom: 1rem;
-            color: var(--dark);
-        }
-
-        .feature-card p {
-            color: var(--gray);
-        }
-
-        /* Footer */
-        .footer {
-            background: var(--dark);
-            color: white;
-            padding: 2rem 0;
-        }
-
-        .footer-links a {
-            color: white;
-            font-size: 1.2rem;
-            margin-left: 1rem;
-            transition: all 0.3s ease;
-        }
-
-        .footer-links a:hover {
-            color: var(--primary);
-        }
-
-        /* Responsividade Melhorada */
-        @media (max-width: 992px) {
-            .hero-title {
-                font-size: 2.8rem;
-            }
-            
-            .custom-illustration {
-                height: 250px;
-                margin-top: 2rem;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .hero {
-                text-align: center;
-                padding: 2rem 0;
-            }
-            
-            .hero-title {
-                font-size: 2.3rem;
-            }
-            
-            .hero-subtitle {
-                font-size: 1.1rem;
-            }
-            
-            .section-title {
-                font-size: 2rem;
-            }
-            
-            .hero-buttons .btn {
-                display: block;
-                width: 100%;
-                margin-bottom: 1rem;
-            }
-            
-            .hero-buttons .btn:last-child {
-                margin-bottom: 0;
-            }
-            
-            .hero-buttons .me-3 {
-                margin-right: 0 !important;
-            }
-            
-            .custom-illustration {
-                height: 200px;
-            }
-            
-            .user-icon {
-                width: 60px;
-                height: 60px;
-            }
-            
-            .user-icon i {
-                font-size: 2rem;
-            }
-            
-            .data-flow {
-                width: 180px;
-                height: 100px;
-            }
-            
-            .flow-line-1, .flow-line-2 {
-                width: 60px;
-            }
-            
-            .post-card {
-                width: 80px;
-                height: 60px;
-            }
-        }
-
-        @media (max-width: 576px) {
-            .hero-title {
-                font-size: 2rem;
-            }
-            
-            .custom-illustration {
-                height: 180px;
-            }
-            
-            .data-flow {
-                width: 150px;
-                height: 80px;
-            }
-            
-            .data-flow-1 {
-                left: 5%;
-            }
-            
-            .data-flow-2 {
-                right: 5%;
-            }
-            
-            .flow-line-1, .flow-line-2 {
-                width: 50px;
-            }
-            
-            .feature-card {
-                padding: 1.5rem;
-            }
-            
-            .feature-icon {
-                width: 60px;
-                height: 60px;
-            }
-            
-            .feature-icon i {
-                font-size: 1.5rem;
-            }
-        }
-
-        /* Animações */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .fade-in {
-            animation: fadeIn 0.6s ease-out;
-        }
-    </style>
+    <!-- Favicon PGFlow -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90' fill='%23667eea'>⚡</text></svg>" type="image/svg+xml">
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark">
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
         <div class="container">
             <a class="navbar-brand" href="/">
-                <i class="fas fa-stream me-2"></i>UserFlow
+                <i class="fas fa-bolt me-2"></i>PGFlow
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <div class="navbar-nav ms-auto">
-                    <a class="nav-link" href="/login">
-                        <i class="fas fa-sign-in-alt me-1"></i>Login
-                    </a>
-                    <a class="nav-link" href="/register">
-                        <i class="fas fa-user-plus me-1"></i>Registrar
-                    </a>
-                </div>
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#home">Início</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#features">Recursos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about">Sobre</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/login">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary text-white px-3" href="/register">
+                            <i class="fas fa-rocket me-1"></i>Começar
+                        </a>
+                    </li>
+                </ul>
             </div>
         </div>
     </nav>
 
-    <section class="hero">
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="floating-elements">
+            <div class="floating-element floating-1">
+                <i class="fas fa-database"></i>
+            </div>
+            <div class="floating-element floating-2">
+                <i class="fas fa-chart-line"></i>
+            </div>
+            <div class="floating-element floating-3">
+                <i class="fas fa-users"></i>
+            </div>
+        </div>
         <div class="container">
-            <div class="row align-items-center">
+            <div class="row align-items-center min-vh-100">
                 <div class="col-lg-6">
                     <div class="hero-content">
-                        <h1 class="hero-title">UserFlow</h1>
-                        <p class="hero-subtitle">
-                            Sistema completo de autenticação e gestão de conteúdos. Crie, edite e gerencie posts com segurança e facilidade.
+                        <h1 class="hero-title fade-in-up">
+                            Transforme sua Gestão com 
+                            <span style="display: block;">PGFlow</span>
+                        </h1>
+                        <p class="hero-subtitle fade-in-up" style="animation-delay: 0.2s;">
+                            Sistema completo de autenticação, gestão de conteúdos e análise de dados. 
+                            Desenvolvido com as melhores tecnologias para otimizar seu workflow.
                         </p>
-                        <div class="hero-buttons mt-4">
-                            <a href="/register" class="btn btn-primary me-3">
+                        <div class="hero-buttons fade-in-up" style="animation-delay: 0.4s;">
+                            <a href="/register" class="btn btn-primary">
                                 <i class="fas fa-rocket me-2"></i>Começar Agora
                             </a>
-                            <a href="/login" class="btn btn-outline-light">
-                                <i class="fas fa-sign-in-alt me-2"></i>Fazer Login
+                            <a href="#features" class="btn btn-outline-light">
+                                <i class="fas fa-play-circle me-2"></i>Ver Demo
                             </a>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-6">
-                    <div class="custom-illustration">
-                        <div class="illustration-container">
-                            <div class="user-icon">
-                                <i class="fas fa-user"></i>
-                            </div>
-                            <div class="data-flow data-flow-1">
-                                <i class="fas fa-database"></i>
-                            </div>
-                            <div class="data-flow data-flow-2">
-                                <i class="fas fa-server"></i>
-                            </div>
-                            <div class="flow-line flow-line-1"></div>
-                            <div class="flow-line flow-line-2"></div>
-                            <div class="post-card post-card-1">
-                                <i class="fas fa-file-alt"></i>
-                            </div>
-                            <div class="post-card post-card-2">
-                                <i class="fas fa-edit"></i>
-                            </div>
+                    <div class="text-center fade-in-up" style="animation-delay: 0.6s;">
+                        <div class="hero-illustration">
+                            <img src="data:image/svg+xml,%3Csvg width='400' height='300' viewBox='0 0 400 300' xmlns='http://www.w3.org/2000/svg'%3E%3Crect x='50' y='50' width='300' height='200' rx='20' fill='%23667eea' opacity='0.8'/%3E%3Ccircle cx='100' cy='100' r='30' fill='white'/%3E%3Crect x='150' y='80' width='150' height='20' rx='10' fill='white'/%3E%3Crect x='150' y='110' width='120' height='15' rx='7' fill='white' opacity='0.7'/%3E%3Crect x='150' y='135' width='100' height='15' rx='7' fill='white' opacity='0.5'/%3E%3C/svg%3E" 
+                                 alt="PGFlow Dashboard" class="img-fluid">
                         </div>
                     </div>
                 </div>
@@ -527,102 +93,218 @@
         </div>
     </section>
 
-    <section class="features">
+    <!-- Features Section -->
+    <section id="features" class="features">
         <div class="container">
             <div class="row justify-content-center mb-5">
                 <div class="col-lg-8 text-center">
-                    <h2 class="section-title">Recursos do UserFlow</h2>
-                    <p class="section-subtitle">Tudo que você precisa para gerenciar usuários e conteúdos</p>
+                    <h2 class="section-title scroll-reveal">Recursos Avançados</h2>
+                    <p class="section-subtitle scroll-reveal">Tudo que você precisa em uma plataforma moderna</p>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-4 mb-4">
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="fas fa-lock"></i>
-                        </div>
-                        <h5>Autenticação Segura</h5>
-                        <p>Autenticação JWT e senhas criptografadas para máxima segurança dos seus dados.</p>
+            <div class="feature-grid">
+                <div class="feature-card scroll-reveal">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h5>Segurança Máxima</h5>
+                    <p>Autenticação JWT, criptografia avançada e proteção contra ataques. Sua segurança é nossa prioridade.</p>
+                </div>
+                <div class="feature-card scroll-reveal" style="animation-delay: 0.2s;">
+                    <div class="feature-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h5>Performance Incrível</h5>
+                    <p>Otimizado para alta performance com MongoDB Atlas e Node.js. Carregamento ultrarrápido.</p>
+                </div>
+                <div class="feature-card scroll-reveal" style="animation-delay: 0.4s;">
+                    <div class="feature-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h5>Totalmente Responsivo</h5>
+                    <p>Interface adaptável que funciona perfeitamente em todos os dispositivos e tamanhos de tela.</p>
+                </div>
+                <div class="feature-card scroll-reveal" style="animation-delay: 0.6s;">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <h5>Análises em Tempo Real</h5>
+                    <p>Dashboard com métricas e analytics para acompanhar o desempenho da sua aplicação.</p>
+                </div>
+                <div class="feature-card scroll-reveal" style="animation-delay: 0.8s;">
+                    <div class="feature-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <h5>API RESTful</h5>
+                    <p>API completa e documentada para integração com outros sistemas e aplicações.</p>
+                </div>
+                <div class="feature-card scroll-reveal" style="animation-delay: 1s;">
+                    <div class="feature-icon">
+                        <i class="fas fa-cloud"></i>
+                    </div>
+                    <h5>Cloud Native</h5>
+                    <p>Hospedagem em nuvem com escalabilidade automática e alta disponibilidade.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats">
+        <div class="container">
+            <div class="row text-center">
+                <div class="col-md-3 col-6 mb-4">
+                    <div class="stat-item">
+                        <div class="stat-number">99.9%</div>
+                        <div class="stat-label">Uptime</div>
                     </div>
                 </div>
-                <div class="col-md-4 mb-4">
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="fas fa-edit"></i>
-                        </div>
-                        <h5>CRUD Completo</h5>
-                        <p>Crie, edite, leia e exclua posts de forma intuitiva com interface amigável.</p>
+                <div class="col-md-3 col-6 mb-4">
+                    <div class="stat-item">
+                        <div class="stat-number">500ms</div>
+                        <div class="stat-label">Response Time</div>
                     </div>
                 </div>
-                <div class="col-md-4 mb-4">
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="fas fa-database"></i>
-                        </div>
-                        <h5>Banco de Dados MySQL</h5>
-                        <p>Armazenamento robusto e confiável para todas as informações do sistema.</p>
+                <div class="col-md-3 col-6 mb-4">
+                    <div class="stat-item">
+                        <div class="stat-number">256-bit</div>
+                        <div class="stat-label">Encryption</div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6 mb-4">
+                    <div class="stat-item">
+                        <div class="stat-number">24/7</div>
+                        <div class="stat-label">Support</div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-  <footer class="footer">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-4 mb-4 mb-lg-0">
-                <h5 class="footer-title">UserFlow</h5>
-                <p class="footer-description">
-                    Sistema completo de autenticação e gestão de conteúdos. 
-                    Desenvolvido com as melhores tecnologias do mercado.
-                </p>
-                <div class="footer-links">
-                    <a href="#"><i class="fab fa-github"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                    <a href="#"><i class="fab fa-linkedin"></i></a>
+    <!-- About Section -->
+    <section id="about" class="features" style="background: #f8fafc;">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <h2 class="section-title text-start">Sobre o PGFlow</h2>
+                    <p class="lead mb-4">
+                        O PGFlow é mais que um sistema de gestão - é uma solução completa desenvolvida 
+                        com as melhores práticas de desenvolvimento moderno.
+                    </p>
+                    <div class="row">
+                        <div class="col-6">
+                            <ul class="list-unstyled">
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Node.js & Express</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>MongoDB Atlas</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>JWT Authentication</li>
+                            </ul>
+                        </div>
+                        <div class="col-6">
+                            <ul class="list-unstyled">
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>RESTful API</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Responsive Design</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Cloud Deployment</li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="col-lg-2 col-md-4 mb-4 mb-md-0">
-                <h6 class="footer-subtitle">Navegação</h6>
-                <ul class="footer-list">
-                    <li><a href="/">Início</a></li>
-                    <li><a href="/login">Login</a></li>
-                    <li><a href="/register">Registrar</a></li>
-                </ul>
-            </div>
-            <div class="col-lg-2 col-md-4 mb-4 mb-md-0">
-                <h6 class="footer-subtitle">Recursos</h6>
-                <ul class="footer-list">
-                    <li><a href="#">Autenticação</a></li>
-                    <li><a href="#">CRUD de Posts</a></li>
-                    <li><a href="#">Dashboard</a></li>
-                </ul>
-            </div>
-            <div class="col-lg-4 col-md-4">
-                <h6 class="footer-subtitle">Tecnologias</h6>
-                <div class="tech-badges">
-                    <span class="tech-badge">Node.js</span>
-                    <span class="tech-badge">Express</span>
-                    <span class="tech-badge">MySQL</span>
-                    <span class="tech-badge">JWT</span>
-                </div>
-            </div>
-        </div>
-        <hr class="footer-divider">
-        <div class="row align-items-center">
-            <div class="col-md-6">
-                <p class="footer-copyright">© 2024 UserFlow. Todos os direitos reservados.</p>
-            </div>
-            <div class="col-md-6 text-md-end">
-                <div class="footer-legal">
-                    <a href="#">Política de Privacidade</a>
-                    <a href="#">Termos de Uso</a>
+                <div class="col-lg-6">
+                    <div class="card border-0 shadow-lg">
+                        <div class="card-body p-4">
+                            <h5 class="card-title">Tecnologias Utilizadas</h5>
+                            <div class="tech-stack">
+                                <span class="badge bg-primary me-2 mb-2 p-2">Node.js</span>
+                                <span class="badge bg-success me-2 mb-2 p-2">Express</span>
+                                <span class="badge bg-info me-2 mb-2 p-2">MongoDB</span>
+                                <span class="badge bg-warning me-2 mb-2 p-2">JWT</span>
+                                <span class="badge bg-danger me-2 mb-2 p-2">Bootstrap 5</span>
+                                <span class="badge bg-secondary me-2 mb-2 p-2">Render</span>
+                            </div>
+                            <p class="mt-3 text-muted">
+                                Stack moderna e escalável para aplicações de alto desempenho.
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</footer>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4">
+                    <div class="footer-brand">PGFlow</div>
+                    <p class="text-light mb-4">
+                        Sistema completo de gestão desenvolvido com as melhores tecnologias 
+                        para otimizar seu workflow e produtividade.
+                    </p>
+                    <div class="social-links">
+                        <a href="#" class="social-link">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4 mb-4">
+                    <h6 class="text-white mb-3">Produto</h6>
+                    <div class="footer-links">
+                        <a href="#features">Recursos</a>
+                        <a href="#about">Tecnologias</a>
+                        <a href="#">Preços</a>
+                        <a href="#">Updates</a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4 mb-4">
+                    <h6 class="text-white mb-3">Suporte</h6>
+                    <div class="footer-links">
+                        <a href="#">Documentação</a>
+                        <a href="#">Guias</a>
+                        <a href="#">API</a>
+                        <a href="#">Status</a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4 mb-4">
+                    <h6 class="text-white mb-3">Empresa</h6>
+                    <div class="footer-links">
+                        <a href="#">Sobre</a>
+                        <a href="#">Blog</a>
+                        <a href="#">Carreiras</a>
+                        <a href="#">Contato</a>
+                    </div>
+                </div>
+                <div class="col-lg-2 mb-4">
+                    <h6 class="text-white mb-3">Legal</h6>
+                    <div class="footer-links">
+                        <a href="#">Privacidade</a>
+                        <a href="#">Termos</a>
+                        <a href="#">Segurança</a>
+                        <a href="#">Cookies</a>
+                    </div>
+                </div>
+            </div>
+            <hr class="border-secondary my-4">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <p class="text-light mb-0">&copy; 2024 PGFlow. Todos os direitos reservados.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p class="text-light mb-0">Desenvolvido com ❤️ por Pablo Gomes</p>
+                </div>
+            </div>
+        </div>
+    </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/main.js"></script>
 </body>
 </html>
