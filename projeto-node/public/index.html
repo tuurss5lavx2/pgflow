@@ -37,7 +37,7 @@
                         <a class="nav-link" href="/login">Login</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link btn btn-primary text-white px-3" href="/register">
+                        <a class="nav-link btn btn-primary text-white px-4" href="/register">
                             <i class="fas fa-rocket me-1"></i>Começar
                         </a>
                     </li>
@@ -46,8 +46,10 @@
         </div>
     </nav>
 
-    <!-- Hero Section -->
+    <!-- Hero Section - COMPLETAMENTE NOVA -->
     <section id="home" class="hero">
+        <div class="hero-bg"></div>
+        
         <div class="floating-elements">
             <div class="floating-element floating-1">
                 <i class="fas fa-database"></i>
@@ -59,20 +61,21 @@
                 <i class="fas fa-users"></i>
             </div>
         </div>
+        
         <div class="container">
             <div class="row align-items-center min-vh-100">
                 <div class="col-lg-6">
                     <div class="hero-content">
-                        <h1 class="hero-title fade-in-up">
+                        <h1 class="hero-title">
                             Transforme sua Gestão com 
-                            <span style="display: block; background: linear-gradient(135deg, #ffffff 0%, #86efac 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">PGFlow</span>
+                            <span class="gradient-text">PGFlow</span>
                         </h1>
-                        <p class="hero-subtitle fade-in-up" style="animation-delay: 0.2s;">
+                        <p class="hero-subtitle">
                             Sistema completo de autenticação, gestão de conteúdos e análise de dados. 
-                            Desenvolvido com tecnologias modernas para otimizar seu workflow.
+                            Desenvolvido com tecnologias modernas para revolucionar seu workflow.
                         </p>
-                        <div class="hero-buttons fade-in-up" style="animation-delay: 0.4s;">
-                            <a href="/register" class="btn btn-primary me-3">
+                        <div class="hero-buttons">
+                            <a href="/register" class="btn btn-primary">
                                 <i class="fas fa-rocket me-2"></i>Começar Agora
                             </a>
                             <a href="#features" class="btn btn-outline-light">
@@ -82,22 +85,22 @@
                     </div>
                 </div>
                 <div class="col-lg-6">
-                    <div class="text-center fade-in-up" style="animation-delay: 0.6s;">
-                        <div class="hero-visual">
-                            <div class="dashboard-preview">
-                                <div class="preview-card">
-                                    <div class="preview-header">
-                                        <div class="preview-dots">
-                                            <span></span>
-                                            <span></span>
-                                            <span></span>
-                                        </div>
+                    <div class="hero-visual">
+                        <div class="hero-dashboard">
+                            <div class="dashboard-mockup">
+                                <div class="dashboard-header">
+                                    <h6 class="mb-0 text-dark fw-bold">Dashboard PGFlow</h6>
+                                    <div class="dashboard-dots">
+                                        <span></span>
+                                        <span></span>
+                                        <span></span>
                                     </div>
-                                    <div class="preview-content">
-                                        <div class="preview-item"></div>
-                                        <div class="preview-item"></div>
-                                        <div class="preview-item"></div>
-                                    </div>
+                                </div>
+                                <div class="dashboard-content">
+                                    <div class="dashboard-item"></div>
+                                    <div class="dashboard-item"></div>
+                                    <div class="dashboard-item"></div>
+                                    <div class="dashboard-item"></div>
                                 </div>
                             </div>
                         </div>
@@ -110,135 +113,108 @@
     <!-- Features Section -->
     <section id="features" class="features">
         <div class="container">
-            <div class="row justify-content-center mb-5">
-                <div class="col-lg-8 text-center">
-                    <h2 class="section-title scroll-reveal">Recursos Avançados</h2>
-                    <p class="section-subtitle scroll-reveal">Tudo que você precisa em uma plataforma moderna</p>
-                </div>
+            <div class="section-header">
+                <h2 class="section-title">Recursos Avançados</h2>
+                <p class="section-subtitle">
+                    Tecnologia de ponta para otimizar seu workflow e impulsionar sua produtividade
+                </p>
             </div>
-            <div class="feature-grid">
+            
+            <div class="features-grid">
+                <!-- Card 1 -->
                 <div class="feature-card scroll-reveal">
-                    <div class="feature-icon">
-                        <i class="fas fa-shield-alt"></i>
+                    <div class="feature-icon-wrapper">
+                        <div class="feature-icon-bg"></div>
+                        <div class="feature-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
                     </div>
                     <h5>Segurança Máxima</h5>
-                    <p>Autenticação JWT, criptografia avançada e proteção contra ataques. Sua segurança é nossa prioridade.</p>
+                    <p>
+                        Autenticação JWT avançada, criptografia de ponta a ponta e proteção 
+                        contra vulnerabilidades modernas.
+                    </p>
+                    <span class="feature-badge">Enterprise</span>
                 </div>
-                <div class="feature-card scroll-reveal" style="animation-delay: 0.2s;">
-                    <div class="feature-icon">
-                        <i class="fas fa-bolt"></i>
+
+                <!-- Card 2 -->
+                <div class="feature-card scroll-reveal" style="animation-delay: 0.1s;">
+                    <div class="feature-icon-wrapper">
+                        <div class="feature-icon-bg"></div>
+                        <div class="feature-icon">
+                            <i class="fas fa-bolt"></i>
+                        </div>
                     </div>
                     <h5>Performance Incrível</h5>
-                    <p>Otimizado para alta performance com MongoDB Atlas e Node.js. Carregamento ultrarrápido.</p>
+                    <p>
+                        Otimizado com MongoDB Atlas e Node.js, garantindo tempos de resposta 
+                        ultrarrápidos mesmo sob alta carga.
+                    </p>
+                    <span class="feature-badge">High Speed</span>
                 </div>
+
+                <!-- Card 3 -->
+                <div class="feature-card scroll-reveal" style="animation-delay: 0.2s;">
+                    <div class="feature-icon-wrapper">
+                        <div class="feature-icon-bg"></div>
+                        <div class="feature-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                    </div>
+                    <h5>Design Responsivo</h5>
+                    <p>
+                        Interface adaptável que proporciona experiência perfeita em todos os 
+                        dispositivos, do mobile ao desktop.
+                    </p>
+                    <span class="feature-badge">Mobile First</span>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="feature-card scroll-reveal" style="animation-delay: 0.3s;">
+                    <div class="feature-icon-wrapper">
+                        <div class="feature-icon-bg"></div>
+                        <div class="feature-icon">
+                            <i class="fas fa-chart-bar"></i>
+                        </div>
+                    </div>
+                    <h5>Analytics em Tempo Real</h5>
+                    <p>
+                        Dashboard completo com métricas detalhadas e relatórios em tempo real 
+                        para tomada de decisões inteligentes.
+                    </p>
+                    <span class="feature-badge">Data Driven</span>
+                </div>
+
+                <!-- Card 5 -->
                 <div class="feature-card scroll-reveal" style="animation-delay: 0.4s;">
-                    <div class="feature-icon">
-                        <i class="fas fa-mobile-alt"></i>
-                    </div>
-                    <h5>Totalmente Responsivo</h5>
-                    <p>Interface adaptável que funciona perfeitamente em todos os dispositivos e tamanhos de tela.</p>
-                </div>
-                <div class="feature-card scroll-reveal" style="animation-delay: 0.6s;">
-                    <div class="feature-icon">
-                        <i class="fas fa-chart-bar"></i>
-                    </div>
-                    <h5>Análises em Tempo Real</h5>
-                    <p>Dashboard com métricas e analytics para acompanhar o desempenho da sua aplicação.</p>
-                </div>
-                <div class="feature-card scroll-reveal" style="animation-delay: 0.8s;">
-                    <div class="feature-icon">
-                        <i class="fas fa-code"></i>
+                    <div class="feature-icon-wrapper">
+                        <div class="feature-icon-bg"></div>
+                        <div class="feature-icon">
+                            <i class="fas fa-code"></i>
+                        </div>
                     </div>
                     <h5>API RESTful</h5>
-                    <p>API completa e documentada para integração com outros sistemas e aplicações.</p>
+                    <p>
+                        API completa e bem documentada para integração fácil com outros sistemas 
+                        e desenvolvimento de aplicações customizadas.
+                    </p>
+                    <span class="feature-badge">Developer Friendly</span>
                 </div>
-                <div class="feature-card scroll-reveal" style="animation-delay: 1s;">
-                    <div class="feature-icon">
-                        <i class="fas fa-cloud"></i>
+
+                <!-- Card 6 -->
+                <div class="feature-card scroll-reveal" style="animation-delay: 0.5s;">
+                    <div class="feature-icon-wrapper">
+                        <div class="feature-icon-bg"></div>
+                        <div class="feature-icon">
+                            <i class="fas fa-cloud"></i>
+                        </div>
                     </div>
                     <h5>Cloud Native</h5>
-                    <p>Hospedagem em nuvem com escalabilidade automática e alta disponibilidade.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Stats Section -->
-    <section class="stats">
-        <div class="container">
-            <div class="row text-center">
-                <div class="col-md-3 col-6 mb-4">
-                    <div class="stat-item">
-                        <div class="stat-number">99.9%</div>
-                        <div class="stat-label">Uptime</div>
-                    </div>
-                </div>
-                <div class="col-md-3 col-6 mb-4">
-                    <div class="stat-item">
-                        <div class="stat-number">500ms</div>
-                        <div class="stat-label">Tempo de Resposta</div>
-                    </div>
-                </div>
-                <div class="col-md-3 col-6 mb-4">
-                    <div class="stat-item">
-                        <div class="stat-number">256-bit</div>
-                        <div class="stat-label">Criptografia</div>
-                    </div>
-                </div>
-                <div class="col-md-3 col-6 mb-4">
-                    <div class="stat-item">
-                        <div class="stat-number">24/7</div>
-                        <div class="stat-label">Suporte</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- About Section -->
-    <section id="about" class="features" style="background: #f0fdf4;">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-6">
-                    <h2 class="section-title text-start">Sobre o PGFlow</h2>
-                    <p class="lead mb-4">
-                        O PGFlow é mais que um sistema de gestão - é uma solução completa desenvolvida 
-                        com as melhores práticas de desenvolvimento moderno e foco em performance.
+                    <p>
+                        Arquitetura nativa em nuvem com escalabilidade automática, alta 
+                        disponibilidade e backup contínuo dos dados.
                     </p>
-                    <div class="row">
-                        <div class="col-6">
-                            <ul class="list-unstyled">
-                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Node.js & Express</li>
-                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>MongoDB Atlas</li>
-                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>JWT Authentication</li>
-                            </ul>
-                        </div>
-                        <div class="col-6">
-                            <ul class="list-unstyled">
-                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>RESTful API</li>
-                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Responsive Design</li>
-                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Cloud Deployment</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="card border-0 shadow-lg">
-                        <div class="card-body p-4">
-                            <h5 class="card-title">Tecnologias Utilizadas</h5>
-                            <div class="tech-stack">
-                                <span class="badge bg-success me-2 mb-2 p-2">Node.js</span>
-                                <span class="badge bg-primary me-2 mb-2 p-2">Express</span>
-                                <span class="badge bg-info me-2 mb-2 p-2">MongoDB</span>
-                                <span class="badge bg-warning me-2 mb-2 p-2">JWT</span>
-                                <span class="badge bg-secondary me-2 mb-2 p-2">Bootstrap 5</span>
-                                <span class="badge bg-dark me-2 mb-2 p-2">Render</span>
-                            </div>
-                            <p class="mt-3 text-muted">
-                                Stack moderna e escalável para aplicações de alto desempenho.
-                            </p>
-                        </div>
-                    </div>
+                    <span class="feature-badge">Scalable</span>
                 </div>
             </div>
         </div>
