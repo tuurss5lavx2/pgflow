@@ -1,6 +1,8 @@
 // controllers/authController.js
 const User = require('../models/user');
 const jwt = require('jsonwebtoken');
+const fs = require('fs');
+const path = require('path');
 
 const authController = {
   register: async (req, res) => {
@@ -62,13 +64,126 @@ const authController = {
         user: {
           id: user._id,
           name: user.name,
-          email: user.email
+          email: user.email,
+          avatar: user.avatar
         }
       });
     } catch (error) {
       res.status(500).json({ message: 'Erro interno do servidor' });
     }
+  },
+
+  // ⬇️⬇️⬇️ NOVOS MÉTODOS DE AVATAR E PERFIL ⬇️⬇️⬇️
+  uploadAvatar: async (req, res) => {
+    try {
+      if (!req.file) {
+        return res.status(400).json({ message: 'Nenhuma imagem enviada' });
+      }
+
+      const userId = req.user.id;
+      const user = await User.findById(userId);
+
+      if (!user) {
+        // Deleta a imagem se usuário não existe
+        fs.unlinkSync(req.file.path);
+        return res.status(404).json({ message: 'Usuário não encontrado' });
+      }
+
+      // Deleta avatar antigo se existir
+      if (user.avatar && user.avatar.startsWith('/uploads/')) {
+        const oldAvatarPath = path.join(__dirname, '../public', user.avatar);
+        if (fs.existsSync(oldAvatarPath)) {
+          fs.unlinkSync(oldAvatarPath);
+        }
+      }
+
+      // Atualiza avatar no usuário
+      user.avatar = '/uploads/' + req.file.filename;
+      await user.save();
+
+      res.json({
+        message: 'Avatar atualizado com sucesso!',
+        avatar: user.avatar,
+        user: {
+          id: user._id,
+          name: user.name,
+          email: user.email,
+          avatar: user.avatar
+        }
+      });
+
+    } catch (error) {
+      // Deleta a imagem em caso de erro
+      if (req.file) {
+        fs.unlinkSync(req.file.path);
+      }
+      console.error('Erro ao fazer upload do avatar:', error);
+      res.status(500).json({ message: 'Erro interno ao fazer upload' });
+    }
+  },
+
+  getProfile: async (req, res) => {
+    try {
+      const userId = req.user.id;
+      const user = await User.findById(userId).select('-password');
+
+      if (!user) {
+        return res.status(404).json({ message: 'Usuário não encontrado' });
+      }
+
+      res.json({
+        user: {
+          id: user._id,
+          name: user.name,
+          email: user.email,
+          avatar: user.avatar,
+          createdAt: user.createdAt
+        }
+      });
+    } catch (error) {
+      console.error('Erro ao buscar perfil:', error);
+      res.status(500).json({ message: 'Erro interno ao buscar perfil' });
+    }
+  },
+
+  updateProfile: async (req, res) => {
+    try {
+      const userId = req.user.id;
+      const { name, email } = req.body;
+
+      const user = await User.findById(userId);
+      if (!user) {
+        return res.status(404).json({ message: 'Usuário não encontrado' });
+      }
+
+      // Verifica se email já existe (exceto pro próprio usuário)
+      if (email && email !== user.email) {
+        const existingUser = await User.findOne({ email });
+        if (existingUser) {
+          return res.status(409).json({ message: 'Email já está em uso' });
+        }
+        user.email = email;
+      }
+
+      if (name) user.name = name;
+      await user.save();
+
+      res.json({
+        message: 'Perfil atualizado com sucesso!',
+        user: {
+          id: user._id,
+          name: user.name,
+          email: user.email,
+          avatar: user.avatar
+        }
+      });
+
+    } catch (error) {
+      console.error('Erro ao atualizar perfil:', error);
+      res.status(500).json({ message: 'Erro interno ao atualizar perfil' });
+    }
   }
+  // ⬆️⬆️⬆️ NOVOS MÉTODOS DE AVATAR E PERFIL ⬆️⬆️⬆️
 };
 
 module.exports = authController;

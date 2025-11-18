@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Perfil - PGFlow</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90' fill='%2310b981'>⚡</text></svg>" type="image/svg+xml">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-bolt me-2"></i>PGFlow
+            </a>
+            <div class="navbar-nav ms-auto align-items-center">
+                <a href="/dashboard" class="btn btn-outline-light me-2">
+                    <i class="fas fa-arrow-left me-1"></i>Voltar
+                </a>
+                <span class="navbar-text me-3">
+                    <i class="fas fa-user me-1"></i>Meu Perfil
+                </span>
+                <button id="logoutBtn" class="btn btn-outline-light">
+                    <i class="fas fa-sign-out-alt me-1"></i>Sair
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <!-- Avatar Section -->
+                <div class="card mb-4 fade-in">
+                    <div class="card-header">
+                        <h4 class="mb-0"><i class="fas fa-user-circle me-2"></i>Foto de Perfil</h4>
+                    </div>
+                    <div class="card-body text-center">
+                        <div class="mb-4">
+                            <img id="avatarPreview" src="" alt="Avatar" 
+                                 class="rounded-circle border shadow" 
+                                 style="width: 150px; height: 150px; object-fit: cover;"
+                                 onerror="this.src='https://ui-avatars.com/api/?name=User&background=10b981&color=fff&size=150'">
+                        </div>
+                        <form id="avatarForm" enctype="multipart/form-data">
+                            <div class="mb-3">
+                                <input type="file" id="avatarInput" name="avatar" 
+                                       accept="image/*" class="form-control" 
+                                       style="max-width: 300px; margin: 0 auto;">
+                                <div class="form-text">
+                                    Formatos: JPG, PNG, GIF. Tamanho máximo: 5MB
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary" id="uploadBtn">
+                                <i class="fas fa-upload me-2"></i>Upload Avatar
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Profile Info -->
+                <div class="card fade-in" style="animation-delay: 0.2s">
+                    <div class="card-header">
+                        <h4 class="mb-0"><i class="fas fa-user-edit me-2"></i>Informações Pessoais</h4>
+                    </div>
+                    <div class="card-body">
+                        <form id="profileForm">
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Nome Completo</label>
+                                <input type="text" class="form-control" id="name" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-2"></i>Salvar Alterações
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/profile.js"></script>
+</body>
+</html>

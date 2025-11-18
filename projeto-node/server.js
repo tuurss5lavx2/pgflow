@@ -63,6 +63,10 @@ app.get('/dashboard', (req, res) => {
   res.sendFile(path.join(__dirname, 'views', 'dashboard.html'));
 });
 
+app.get('/profile', (req, res) => {
+  res.sendFile(path.join(__dirname, 'views', 'profile.html'));
+});
+
 // ✅ HEALTH CHECK (importante para Render)
 app.get('/health', (req, res) => {
   res.status(200).json({ 
