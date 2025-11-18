@@ -1,6 +1,37 @@
 document.addEventListener('DOMContentLoaded', function() {
     const token = localStorage.getItem('token');
     const user = JSON.parse(localStorage.getItem('user'));
+
+    // No posts.js - atualizar a parte do user
+if (user) {
+    // Atualizar todos os elementos de nome
+    document.querySelectorAll('#userName, #userNameMobile').forEach(element => {
+        element.textContent = user.name;
+    });
+    
+    // Atualizar email no mobile
+    const userEmailElement = document.getElementById('userEmailMobile');
+    if (userEmailElement) {
+        userEmailElement.textContent = user.email;
+    }
+
+    // Logout para desktop e mobile
+document.getElementById('logoutBtn').addEventListener('click', handleLogout);
+document.getElementById('logoutBtnMobile').addEventListener('click', handleLogout);
+
+function handleLogout() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    window.location.href = '/';
+}
+    
+    // Atualizar avatares
+    document.querySelectorAll('#userAvatar, #userAvatarMobile, #userAvatarMobileLarge').forEach(img => {
+        if (user.avatar) {
+            img.src = user.avatar;
+        }
+    });
+}
     
     if (!token) {
         window.location.href = '/login';

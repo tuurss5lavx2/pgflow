@@ -13,26 +13,103 @@
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90' fill='%2310b981'>⚡</text></svg>" type="image/svg+xml">
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark">
+    <!-- Nova Navbar Premium -->
+    <nav class="navbar navbar-expand-lg navbar-premium">
         <div class="container">
-            <a class="navbar-brand" href="/">
-                <i class="fas fa-bolt me-2"></i>PGFlow
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <div class="navbar-nav ms-auto align-items-center">
-                    <span class="navbar-text me-3 user-greeting">
-                        <a href="/profile" class="btn btn-outline-light me-2">
-    <i class="fas fa-user-edit me-1"></i>Meu Perfil
-</a>
-                        <i class="fas fa-user me-1"></i>Olá, <span id="userName"></span>
-                    </span>
-                    <button id="logoutBtn" class="btn btn-outline-light">
-                        <i class="fas fa-sign-out-alt me-1"></i>Sair
-                    </button>
+            <!-- Logo -->
+            <a class="navbar-brand premium-brand" href="/">
+                <div class="brand-content">
+                    <div class="brand-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <div class="brand-text">
+                        <span class="brand-name">PGFlow</span>
+                        <span class="brand-subtitle">Dashboard</span>
+                    </div>
                 </div>
+            </a>
+
+            <!-- User Menu -->
+            <div class="navbar-user-menu">
+                <!-- User Info Desktop -->
+                <div class="user-info-desktop">
+                    <div class="user-avatar-container">
+                        <img id="userAvatar" src="" alt="Avatar" 
+                             class="user-avatar"
+                             onerror="this.src='https://ui-avatars.com/api/?name=User&background=10b981&color=fff&size=40'">
+                    </div>
+                    <div class="user-details">
+                        <span class="user-name" id="userName">Carregando...</span>
+                        <span class="user-status">Online</span>
+                    </div>
+                    <div class="dropdown">
+                        <button class="dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-premium">
+                            <li>
+                                <a class="dropdown-item" href="/profile">
+                                    <i class="fas fa-user-edit me-2"></i>Meu Perfil
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="/">
+                                    <i class="fas fa-home me-2"></i>Página Inicial
+                                </a>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <button class="dropdown-item text-danger" id="logoutBtn">
+                                    <i class="fas fa-sign-out-alt me-2"></i>Sair
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Mobile Toggle -->
+                <button class="navbar-toggler user-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#userMobileMenu">
+                    <div class="user-avatar-mobile">
+                        <img id="userAvatarMobile" src="" alt="Avatar" 
+                             class="user-avatar"
+                             onerror="this.src='https://ui-avatars.com/api/?name=User&background=10b981&color=fff&size=40'">
+                    </div>
+                </button>
+            </div>
+
+            <!-- Mobile Menu -->
+            <div class="collapse navbar-collapse mobile-user-menu" id="userMobileMenu">
+                <div class="mobile-user-info">
+                    <div class="user-avatar-mobile-large">
+                        <img id="userAvatarMobileLarge" src="" alt="Avatar" 
+                             class="user-avatar"
+                             onerror="this.src='https://ui-avatars.com/api/?name=User&background=10b981&color=fff&size=80'">
+                    </div>
+                    <div class="user-details-mobile">
+                        <span class="user-name" id="userNameMobile">Carregando...</span>
+                        <span class="user-email" id="userEmailMobile">carregando@email.com</span>
+                    </div>
+                </div>
+                <ul class="navbar-nav mobile-nav-items">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/profile">
+                            <i class="fas fa-user-edit me-2"></i>Meu Perfil
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">
+                            <i class="fas fa-home me-2"></i>Página Inicial
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link text-danger" id="logoutBtnMobile">
+                            <i class="fas fa-sign-out-alt me-2"></i>Sair da Conta
+                        </button>
+                    </li>
+                </ul>
             </div>
         </div>
     </nav>
