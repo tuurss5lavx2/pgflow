@@ -74,11 +74,9 @@ function displayPosts(posts) {
   const postsList = document.getElementById('postsList');
   if (!postsList) return;
   
-  console.log('Posts recebidos:', posts); // DEBUG
-  
   if (posts.length === 0) {
     postsList.innerHTML = `
-      <div class="text-center py-5">
+      <div class="col-12 text-center py-5">
         <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
         <p class="text-muted">Nenhum post encontrado. Seja o primeiro a postar!</p>
       </div>
@@ -92,9 +90,6 @@ function displayPosts(posts) {
   const user = JSON.parse(localStorage.getItem('user'));
   
   posts.forEach(post => {
-    console.log('Post individual:', post); // DEBUG
-    console.log('authorAvatar:', post.authorAvatar); // DEBUG
-    
     const isOwner = user && post.author === user.name;
     
     // ✅ CORREÇÃO: Verificação de likes melhorada
@@ -104,26 +99,11 @@ function displayPosts(posts) {
     
     const likesCount = post.likes ? post.likes.length : 0;
     
-    // ✅ CORREÇÃO: Usar avatar do autor do post
-    // Se não tiver authorAvatar, usar avatar gerado baseado no nome do autor
-    const authorAvatar = post.authorAvatar || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(post.author) + '&background=10b981&color=fff&size=150';
-    
-    console.log('Avatar a ser usado:', authorAvatar); // DEBUG
-    
     const postElement = document.createElement('div');
     postElement.className = 'post-card fade-in';
     postElement.innerHTML = `
-      <div class="post-header">
-        <img src="${authorAvatar}" alt="${post.author}" class="post-avatar" onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(post.author)}&background=10b981&color=fff&size=150'">
-        <div class="post-author-info">
-          <div class="post-author">${post.author}</div>
-          <div class="post-date">
-            <i class="fas fa-calendar me-1"></i>
-            ${new Date(post.createdAt).toLocaleDateString('pt-BR')}
-            ${post.createdAt !== post.updatedAt ? 
-            ` • <i class="fas fa-sync-alt me-1"></i>${new Date(post.updatedAt).toLocaleDateString('pt-BR')}` : ''}
-          </div>
-        </div>
+      <div class="d-flex justify-content-between align-items-start mb-3">
+        <h5 class="post-title mb-0">${post.title}</h5>
         ${isOwner ? `
         <div class="btn-group">
           <button class="btn btn-sm btn-outline-primary edit-post" data-id="${post._id}">
@@ -135,16 +115,23 @@ function displayPosts(posts) {
         </div>
         ` : ''}
       </div>
+      <div class="post-author">
+        <i class="fas fa-user me-1"></i>Por: ${post.author}
+      </div>
+      <p class="post-content">${post.content}</p>
       
-      <div class="post-title">${post.title}</div>
-      <div class="post-content">${post.content}</div>
-      
-      <div class="post-footer">
-        <div class="post-actions">
-          <button class="like-btn ${userLiked ? 'btn-danger' : 'btn-outline-danger'}" data-id="${post._id}">
-            <i class="fas fa-heart ${userLiked ? 'text-white' : ''}"></i> 
-            <span class="likes-count">${likesCount}</span>
-          </button>
+      <!-- BOTÃO DE LIKE -->
+      <div class="d-flex justify-content-between align-items-center mt-3">
+        <button class="btn ${userLiked ? 'btn-danger' : 'btn-outline-danger'} like-btn" data-id="${post._id}">
+          <i class="fas fa-heart ${userLiked ? 'text-white' : ''}"></i> 
+          <span class="ms-1 likes-count">${likesCount}</span>
+        </button>
+        
+        <div class="post-date">
+          <i class="fas fa-calendar me-1"></i>
+          ${new Date(post.createdAt).toLocaleDateString('pt-BR')}
+          ${post.createdAt !== post.updatedAt ? 
+          ` • <i class="fas fa-sync-alt me-1"></i>${new Date(post.updatedAt).toLocaleDateString('pt-BR')}` : ''}
         </div>
       </div>
     `;
