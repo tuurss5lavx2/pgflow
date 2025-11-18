@@ -850,3 +850,93 @@ body {
         display: none;
     }
 }
+
+/* Estilos para páginas de auth e dashboard */
+.min-vh-75 {
+    min-height: 75vh;
+}
+
+.navbar-dark {
+    background: var(--gradient-dark) !important;
+}
+
+.card {
+    border: none;
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-lg);
+}
+
+.card-header {
+    background: var(--gradient);
+    color: white;
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0 !important;
+    border: none;
+}
+
+.post-card {
+    background: white;
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    margin-bottom: 1.5rem;
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+    border-left: 4px solid var(--primary);
+}
+
+.post-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+.post-title {
+    color: var(--dark);
+    font-weight: 700;
+}
+
+.post-author {
+    color: var(--primary);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.post-content {
+    color: var(--gray);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+.post-date {
+    color: #94a3b8;
+    font-size: 0.9rem;
+}
+
+.user-greeting {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.fade-in {
+    animation: fadeIn 0.6s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .post-card {
+        padding: 1.5rem;
+    }
+    
+    .container {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+}

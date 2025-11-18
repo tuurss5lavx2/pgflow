@@ -37,7 +37,10 @@ async function handleLogin(e) {
         if (response.ok) {
             localStorage.setItem('token', data.token);
             localStorage.setItem('user', JSON.stringify(data.user));
-            window.location.href = '/dashboard';
+            showAlert('Login realizado com sucesso!', 'success');
+            setTimeout(() => {
+                window.location.href = '/dashboard';
+            }, 1000);
         } else {
             showAlert(data.message, 'danger');
         }
@@ -59,6 +62,11 @@ async function handleRegister(e) {
         return;
     }
     
+    if (password.length < 6) {
+        showAlert('A senha deve ter pelo menos 6 caracteres', 'danger');
+        return;
+    }
+    
     try {
         const response = await fetch('/api/auth/register', {
             method: 'POST',
@@ -71,7 +79,7 @@ async function handleRegister(e) {
         const data = await response.json();
         
         if (response.ok) {
-            showAlert('Conta criada com sucesso! Faça login.', 'success');
+            showAlert('Conta criada com sucesso! Redirecionando para login...', 'success');
             setTimeout(() => {
                 window.location.href = '/login';
             }, 2000);
@@ -84,6 +92,10 @@ async function handleRegister(e) {
 }
 
 function showAlert(message, type) {
+    // Remover alertas existentes
+    const existingAlerts = document.querySelectorAll('.alert');
+    existingAlerts.forEach(alert => alert.remove());
+    
     const alertDiv = document.createElement('div');
     alertDiv.className = `alert alert-${type} alert-dismissible fade show`;
     alertDiv.role = 'alert';
@@ -97,6 +109,8 @@ function showAlert(message, type) {
     
     // Auto-close after 5 seconds
     setTimeout(() => {
-        alertDiv.remove();
+        if (alertDiv.parentNode) {
+            alertDiv.remove();
+        }
     }, 5000);
 }

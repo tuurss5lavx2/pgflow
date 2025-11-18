@@ -80,7 +80,6 @@ function displayPosts(posts) {
     const user = JSON.parse(localStorage.getItem('user'));
     
     posts.forEach(post => {
-        // Verificar se o usuário é o autor (comparando IDs)
         const isOwner = user && post.author === user.name;
         
         const postElement = document.createElement('div');
@@ -261,7 +260,7 @@ function resetForm() {
     
     const submitButton = document.querySelector('#postForm button[type="submit"]');
     submitButton.innerHTML = '<i class="fas fa-paper-plane me-2"></i>Publicar Post';
-    submitButton.className = 'btn btn-gradient';
+    submitButton.className = 'btn btn-primary';
 }
 
 function updatePostsCount(posts) {
