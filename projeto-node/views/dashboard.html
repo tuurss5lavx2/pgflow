@@ -13,11 +13,11 @@
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90' fill='%2310b981'>⚡</text></svg>" type="image/svg+xml">
 </head>
 <body>
-    <!-- Nova Navbar Premium -->
-    <nav class="navbar navbar-expand-lg navbar-premium">
+    <!-- Navbar Dashboard Premium -->
+    <nav class="navbar navbar-expand-lg navbar-dashboard">
         <div class="container">
             <!-- Logo -->
-            <a class="navbar-brand premium-brand" href="/">
+            <a class="navbar-brand dashboard-brand" href="/">
                 <div class="brand-content">
                     <div class="brand-icon">
                         <i class="fas fa-bolt"></i>
@@ -29,10 +29,9 @@
                 </div>
             </a>
 
-            <!-- User Menu -->
-            <div class="navbar-user-menu">
-                <!-- User Info Desktop -->
-                <div class="user-info-desktop">
+            <!-- User Menu Desktop -->
+            <div class="user-menu-desktop">
+                <div class="user-info">
                     <div class="user-avatar-container">
                         <img id="userAvatar" src="" alt="Avatar" 
                              class="user-avatar"
@@ -40,13 +39,15 @@
                     </div>
                     <div class="user-details">
                         <span class="user-name" id="userName">Carregando...</span>
-                        <span class="user-status">Online</span>
+                        <span class="user-status">
+                            <i class="fas fa-circle status-online"></i> Online
+                        </span>
                     </div>
                     <div class="dropdown">
                         <button class="dropdown-toggle" type="button" data-bs-toggle="dropdown">
                             <i class="fas fa-chevron-down"></i>
                         </button>
-                        <ul class="dropdown-menu dropdown-menu-premium">
+                        <ul class="dropdown-menu dropdown-menu-dashboard">
                             <li>
                                 <a class="dropdown-item" href="/profile">
                                     <i class="fas fa-user-edit me-2"></i>Meu Perfil
@@ -66,22 +67,22 @@
                         </ul>
                     </div>
                 </div>
-
-                <!-- Mobile Toggle -->
-                <button class="navbar-toggler user-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#userMobileMenu">
-                    <div class="user-avatar-mobile">
-                        <img id="userAvatarMobile" src="" alt="Avatar" 
-                             class="user-avatar"
-                             onerror="this.src='https://ui-avatars.com/api/?name=User&background=10b981&color=fff&size=40'">
-                    </div>
-                </button>
             </div>
 
+            <!-- Mobile Toggle -->
+            <button class="navbar-toggler mobile-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#mobileMenu">
+                <div class="user-avatar-mobile">
+                    <img id="userAvatarMobile" src="" alt="Avatar" 
+                         class="user-avatar"
+                         onerror="this.src='https://ui-avatars.com/api/?name=User&background=10b981&color=fff&size=40'">
+                </div>
+            </button>
+
             <!-- Mobile Menu -->
-            <div class="collapse navbar-collapse mobile-user-menu" id="userMobileMenu">
+            <div class="collapse navbar-collapse mobile-menu" id="mobileMenu">
                 <div class="mobile-user-info">
-                    <div class="user-avatar-mobile-large">
-                        <img id="userAvatarMobileLarge" src="" alt="Avatar" 
+                    <div class="user-avatar-large">
+                        <img id="userAvatarLarge" src="" alt="Avatar" 
                              class="user-avatar"
                              onerror="this.src='https://ui-avatars.com/api/?name=User&background=10b981&color=fff&size=80'">
                     </div>
@@ -92,20 +93,20 @@
                 </div>
                 <ul class="navbar-nav mobile-nav-items">
                     <li class="nav-item">
-                        <a class="nav-link" href="/profile">
+                        <a class="nav-link mobile-nav-link" href="/profile">
                             <i class="fas fa-user-edit me-2"></i>Meu Perfil
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/">
+                        <a class="nav-link mobile-nav-link" href="/">
                             <i class="fas fa-home me-2"></i>Página Inicial
                         </a>
                     </li>
                     <li class="nav-item">
-                        <hr class="dropdown-divider">
+                        <hr class="dropdown-divider mobile-divider">
                     </li>
                     <li class="nav-item">
-                        <button class="nav-link text-danger" id="logoutBtnMobile">
+                        <button class="nav-link mobile-nav-link text-danger" id="logoutBtnMobile">
                             <i class="fas fa-sign-out-alt me-2"></i>Sair da Conta
                         </button>
                     </li>
