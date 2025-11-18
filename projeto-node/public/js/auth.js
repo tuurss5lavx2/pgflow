@@ -43,18 +43,18 @@ async function handleLogin(e) {
         if (response.ok) {
             localStorage.setItem('token', data.token);
             localStorage.setItem('user', JSON.stringify(data.user));
-            showAlert('Login realizado com sucesso!', 'success');
+            showToast('Login realizado com sucesso!', 'success');
             
             setTimeout(() => {
                 window.location.href = '/dashboard';
             }, 1500);
         } else {
-            showAlert(data.message, 'danger');
+            showToast(data.message, 'danger');
             submitButton.innerHTML = originalText;
             submitButton.disabled = false;
         }
     } catch (error) {
-        showAlert('Erro ao fazer login. Tente novamente.', 'danger');
+        showToast('Erro ao fazer login. Tente novamente.', 'danger');
         const submitButton = e.target.querySelector('button[type="submit"]');
         submitButton.innerHTML = '<i class="fas fa-sign-in-alt me-2"></i>Entrar';
         submitButton.disabled = false;
@@ -70,12 +70,12 @@ async function handleRegister(e) {
     const confirmPassword = document.getElementById('confirmPassword').value;
     
     if (password !== confirmPassword) {
-        showAlert('As senhas não coincidem', 'danger');
+        showToast('As senhas não coincidem', 'danger');
         return;
     }
     
     if (password.length < 6) {
-        showAlert('A senha deve ter pelo menos 6 caracteres', 'danger');
+        showToast('A senha deve ter pelo menos 6 caracteres', 'danger');
         return;
     }
     
@@ -97,57 +97,94 @@ async function handleRegister(e) {
         const data = await response.json();
         
         if (response.ok) {
-            showAlert('Conta criada com sucesso! Redirecionando para login...', 'success');
+            showToast('Conta criada com sucesso! Redirecionando para login...', 'success');
             
             setTimeout(() => {
                 window.location.href = '/login';
             }, 2000);
         } else {
-            showAlert(data.message, 'danger');
+            showToast(data.message, 'danger');
             submitButton.innerHTML = originalText;
             submitButton.disabled = false;
         }
     } catch (error) {
-        showAlert('Erro ao criar conta. Tente novamente.', 'danger');
+        showToast('Erro ao criar conta. Tente novamente.', 'danger');
         const submitButton = e.target.querySelector('button[type="submit"]');
         submitButton.innerHTML = '<i class="fas fa-user-plus me-2"></i>Criar Conta';
         submitButton.disabled = false;
     }
 }
 
-// ✅ SISTEMA DE ALERTAS FIXOS - ATUALIZADO
-function showAlert(message, type) {
-    // Remover alertas existentes
-    const existingAlerts = document.querySelectorAll('.alert-fixed');
-    existingAlerts.forEach(alert => alert.remove());
+// ✅ SISTEMA DE NOTIFICAÇÕES TOAST
+function showToast(message, type = 'success') {
+    // Usar a função global se existir
+    if (typeof window.showToast === 'function') {
+        window.showToast(message, type);
+        return;
+    }
     
-    const alertDiv = document.createElement('div');
-    alertDiv.className = `alert alert-${type} alert-dismissible fade show alert-fixed`;
-    alertDiv.role = 'alert';
-    alertDiv.innerHTML = `
-        <div class="d-flex align-items-center">
-            <i class="fas ${getAlertIcon(type)} me-2"></i>
-            <div class="flex-grow-1">${message}</div>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    // Fallback local para login/register
+    const toastContainer = document.querySelector('.toast-container') || createToastContainer();
+    const toastId = 'toast-' + Date.now();
+    
+    const toastHTML = `
+        <div id="${toastId}" class="custom-toast ${type} mb-3">
+            <div class="toast-body p-3">
+                <div class="d-flex align-items-center">
+                    <i class="fas ${getToastIcon(type)} me-3 text-${type}"></i>
+                    <div class="flex-grow-1">
+                        <div class="fw-semibold">${message}</div>
+                    </div>
+                    <button type="button" class="btn-close ms-3" onclick="closeToast('${toastId}')"></button>
+                </div>
+            </div>
         </div>
     `;
     
-    document.body.appendChild(alertDiv);
+    toastContainer.insertAdjacentHTML('beforeend', toastHTML);
     
-    // Auto-close after 5 seconds
+    // Tocar som de notificação
+    playNotificationSound();
+    
+    // Auto-remove após 3 segundos
     setTimeout(() => {
-        if (alertDiv.parentNode) {
-            alertDiv.remove();
-        }
-    }, 5000);
+        closeToast(toastId);
+    }, 3000);
 }
 
-function getAlertIcon(type) {
+function createToastContainer() {
+    const container = document.createElement('div');
+    container.className = 'toast-container';
+    document.body.appendChild(container);
+    return container;
+}
+
+function closeToast(toastId) {
+    const toast = document.getElementById(toastId);
+    if (toast) {
+        toast.classList.add('toast-hide');
+        setTimeout(() => {
+            if (toast.parentNode) {
+                toast.remove();
+            }
+        }, 300);
+    }
+}
+
+function getToastIcon(type) {
     switch(type) {
         case 'success': return 'fa-check-circle';
         case 'danger': return 'fa-exclamation-circle';
         case 'warning': return 'fa-exclamation-triangle';
         case 'info': return 'fa-info-circle';
         default: return 'fa-bell';
+    }
+}
+
+function playNotificationSound() {
+    const audio = document.getElementById('notificationSound');
+    if (audio) {
+        audio.currentTime = 0;
+        audio.play().catch(e => console.log('Audio play failed:', e));
     }
 }

@@ -54,11 +54,11 @@ async function loadPosts() {
             localStorage.removeItem('user');
             window.location.href = '/login';
         } else {
-            showAlert('Erro ao carregar posts', 'danger');
+            showToast('Erro ao carregar posts', 'danger');
         }
     } catch (error) {
         console.error('Erro ao carregar posts:', error);
-        showAlert('Erro ao carregar posts', 'danger');
+        showToast('Erro ao carregar posts', 'danger');
     }
 }
 
@@ -160,7 +160,7 @@ async function toggleLike(postId, button) {
     const user = JSON.parse(localStorage.getItem('user'));
     
     if (!user) {
-      showAlert('Você precisa estar logado para curtir posts', 'warning');
+      showToast('Você precisa estar logado para curtir posts', 'warning');
       return;
     }
     
@@ -209,10 +209,10 @@ async function toggleLike(postId, button) {
         icon.classList.remove('text-white');
         countSpan.textContent = currentCount;
       }
-      showAlert(data.message || 'Erro ao processar like', 'danger');
+      showToast(data.message || 'Erro ao processar like', 'danger');
     } else {
       // ✅ SUCESSO: Atualiza com dados reais
-      showAlert(data.message, 'success');
+      showToast(data.message, 'success');
       countSpan.textContent = data.likes;
       
       // Garante estado visual correto
@@ -228,7 +228,7 @@ async function toggleLike(postId, button) {
     }
   } catch (error) {
     console.error('Erro no toggleLike:', error);
-    showAlert('Erro de conexão', 'danger');
+    showToast('Erro de conexão', 'danger');
   }
 }
 
@@ -293,12 +293,12 @@ async function editPost(postId) {
             // Scroll para o formulário
             form.scrollIntoView({ behavior: 'smooth' });
             
-            showAlert('Preencha os campos e clique em "Salvar Edição" para atualizar o post', 'info');
+            showToast('Preencha os campos e clique em "Salvar Edição" para atualizar o post', 'info');
         } else {
-            showAlert('Erro ao carregar post para edição', 'danger');
+            showToast('Erro ao carregar post para edição', 'danger');
         }
     } catch (error) {
-        showAlert('Erro ao carregar post para edição', 'danger');
+        showToast('Erro ao carregar post para edição', 'danger');
     }
 }
 
@@ -317,14 +317,14 @@ async function deletePost(postId) {
         });
         
         if (response.ok) {
-            showAlert('Post excluído com sucesso!', 'success');
+            showToast('Post excluído com sucesso!', 'success');
             loadPosts(); // Recarregar a lista
         } else {
             const data = await response.json();
-            showAlert(data.message || 'Erro ao excluir post', 'danger');
+            showToast(data.message || 'Erro ao excluir post', 'danger');
         }
     } catch (error) {
-        showAlert('Erro ao excluir post', 'danger');
+        showToast('Erro ao excluir post', 'danger');
     }
 }
 
@@ -365,7 +365,7 @@ async function handleCreatePost(e) {
         
         if (response.ok) {
             const message = isEditMode ? 'Post atualizado com sucesso!' : 'Post criado com sucesso!';
-            showAlert(message, 'success');
+            showToast(message, 'success');
             
             // Resetar formulário
             resetForm();
@@ -374,10 +374,10 @@ async function handleCreatePost(e) {
             loadPosts();
         } else {
             const data = await response.json();
-            showAlert(data.message || 'Erro ao processar post', 'danger');
+            showToast(data.message || 'Erro ao processar post', 'danger');
         }
     } catch (error) {
-        showAlert('Erro ao processar post', 'danger');
+        showToast('Erro ao processar post', 'danger');
     }
 }
 
@@ -410,39 +410,76 @@ function showLoading() {
     }
 }
 
-// ✅ SISTEMA DE ALERTAS FIXOS - ATUALIZADO
-function showAlert(message, type) {
-    // Remover alertas existentes
-    const existingAlerts = document.querySelectorAll('.alert-fixed');
-    existingAlerts.forEach(alert => alert.remove());
+// ✅ SISTEMA DE NOTIFICAÇÕES TOAST
+function showToast(message, type = 'success') {
+    // Usar a função global se existir
+    if (typeof window.showToast === 'function') {
+        window.showToast(message, type);
+        return;
+    }
     
-    const alertDiv = document.createElement('div');
-    alertDiv.className = `alert alert-${type} alert-dismissible fade show alert-fixed`;
-    alertDiv.role = 'alert';
-    alertDiv.innerHTML = `
-        <div class="d-flex align-items-center">
-            <i class="fas ${getAlertIcon(type)} me-2"></i>
-            <div class="flex-grow-1">${message}</div>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    // Fallback local
+    const toastContainer = document.querySelector('.toast-container') || createToastContainer();
+    const toastId = 'toast-' + Date.now();
+    
+    const toastHTML = `
+        <div id="${toastId}" class="custom-toast ${type} mb-3">
+            <div class="toast-body p-3">
+                <div class="d-flex align-items-center">
+                    <i class="fas ${getToastIcon(type)} me-3 text-${type}"></i>
+                    <div class="flex-grow-1">
+                        <div class="fw-semibold">${message}</div>
+                    </div>
+                    <button type="button" class="btn-close ms-3" onclick="closeToast('${toastId}')"></button>
+                </div>
+            </div>
         </div>
     `;
     
-    document.body.appendChild(alertDiv);
+    toastContainer.insertAdjacentHTML('beforeend', toastHTML);
     
-    // Auto-close after 5 seconds
+    // Tocar som de notificação
+    playNotificationSound();
+    
+    // Auto-remove após 3 segundos
     setTimeout(() => {
-        if (alertDiv.parentNode) {
-            alertDiv.remove();
-        }
-    }, 5000);
+        closeToast(toastId);
+    }, 3000);
 }
 
-function getAlertIcon(type) {
+function createToastContainer() {
+    const container = document.createElement('div');
+    container.className = 'toast-container';
+    document.body.appendChild(container);
+    return container;
+}
+
+function closeToast(toastId) {
+    const toast = document.getElementById(toastId);
+    if (toast) {
+        toast.classList.add('toast-hide');
+        setTimeout(() => {
+            if (toast.parentNode) {
+                toast.remove();
+            }
+        }, 300);
+    }
+}
+
+function getToastIcon(type) {
     switch(type) {
         case 'success': return 'fa-check-circle';
         case 'danger': return 'fa-exclamation-circle';
         case 'warning': return 'fa-exclamation-triangle';
         case 'info': return 'fa-info-circle';
         default: return 'fa-bell';
+    }
+}
+
+function playNotificationSound() {
+    const audio = document.getElementById('notificationSound');
+    if (audio) {
+        audio.currentTime = 0;
+        audio.play().catch(e => console.log('Audio play failed:', e));
     }
 }
