@@ -81,7 +81,14 @@ function displayPosts(posts) {
   
   posts.forEach(post => {
     const isOwner = user && post.author === user.name;
-    const userLiked = user && post.likes && post.likes.includes(user.id);
+    
+    // ⬇️⬇️⬇️ CORREÇÃO CRÍTICA AQUI ⬇️⬇️⬇️
+    const userLiked = user && post.likes && post.likes.some(like => {
+      // Verifica se like é string (ID) ou objeto com _id
+      return typeof like === 'string' ? like === user.id : like._id === user.id;
+    });
+    // ⬆️⬆️⬆️ CORREÇÃO CRÍTICA AQUI ⬆️⬆️⬆️
+    
     const likesCount = post.likes ? post.likes.length : 0;
     
     const postElement = document.createElement('div');
@@ -109,7 +116,7 @@ function displayPosts(posts) {
       <div class="d-flex justify-content-between align-items-center mt-3">
         <button class="btn ${userLiked ? 'btn-danger' : 'btn-outline-danger'} like-btn" data-id="${post._id}">
           <i class="fas fa-heart ${userLiked ? 'text-white' : ''}"></i> 
-          <span class="ms-1">${likesCount}</span>
+          <span class="ms-1 likes-count">${likesCount}</span>
         </button>
         
         <div class="post-date">
@@ -128,6 +135,7 @@ function displayPosts(posts) {
   addPostEventListeners();
   updatePostsCount(posts);
 }
+
 // Função para alternar like/unlike
 async function toggleLike(postId, button) {
   try {
@@ -140,7 +148,7 @@ async function toggleLike(postId, button) {
     }
     
     const icon = button.querySelector('i');
-    const countSpan = button.querySelector('span');
+    const countSpan = button.querySelector('.likes-count');
     const currentCount = parseInt(countSpan.textContent);
     const isCurrentlyLiked = button.classList.contains('btn-danger');
     
@@ -187,6 +195,9 @@ async function toggleLike(postId, button) {
     } else {
       const data = await response.json();
       showAlert(data.message, 'success');
+      
+      // Atualizar contador com valor real da API
+      countSpan.textContent = data.likes;
     }
   } catch (error) {
     showAlert('Erro de conexão ao curtir post', 'danger');
@@ -223,24 +234,6 @@ function addPostEventListeners() {
   
   // Botões de like (NOVO)
   addLikeEventListeners();
-}
-
-function addPostEventListeners() {
-    // Botões de editar
-    document.querySelectorAll('.edit-post').forEach(button => {
-        button.addEventListener('click', function() {
-            const postId = this.getAttribute('data-id');
-            editPost(postId);
-        });
-    });
-    
-    // Botões de excluir
-    document.querySelectorAll('.delete-post').forEach(button => {
-        button.addEventListener('click', function() {
-            const postId = this.getAttribute('data-id');
-            deletePost(postId);
-        });
-    });
 }
 
 async function editPost(postId) {
