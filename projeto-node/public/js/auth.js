@@ -1,125 +1,4 @@
-// Toggle password visibility
-function togglePasswordVisibility() {
-    const passwordInput = document.getElementById('password');
-    const toggleButton = document.getElementById('togglePassword');
-    
-    if (!passwordInput || !toggleButton) return;
-    
-    const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-    passwordInput.setAttribute('type', type);
-    
-    // Update button icon
-    const icon = toggleButton.querySelector('i');
-    if (icon) {
-        icon.className = type === 'password' ? 'fas fa-eye' : 'fas fa-eye-slash';
-    }
-}
-
-// Password strength checker
-function checkPasswordStrength(password) {
-    let strength = 0;
-    const progressBar = document.getElementById('passwordStrength');
-    const strengthText = document.getElementById('passwordText');
-    
-    if (!progressBar || !strengthText) return;
-    
-    if (password.length >= 6) strength += 25;
-    if (password.match(/[a-z]/) && password.match(/[A-Z]/)) strength += 25;
-    if (password.match(/\d/)) strength += 25;
-    if (password.match(/[^a-zA-Z\d]/)) strength += 25;
-    
-    progressBar.style.width = strength + '%';
-    
-    if (strength < 50) {
-        progressBar.className = 'progress-bar bg-danger';
-        strengthText.textContent = 'Senha fraca';
-    } else if (strength < 75) {
-        progressBar.className = 'progress-bar bg-warning';
-        strengthText.textContent = 'Senha média';
-    } else {
-        progressBar.className = 'progress-bar bg-success';
-        strengthText.textContent = 'Senha forte';
-    }
-}
-
-// Show alert function
-function showAlert(message, type) {
-    // Remover alertas existentes
-    const existingAlerts = document.querySelectorAll('.alert');
-    existingAlerts.forEach(alert => alert.remove());
-    
-    const alertDiv = document.createElement('div');
-    alertDiv.className = `alert alert-${type} alert-dismissible fade show`;
-    alertDiv.role = 'alert';
-    alertDiv.innerHTML = `
-        ${message}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    `;
-    
-    // Encontrar o container apropriado
-    let container;
-    if (document.querySelector('.auth-container')) {
-        container = document.querySelector('.auth-container');
-    } else if (document.querySelector('.container')) {
-        container = document.querySelector('.container');
-    } else {
-        container = document.body;
-    }
-    
-    container.insertBefore(alertDiv, container.firstChild);
-    
-    // Auto-close after 5 seconds
-    setTimeout(() => {
-        if (alertDiv.parentNode) {
-            alertDiv.remove();
-        }
-    }, 5000);
-}
-
-// Form validation
-function validateForm(formData) {
-    const { name, email, password, confirmPassword } = formData;
-    
-    if (name && name.length < 2) {
-        showAlert('Nome deve ter pelo menos 2 caracteres', 'danger');
-        return false;
-    }
-    
-    if (!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
-        showAlert('Por favor, insira um email válido', 'danger');
-        return false;
-    }
-    
-    if (password.length < 6) {
-        showAlert('A senha deve ter pelo menos 6 caracteres', 'danger');
-        return false;
-    }
-    
-    if (confirmPassword && password !== confirmPassword) {
-        showAlert('As senhas não coincidem', 'danger');
-        return false;
-    }
-    
-    return true;
-}
-
-// Initialize auth functionality
 document.addEventListener('DOMContentLoaded', function() {
-    // Toggle password visibility
-    const toggleButton = document.getElementById('togglePassword');
-    if (toggleButton) {
-        toggleButton.addEventListener('click', togglePasswordVisibility);
-    }
-    
-    // Password strength checker
-    const passwordInput = document.getElementById('password');
-    if (passwordInput) {
-        passwordInput.addEventListener('input', function() {
-            checkPasswordStrength(this.value);
-        });
-    }
-    
-    // Form submissions
     const loginForm = document.getElementById('loginForm');
     const registerForm = document.getElementById('registerForm');
     
@@ -137,12 +16,18 @@ document.addEventListener('DOMContentLoaded', function() {
         window.location.href = '/dashboard';
     }
     
-    // Preencher dados do usuário se estiver no dashboard
+    // Preencher dados do usuário no dashboard
     if (window.location.pathname === '/dashboard') {
         const user = JSON.parse(localStorage.getItem('user') || '{}');
         const userNameElement = document.getElementById('userName');
         if (userNameElement && user.name) {
             userNameElement.textContent = user.name;
+        }
+        
+        // Adicionar evento de logout
+        const logoutBtn = document.getElementById('logoutBtn');
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', handleLogout);
         }
     }
 });
@@ -154,7 +39,13 @@ async function handleLogin(e) {
     const password = document.getElementById('password').value;
     
     // Validação básica
-    if (!validateForm({ email, password })) {
+    if (!email || !password) {
+        showAlert('Por favor, preencha todos os campos', 'danger');
+        return;
+    }
+    
+    if (!validateEmail(email)) {
+        showAlert('Por favor, insira um email válido', 'danger');
         return;
     }
     
@@ -186,12 +77,13 @@ async function handleLogin(e) {
             showAlert(data.message || 'Erro ao fazer login', 'danger');
         }
     } catch (error) {
+        console.error('Login error:', error);
         showAlert('Erro de conexão. Tente novamente.', 'danger');
     } finally {
         // Restaurar botão
         const submitBtn = e.target.querySelector('button[type="submit"]');
         if (submitBtn) {
-            submitBtn.innerHTML = '<i class="fas fa-sign-in-alt me-2"></i>Entrar na Conta';
+            submitBtn.innerHTML = '<i class="fas fa-sign-in-alt me-2"></i>Entrar';
             submitBtn.disabled = false;
         }
     }
@@ -205,8 +97,24 @@ async function handleRegister(e) {
     const password = document.getElementById('password').value;
     const confirmPassword = document.getElementById('confirmPassword').value;
     
-    // Validação
-    if (!validateForm({ name, email, password, confirmPassword })) {
+    // Validações
+    if (!name || !email || !password || !confirmPassword) {
+        showAlert('Por favor, preencha todos os campos', 'danger');
+        return;
+    }
+    
+    if (!validateEmail(email)) {
+        showAlert('Por favor, insira um email válido', 'danger');
+        return;
+    }
+    
+    if (password.length < 6) {
+        showAlert('A senha deve ter pelo menos 6 caracteres', 'danger');
+        return;
+    }
+    
+    if (password !== confirmPassword) {
+        showAlert('As senhas não coincidem', 'danger');
         return;
     }
     
@@ -236,28 +144,113 @@ async function handleRegister(e) {
             showAlert(data.message || 'Erro ao criar conta', 'danger');
         }
     } catch (error) {
+        console.error('Register error:', error);
         showAlert('Erro de conexão. Tente novamente.', 'danger');
     } finally {
         // Restaurar botão
         const submitBtn = e.target.querySelector('button[type="submit"]');
         if (submitBtn) {
-            submitBtn.innerHTML = '<i class="fas fa-user-plus me-2"></i>Criar Minha Conta';
+            submitBtn.innerHTML = '<i class="fas fa-user-plus me-2"></i>Criar Conta';
             submitBtn.disabled = false;
         }
     }
 }
 
-// Logout function (para ser usada no dashboard)
 function handleLogout() {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
-    window.location.href = '/login';
+    showAlert('Logout realizado com sucesso!', 'success');
+    setTimeout(() => {
+        window.location.href = '/login';
+    }, 1000);
 }
 
-// Adicionar evento de logout se o botão existir
-document.addEventListener('DOMContentLoaded', function() {
-    const logoutBtn = document.getElementById('logoutBtn');
-    if (logoutBtn) {
-        logoutBtn.addEventListener('click', handleLogout);
+function showAlert(message, type) {
+    // Remover alertas existentes
+    const existingAlerts = document.querySelectorAll('.alert');
+    existingAlerts.forEach(alert => alert.remove());
+    
+    const alertDiv = document.createElement('div');
+    alertDiv.className = `alert alert-${type} alert-dismissible fade show`;
+    alertDiv.role = 'alert';
+    alertDiv.innerHTML = `
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    `;
+    
+    // Encontrar o container apropriado
+    let container;
+    if (document.querySelector('.auth-container')) {
+        container = document.querySelector('.auth-container');
+    } else if (document.querySelector('.container')) {
+        container = document.querySelector('.container');
+    } else {
+        container = document.body;
     }
+    
+    if (container) {
+        container.insertBefore(alertDiv, container.firstChild);
+        
+        // Auto-close after 5 seconds
+        setTimeout(() => {
+            if (alertDiv.parentNode) {
+                alertDiv.remove();
+            }
+        }, 5000);
+    }
+}
+
+function validateEmail(email) {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(email);
+}
+
+// Verificar autenticação em páginas protegidas
+function checkAuth() {
+    const token = localStorage.getItem('token');
+    const protectedRoutes = ['/dashboard'];
+    const currentPath = window.location.pathname;
+    
+    if (protectedRoutes.includes(currentPath) && !token) {
+        window.location.href = '/login';
+        return false;
+    }
+    
+    return true;
+}
+
+// Executar verificação de autenticação
+document.addEventListener('DOMContentLoaded', function() {
+    checkAuth();
 });
+
+// Função para obter o token do usuário logado
+function getAuthToken() {
+    return localStorage.getItem('token');
+}
+
+// Função para obter dados do usuário logado
+function getCurrentUser() {
+    const userStr = localStorage.getItem('user');
+    return userStr ? JSON.parse(userStr) : null;
+}
+
+// Função para verificar se o usuário está logado
+function isLoggedIn() {
+    return !!localStorage.getItem('token');
+}
+
+// Exportar funções para uso em outros arquivos
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = {
+        handleLogin,
+        handleRegister,
+        handleLogout,
+        showAlert,
+        validateEmail,
+        checkAuth,
+        getAuthToken,
+        getCurrentUser,
+        isLoggedIn
+    };
+}

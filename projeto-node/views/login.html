@@ -13,100 +13,45 @@
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90' fill='%2310b981'>⚡</text></svg>" type="image/svg+xml">
 </head>
 <body class="auth-body">
-    <!-- Background Elements -->
-    <div class="auth-background">
-        <div class="auth-grid"></div>
-        <div class="auth-floating">
-            <div class="auth-float a-1">
-                <i class="fas fa-key"></i>
-            </div>
-            <div class="auth-float a-2">
-                <i class="fas fa-user-shield"></i>
-            </div>
-            <div class="auth-float a-3">
-                <i class="fas fa-lock"></i>
-            </div>
-        </div>
-    </div>
-
     <div class="auth-container">
-        <div class="auth-card-wrapper">
-            <!-- Header Brand -->
-            <div class="auth-header text-center mb-5">
+        <div class="auth-card">
+            <!-- Header -->
+            <div class="auth-header text-center mb-4">
                 <a href="/" class="auth-brand">
                     <i class="fas fa-bolt me-2"></i>PGFlow
                 </a>
-                <p class="auth-subtitle">Sistema de Autenticação e Posts</p>
+                <p class="auth-subtitle">Entre em sua conta</p>
             </div>
 
-            <!-- Login Card -->
-            <div class="auth-card">
-                <div class="card-header">
-                    <h3 class="mb-2">Acessar PGFlow</h3>
-                    <p class="mb-0">Entre em sua conta para gerenciar seus posts</p>
-                </div>
-                <div class="card-body p-4">
-                    <form id="loginForm">
-                        <div class="mb-4">
-                            <label for="email" class="form-label">Email</label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="fas fa-envelope"></i></span>
-                                <input type="email" class="form-control" id="email" placeholder="seu@email.com" required>
-                            </div>
-                            <div class="form-text">Digite o email utilizado no cadastro</div>
+            <!-- Login Form -->
+            <div class="card-body p-4">
+                <form id="loginForm">
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                            <input type="email" class="form-control" id="email" placeholder="seu@email.com" required>
                         </div>
-                        
-                        <div class="mb-4">
-                            <label for="password" class="form-label">Senha</label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="fas fa-lock"></i></span>
-                                <input type="password" class="form-control" id="password" placeholder="Sua senha" required>
-                                <button type="button" class="btn btn-outline-secondary" id="togglePassword">
-                                    <i class="fas fa-eye"></i>
-                                </button>
-                            </div>
-                            <div class="form-text">Mínimo 6 caracteres</div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="password" class="form-label">Senha</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                            <input type="password" class="form-control" id="password" placeholder="Sua senha" required>
                         </div>
+                    </div>
 
-                        <div class="mb-4">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="rememberMe">
-                                <label class="form-check-label" for="rememberMe">
-                                    Lembrar de mim
-                                </label>
-                            </div>
-                        </div>
+                    <button type="submit" class="btn btn-primary w-100 py-3 mb-3">
+                        <i class="fas fa-sign-in-alt me-2"></i>Entrar
+                    </button>
 
-                        <button type="submit" class="btn btn-primary w-100 py-3 auth-submit-btn">
-                            <i class="fas fa-sign-in-alt me-2"></i>Entrar na Conta
-                        </button>
-
-                        <div class="text-center mt-4">
-                            <a href="#" class="text-decoration-none d-block mb-2">
-                                <i class="fas fa-key me-1"></i>Esqueci minha senha
-                            </a>
-                            <p class="mb-0">Não tem uma conta? 
-                                <a href="/register" class="text-decoration-none fw-bold">Crie uma aqui</a>
-                            </p>
-                        </div>
-                    </form>
-                </div>
-            </div>
-
-            <!-- Quick Stats -->
-            <div class="auth-stats">
-                <div class="stat-item">
-                    <i class="fas fa-shield-alt"></i>
-                    <span>Segurança</span>
-                </div>
-                <div class="stat-item">
-                    <i class="fas fa-bolt"></i>
-                    <span>Rápido</span>
-                </div>
-                <div class="stat-item">
-                    <i class="fas fa-infinity"></i>
-                    <span>Grátis</span>
-                </div>
+                    <div class="text-center">
+                        <p class="mb-0">Não tem uma conta? 
+                            <a href="/register" class="text-decoration-none fw-bold">Registre-se aqui</a>
+                        </p>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
