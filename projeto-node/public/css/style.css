@@ -57,7 +57,10 @@ body {
     border-radius: 3px;
 }
 
-/* Navbar */
+/* ============================================= */
+/* NAVBAR MODERNO E ÚNICO */
+/* ============================================= */
+
 .navbar {
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(20px);
@@ -65,38 +68,101 @@ body {
     padding: 1rem 0;
     transition: var(--transition);
     border-bottom: 1px solid rgba(241, 245, 249, 0.8);
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
 }
 
 .navbar.scrolled {
     padding: 0.8rem 0;
     background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(30px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    border-bottom-color: rgba(241, 245, 249, 0.9);
 }
 
 .navbar-brand {
-    font-weight: 700;
-    font-size: 1.5rem;
+    font-weight: 800;
+    font-size: 1.6rem;
     background: var(--gradient);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    position: relative;
+    padding: 0.5rem 0;
+    transition: var(--transition);
+}
+
+.navbar-brand::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--gradient);
+    transition: var(--transition);
+    border-radius: 2px;
+}
+
+.navbar-brand:hover::before {
+    width: 100%;
+}
+
+.navbar-brand i {
+    font-size: 1.4rem;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+.navbar-nav {
+    gap: 0.5rem;
 }
 
 .navbar-nav .nav-link {
-    font-weight: 500;
-    padding: 0.5rem 1rem;
+    font-weight: 600;
+    padding: 0.75rem 1.25rem;
     border-radius: var(--radius);
     transition: var(--transition);
     color: var(--dark);
+    position: relative;
+    overflow: hidden;
+    font-size: 0.95rem;
+}
+
+.navbar-nav .nav-link::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: var(--gradient);
+    transition: var(--transition);
+    z-index: -1;
+    border-radius: var(--radius);
 }
 
 .navbar-nav .nav-link:hover {
-    background: var(--primary);
     color: white;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+}
+
+.navbar-nav .nav-link:hover::before {
+    left: 0;
 }
 
 .navbar-nav .nav-link.active {
-    background: var(--primary);
+    background: var(--gradient);
     color: white;
+    box-shadow: var(--shadow);
+    transform: translateY(-1px);
 }
 
 .navbar-nav .nav-link.btn {
@@ -104,22 +170,166 @@ body {
     color: white;
     border: none;
     margin-left: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    position: relative;
+    overflow: hidden;
+}
+
+.navbar-nav .nav-link.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: var(--transition);
+}
+
+.navbar-nav .nav-link.btn:hover::before {
+    left: 100%;
 }
 
 .navbar-nav .nav-link.btn:hover {
-    transform: translateY(-1px);
+    transform: translateY(-2px);
     box-shadow: var(--shadow-lg);
+}
+
+/* Navbar Toggler Moderno */
+.navbar-toggler {
+    border: none;
+    padding: 0.5rem;
+    background: transparent;
+    position: relative;
+    width: 30px;
+    height: 30px;
+}
+
+.navbar-toggler:focus {
+    box-shadow: none;
+    outline: none;
+}
+
+.navbar-toggler-icon {
+    background-image: none;
+    position: relative;
+    width: 24px;
+    height: 2px;
+    background: var(--dark);
+    transition: var(--transition);
+    display: block;
+}
+
+.navbar-toggler-icon::before,
+.navbar-toggler-icon::after {
+    content: '';
+    position: absolute;
+    width: 24px;
+    height: 2px;
+    background: var(--dark);
+    left: 0;
+    transition: var(--transition);
+}
+
+.navbar-toggler-icon::before {
+    top: -8px;
+}
+
+.navbar-toggler-icon::after {
+    top: 8px;
+}
+
+.navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
+    background: transparent;
+}
+
+.navbar-toggler[aria-expanded="true"] .navbar-toggler-icon::before {
+    transform: rotate(45deg);
+    top: 0;
+    background: var(--primary);
+}
+
+.navbar-toggler[aria-expanded="true"] .navbar-toggler-icon::after {
+    transform: rotate(-45deg);
+    top: 0;
+    background: var(--primary);
+}
+
+/* Mobile Menu */
+@media (max-width: 991px) {
+    .navbar-collapse {
+        background: rgba(255, 255, 255, 0.98);
+        backdrop-filter: blur(20px);
+        border-radius: var(--radius-lg);
+        margin-top: 1rem;
+        padding: 1rem;
+        box-shadow: var(--shadow-xl);
+        border: 1px solid rgba(241, 245, 249, 0.8);
+    }
+    
+    .navbar-nav {
+        gap: 0.5rem;
+    }
+    
+    .navbar-nav .nav-link {
+        text-align: center;
+        padding: 1rem 1.5rem;
+        border-radius: var(--radius);
+        margin: 0.25rem 0;
+    }
+    
+    .navbar-nav .nav-link.btn {
+        margin: 0.5rem 0;
+        text-align: center;
+        display: block;
+    }
 }
 
 /* Navbar Dark para páginas de auth e dashboard */
 .navbar-dark {
     background: var(--gradient-dark) !important;
+    backdrop-filter: none;
 }
 
 .navbar-dark .navbar-brand {
     color: white !important;
     background: none !important;
     -webkit-text-fill-color: white !important;
+}
+
+.navbar-dark .navbar-brand::before {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.navbar-dark .navbar-nav .nav-link {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.navbar-dark .navbar-nav .nav-link:hover {
+    color: white;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.navbar-dark .navbar-nav .nav-link.active {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+.navbar-dark .navbar-nav .nav-link.btn {
+    background: rgba(255, 255, 255, 0.9);
+    color: var(--dark);
+}
+
+.navbar-dark .navbar-nav .nav-link.btn:hover {
+    background: white;
+    color: var(--dark);
+}
+
+.navbar-dark .navbar-toggler-icon,
+.navbar-dark .navbar-toggler-icon::before,
+.navbar-dark .navbar-toggler-icon::after {
+    background: white;
 }
 
 /* Hero Minimalista */
