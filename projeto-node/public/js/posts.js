@@ -61,61 +61,168 @@ async function loadPosts() {
 }
 
 function displayPosts(posts) {
-    const postsList = document.getElementById('postsList');
-    if (!postsList) return;
+  const postsList = document.getElementById('postsList');
+  if (!postsList) return;
+  
+  if (posts.length === 0) {
+    postsList.innerHTML = `
+      <div class="col-12 text-center py-5">
+        <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
+        <p class="text-muted">Nenhum post encontrado. Seja o primeiro a postar!</p>
+      </div>
+    `;
+    updatePostsCount(posts);
+    return;
+  }
+  
+  postsList.innerHTML = '';
+  
+  const user = JSON.parse(localStorage.getItem('user'));
+  
+  posts.forEach(post => {
+    const isOwner = user && post.author === user.name;
+    const userLiked = user && post.likes && post.likes.includes(user.id);
+    const likesCount = post.likes ? post.likes.length : 0;
     
-    if (posts.length === 0) {
-        postsList.innerHTML = `
-            <div class="col-12 text-center py-5">
-                <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
-                <p class="text-muted">Nenhum post encontrado. Seja o primeiro a postar!</p>
-            </div>
-        `;
-        updatePostsCount(posts);
-        return;
-    }
+    const postElement = document.createElement('div');
+    postElement.className = 'post-card fade-in';
+    postElement.innerHTML = `
+      <div class="d-flex justify-content-between align-items-start mb-3">
+        <h5 class="post-title mb-0">${post.title}</h5>
+        ${isOwner ? `
+        <div class="btn-group">
+          <button class="btn btn-sm btn-outline-primary edit-post" data-id="${post._id}">
+            <i class="fas fa-edit"></i>
+          </button>
+          <button class="btn btn-sm btn-outline-danger delete-post" data-id="${post._id}">
+            <i class="fas fa-trash"></i>
+          </button>
+        </div>
+        ` : ''}
+      </div>
+      <div class="post-author">
+        <i class="fas fa-user me-1"></i>Por: ${post.author}
+      </div>
+      <p class="post-content">${post.content}</p>
+      
+      <!-- BOTÃO DE LIKE -->
+      <div class="d-flex justify-content-between align-items-center mt-3">
+        <button class="btn ${userLiked ? 'btn-danger' : 'btn-outline-danger'} like-btn" data-id="${post._id}">
+          <i class="fas fa-heart ${userLiked ? 'text-white' : ''}"></i> 
+          <span class="ms-1">${likesCount}</span>
+        </button>
+        
+        <div class="post-date">
+          <i class="fas fa-calendar me-1"></i>
+          ${new Date(post.createdAt).toLocaleDateString('pt-BR')}
+          ${post.createdAt !== post.updatedAt ? 
+          ` • <i class="fas fa-sync-alt me-1"></i>${new Date(post.updatedAt).toLocaleDateString('pt-BR')}` : ''}
+        </div>
+      </div>
+    `;
     
-    postsList.innerHTML = '';
-    
+    postsList.appendChild(postElement);
+  });
+  
+  // Adicionar event listeners
+  addPostEventListeners();
+  updatePostsCount(posts);
+}
+// Função para alternar like/unlike
+async function toggleLike(postId, button) {
+  try {
+    const token = localStorage.getItem('token');
     const user = JSON.parse(localStorage.getItem('user'));
     
-    posts.forEach(post => {
-        const isOwner = user && post.author === user.name;
-        
-        const postElement = document.createElement('div');
-        postElement.className = 'post-card fade-in';
-        postElement.innerHTML = `
-            <div class="d-flex justify-content-between align-items-start mb-3">
-                <h5 class="post-title mb-0">${post.title}</h5>
-                ${isOwner ? `
-                <div class="btn-group">
-                    <button class="btn btn-sm btn-outline-primary edit-post" data-id="${post._id}">
-                        <i class="fas fa-edit"></i>
-                    </button>
-                    <button class="btn btn-sm btn-outline-danger delete-post" data-id="${post._id}">
-                        <i class="fas fa-trash"></i>
-                    </button>
-                </div>
-                ` : ''}
-            </div>
-            <div class="post-author">
-                <i class="fas fa-user me-1"></i>Por: ${post.author}
-            </div>
-            <p class="post-content">${post.content}</p>
-            <div class="post-date">
-                <i class="fas fa-calendar me-1"></i>
-                Criado em: ${new Date(post.createdAt).toLocaleDateString('pt-BR')}
-                ${post.createdAt !== post.updatedAt ? 
-                ` • <i class="fas fa-sync-alt me-1"></i>Editado em: ${new Date(post.updatedAt).toLocaleDateString('pt-BR')}` : ''}
-            </div>
-        `;
-        
-        postsList.appendChild(postElement);
+    if (!user) {
+      showAlert('Você precisa estar logado para curtir posts', 'warning');
+      return;
+    }
+    
+    const icon = button.querySelector('i');
+    const countSpan = button.querySelector('span');
+    const currentCount = parseInt(countSpan.textContent);
+    const isCurrentlyLiked = button.classList.contains('btn-danger');
+    
+    // Atualização otimista - muda visual antes da API
+    if (isCurrentlyLiked) {
+      // Vai descurtir
+      button.classList.remove('btn-danger');
+      button.classList.add('btn-outline-danger');
+      icon.classList.remove('text-white');
+      countSpan.textContent = currentCount - 1;
+    } else {
+      // Vai curtir
+      button.classList.remove('btn-outline-danger');
+      button.classList.add('btn-danger');
+      icon.classList.add('text-white');
+      countSpan.textContent = currentCount + 1;
+    }
+    
+    // Chamada API
+    const endpoint = isCurrentlyLiked ? 'unlike' : 'like';
+    const response = await fetch(`/api/posts/${postId}/${endpoint}`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
     });
     
-    // Adicionar event listeners para editar e excluir
-    addPostEventListeners();
-    updatePostsCount(posts);
+    if (!response.ok) {
+      // Rollback se a API falhar
+      if (isCurrentlyLiked) {
+        button.classList.add('btn-danger');
+        button.classList.remove('btn-outline-danger');
+        icon.classList.add('text-white');
+        countSpan.textContent = currentCount;
+      } else {
+        button.classList.remove('btn-danger');
+        button.classList.add('btn-outline-danger');
+        icon.classList.remove('text-white');
+        countSpan.textContent = currentCount;
+      }
+      
+      const data = await response.json();
+      showAlert(data.message || 'Erro ao curtir post', 'danger');
+    } else {
+      const data = await response.json();
+      showAlert(data.message, 'success');
+    }
+  } catch (error) {
+    showAlert('Erro de conexão ao curtir post', 'danger');
+  }
+}
+
+// Event listener para likes
+function addLikeEventListeners() {
+  document.querySelectorAll('.like-btn').forEach(button => {
+    button.addEventListener('click', function() {
+      const postId = this.getAttribute('data-id');
+      toggleLike(postId, this);
+    });
+  });
+}
+
+// Atualizar addPostEventListeners para incluir likes
+function addPostEventListeners() {
+  // Botões de editar
+  document.querySelectorAll('.edit-post').forEach(button => {
+    button.addEventListener('click', function() {
+      const postId = this.getAttribute('data-id');
+      editPost(postId);
+    });
+  });
+  
+  // Botões de excluir
+  document.querySelectorAll('.delete-post').forEach(button => {
+    button.addEventListener('click', function() {
+      const postId = this.getAttribute('data-id');
+      deletePost(postId);
+    });
+  });
+  
+  // Botões de like (NOVO)
+  addLikeEventListeners();
 }
 
 function addPostEventListeners() {

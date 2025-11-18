@@ -11,5 +11,7 @@ router.get('/user', postController.getByUser); // ← Esta rota é importante
 router.get('/:id', postController.getById);
 router.put('/:id', postController.update);
 router.delete('/:id', postController.delete);
+router.post('/:id/like', authenticateToken, postController.like);
+router.post('/:id/unlike', authenticateToken, postController.unlike);
 
 module.exports = router;

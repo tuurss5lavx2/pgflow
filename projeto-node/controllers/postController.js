@@ -143,6 +143,29 @@ const postController = {
       res.status(500).json({ message: 'Erro ao excluir post' });
     }
   },
+  like: async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.id);
+    if (!post.likes.includes(req.user.id)) {
+      post.likes.push(req.user.id);
+      await post.save();
+    }
+    res.json({ likes: post.likes.length });
+  } catch (error) {
+    res.status(500).json({ message: 'Erro ao curtir' });
+  }
+},
+
+unlike: async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.id);
+    post.likes = post.likes.filter(id => id.toString() !== req.user.id);
+    await post.save();
+    res.json({ likes: post.likes.length });
+  } catch (error) {
+    res.status(500).json({ message: 'Erro ao descurtir' });
+  }
+},
   
   getByUser: async (req, res) => {
     try {
