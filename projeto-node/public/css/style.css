@@ -111,6 +111,17 @@ body {
     box-shadow: var(--shadow-lg);
 }
 
+/* Navbar Dark para páginas de auth e dashboard */
+.navbar-dark {
+    background: var(--gradient-dark) !important;
+}
+
+.navbar-dark .navbar-brand {
+    color: white !important;
+    background: none !important;
+    -webkit-text-fill-color: white !important;
+}
+
 /* Hero Minimalista */
 .hero-minimal {
     min-height: 100vh;
@@ -851,13 +862,12 @@ body {
     }
 }
 
-/* Estilos para páginas de auth e dashboard */
+/* ============================================= */
+/* ESTILOS PARA PÁGINAS DE AUTH E DASHBOARD */
+/* ============================================= */
+
 .min-vh-75 {
     min-height: 75vh;
-}
-
-.navbar-dark {
-    background: var(--gradient-dark) !important;
 }
 
 .card {
@@ -929,7 +939,7 @@ body {
     }
 }
 
-/* Responsive */
+/* Responsive para auth e dashboard */
 @media (max-width: 768px) {
     .post-card {
         padding: 1.5rem;
@@ -938,5 +948,14 @@ body {
     .container {
         padding-left: 15px;
         padding-right: 15px;
+    }
+    
+    .navbar-dark .navbar-brand {
+        font-size: 1.3rem;
+    }
+    
+    .user-greeting {
+        font-size: 0.9rem;
+        margin-right: 1rem !important;
     }
 }
