@@ -897,36 +897,36 @@
         }
 
         function playNotificationSound() {
-    const audio = document.getElementById('notificationSound');
-    if (audio) {
-        // Reset do áudio
-        audio.currentTime = 0;
-        
-        // Tentar reproduzir com tratamento de erro melhorado
-        const playPromise = audio.play();
-        
-        if (playPromise !== undefined) {
-            playPromise.catch(error => {
-                console.log('Reprodução de áudio bloqueada:', error);
-                // Tentar destravar o áudio com interação do usuário
-                unlockAudio();
-            });
-        }
+    // Tentar usar o áudio existente primeiro
+    const existingAudio = document.getElementById('notificationSound');
+    if (existingAudio) {
+        existingAudio.currentTime = 0;
+        existingAudio.play().catch(e => {
+            console.log('Falha ao reproduzir áudio existente:', e);
+            createAndPlayAudio();
+        });
+    } else {
+        createAndPlayAudio();
     }
 }
 
-// Função para destravar áudio com interação do usuário
-function unlockAudio() {
-    document.addEventListener('click', function unlock() {
-        const audio = document.getElementById('notificationSound');
-        if (audio) {
+function createAndPlayAudio() {
+    // Criar áudio dinamicamente
+    const audio = new Audio('/sounds/notificacao-dragon.mp3');
+    audio.volume = 0.3; // Volume mais baixo
+    
+    audio.play().catch(error => {
+        console.log('Não foi possível reproduzir o áudio:', error);
+        
+        // Tentar carregar e tocar após interação do usuário
+        document.body.addEventListener('click', function once() {
             audio.play().then(() => {
-                console.log('Áudio destravado!');
+                console.log('Áudio reproduzido após interação');
             }).catch(e => {
-                console.log('Ainda não foi possível reproduzir o áudio:', e);
+                console.log('Ainda falhou:', e);
             });
-        }
-        document.removeEventListener('click', unlock);
+            document.body.removeEventListener('click', once);
+        });
     });
 }
     </script>
