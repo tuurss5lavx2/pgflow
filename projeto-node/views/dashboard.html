@@ -277,71 +277,176 @@
             padding: 1.5rem;
         }
 
-        /* Posts List - VOLTADO COMO ESTAVA ANTES */
+        /* Posts List - DESIGN MELHORADO */
         .post-card {
             background: white;
             border-radius: var(--radius-lg);
             padding: 2rem;
-            margin-bottom: 1.5rem;
+            margin-bottom: 2rem;
             box-shadow: var(--shadow);
             transition: var(--transition);
             border-left: 4px solid var(--primary);
+            position: relative;
+            overflow: hidden;
         }
 
         .post-card:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-lg);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-xl);
         }
 
-        .post-title {
-            color: #1e293b;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
+        .post-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--gradient);
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .post-card:hover::before {
+            opacity: 1;
+        }
+
+        .post-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .post-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #f1f5f9;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .post-avatar:hover {
+            transform: scale(1.05);
+            border-color: var(--primary-light);
+        }
+
+        .post-author-info {
+            flex: 1;
         }
 
         .post-author {
             color: var(--primary);
             font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-
-        .post-content {
-            color: #64748b;
-            line-height: 1.6;
-            margin-bottom: 1rem;
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
         }
 
         .post-date {
             color: #94a3b8;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
 
-        .post-meta {
+        .post-title {
+            color: #1e293b;
+            font-weight: 700;
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            line-height: 1.3;
+        }
+
+        .post-content {
+            color: #64748b;
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+            font-size: 1.05rem;
+        }
+
+        .post-footer {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 0.875rem;
-            color: #94a3b8;
+            padding-top: 1.5rem;
+            border-top: 1px solid #f1f5f9;
         }
 
         .post-actions {
             display: flex;
-            gap: 0.5rem;
+            gap: 1rem;
+            align-items: center;
         }
 
-        /* Like Button */
+        /* Like Button - SISTEMA FUNCIONAL */
         .like-btn {
             transition: all 0.3s ease;
-            border-radius: 20px;
-            padding: 0.375rem 0.75rem;
+            border-radius: 25px;
+            padding: 0.5rem 1rem;
+            border: 2px solid #e5e7eb;
+            background: white;
+            color: #64748b;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
         }
 
         .like-btn:hover {
-            transform: scale(1.05);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+            border-color: var(--primary);
+            color: var(--primary);
         }
 
-        .like-btn:active {
-            transform: scale(0.95);
+        .like-btn.liked {
+            background: var(--gradient);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .like-btn.liked:hover {
+            background: var(--primary-dark);
+        }
+
+        .like-btn .fa-heart {
+            transition: var(--transition);
+        }
+
+        .like-btn.liked .fa-heart {
+            animation: heartBeat 0.6s ease;
+        }
+
+        @keyframes heartBeat {
+            0% { transform: scale(1); }
+            25% { transform: scale(1.3); }
+            50% { transform: scale(0.9); }
+            75% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        .likes-count {
+            font-weight: 600;
+            min-width: 20px;
+            text-align: center;
+        }
+
+        .post-stats {
+            display: flex;
+            gap: 1.5rem;
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+
+        .post-stat {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .post-stat i {
+            width: 16px;
         }
 
         /* Animations */
@@ -414,7 +519,36 @@
             /* Posts responsivos */
             .post-card {
                 padding: 1.5rem;
+                margin-bottom: 1.5rem;
+            }
+            
+            .post-header {
+                gap: 0.75rem;
                 margin-bottom: 1rem;
+            }
+            
+            .post-avatar {
+                width: 45px;
+                height: 45px;
+            }
+            
+            .post-title {
+                font-size: 1.2rem;
+            }
+            
+            .post-content {
+                font-size: 1rem;
+            }
+            
+            .post-footer {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+            }
+            
+            .post-actions {
+                width: 100%;
+                justify-content: space-between;
             }
             
             .card-body {
@@ -485,22 +619,32 @@
                 padding: 1.25rem;
             }
             
+            .post-avatar {
+                width: 40px;
+                height: 40px;
+            }
+            
             .post-title {
                 font-size: 1.1rem;
             }
             
             .post-content {
-                font-size: 0.9rem;
+                font-size: 0.95rem;
             }
             
             .like-btn {
-                padding: 0.5rem 0.75rem;
-                font-size: 0.8rem;
+                padding: 0.4rem 0.8rem;
+                font-size: 0.85rem;
             }
             
             .container.py-5 {
                 padding-top: 2rem !important;
                 padding-bottom: 2rem !important;
+            }
+            
+            .post-stats {
+                gap: 1rem;
+                font-size: 0.85rem;
             }
         }
 
@@ -525,6 +669,15 @@
             
             .post-title {
                 font-size: 1rem;
+            }
+            
+            .post-header {
+                gap: 0.5rem;
+            }
+            
+            .post-avatar {
+                width: 35px;
+                height: 35px;
             }
         }
 
@@ -675,27 +828,102 @@
                 });
             });
 
-            // Exemplo de posts (você pode remover isso depois)
+            // Sistema de Likes Funcional
+            function setupLikeButtons() {
+                document.querySelectorAll('.like-btn').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const likesCount = this.querySelector('.likes-count');
+                        let count = parseInt(likesCount.textContent);
+                        
+                        if (this.classList.contains('liked')) {
+                            // Já curtiu, então remove o like
+                            this.classList.remove('liked');
+                            count--;
+                        } else {
+                            // Ainda não curtiu, então adiciona o like
+                            this.classList.add('liked');
+                            count++;
+                        }
+                        
+                        likesCount.textContent = count;
+                    });
+                });
+            }
+
+            // Exemplo de posts com fotos (você pode remover isso depois)
             setTimeout(() => {
                 const postsList = document.getElementById('postsList');
+                const userAvatar = document.getElementById('userAvatar').src || 'https://ui-avatars.com/api/?name=User&background=10b981&color=fff&size=150';
+                
                 if (postsList) {
                     postsList.innerHTML = `
                         <div class="post-card">
-                            <div class="post-title">Meu Primeiro Post</div>
-                            <div class="post-author">Por Você</div>
-                            <div class="post-content">
-                                Este é um exemplo de post no PGFlow. Você pode criar, editar e excluir seus posts facilmente.
+                            <div class="post-header">
+                                <img src="${userAvatar}" alt="Avatar" class="post-avatar">
+                                <div class="post-author-info">
+                                    <div class="post-author">Você</div>
+                                    <div class="post-date">Publicado em ${new Date().toLocaleDateString()} • ${new Date().toLocaleTimeString()}</div>
+                                </div>
                             </div>
-                            <div class="post-meta">
-                                <span class="post-date">Publicado em ${new Date().toLocaleDateString()}</span>
+                            <div class="post-title">Meu Primeiro Post no PGFlow</div>
+                            <div class="post-content">
+                                Este é um exemplo de post no PGFlow. Agora com design melhorado, foto do autor e sistema de likes totalmente funcional! Você pode criar, editar e excluir seus posts facilmente. Compartilhe suas ideias com o mundo! 🚀
+                            </div>
+                            <div class="post-footer">
+                                <div class="post-stats">
+                                    <div class="post-stat">
+                                        <i class="fas fa-eye"></i>
+                                        <span>125 visualizações</span>
+                                    </div>
+                                    <div class="post-stat">
+                                        <i class="fas fa-comment"></i>
+                                        <span>8 comentários</span>
+                                    </div>
+                                </div>
                                 <div class="post-actions">
-                                    <button class="btn btn-outline-danger btn-sm like-btn">
-                                        <i class="fas fa-heart"></i> <span class="likes-count">0</span>
+                                    <button class="like-btn">
+                                        <i class="fas fa-heart"></i>
+                                        <span class="likes-count">0</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="post-card">
+                            <div class="post-header">
+                                <img src="${userAvatar}" alt="Avatar" class="post-avatar">
+                                <div class="post-author-info">
+                                    <div class="post-author">Você</div>
+                                    <div class="post-date">Publicado em ${new Date().toLocaleDateString()} • ${new Date().toLocaleTimeString()}</div>
+                                </div>
+                            </div>
+                            <div class="post-title">Dicas para Escrever Posts Incríveis</div>
+                            <div class="post-content">
+                                Descubra como criar conteúdos engajadores que cativam sua audiência. Use títulos criativos, conte histórias pessoais e sempre adicione valor para seus leitores. A prática leva à perfeição! ✨
+                            </div>
+                            <div class="post-footer">
+                                <div class="post-stats">
+                                    <div class="post-stat">
+                                        <i class="fas fa-eye"></i>
+                                        <span>89 visualizações</span>
+                                    </div>
+                                    <div class="post-stat">
+                                        <i class="fas fa-comment"></i>
+                                        <span>12 comentários</span>
+                                    </div>
+                                </div>
+                                <div class="post-actions">
+                                    <button class="like-btn">
+                                        <i class="fas fa-heart"></i>
+                                        <span class="likes-count">0</span>
                                     </button>
                                 </div>
                             </div>
                         </div>
                     `;
+                    
+                    // Configurar os botões de like após adicionar os posts
+                    setupLikeButtons();
                 }
             }, 1000);
         });
