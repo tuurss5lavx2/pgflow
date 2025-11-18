@@ -145,6 +145,7 @@ function displayPosts(posts) {
 }
 
 // Função para alternar like/unlike
+// ✅ CORREÇÃO: Função toggleLike corrigida
 async function toggleLike(postId, button) {
   try {
     const token = localStorage.getItem('token');
@@ -157,58 +158,86 @@ async function toggleLike(postId, button) {
     
     const icon = button.querySelector('i');
     const countSpan = button.querySelector('.likes-count');
-    const currentCount = parseInt(countSpan.textContent);
+    const currentCount = parseInt(countSpan.textContent) || 0;
     const isCurrentlyLiked = button.classList.contains('btn-danger');
     
-    // Atualização otimista - muda visual antes da API
+    console.log('Toggle Like:', { 
+      postId, 
+      currentCount, 
+      isCurrentlyLiked,
+      user: user.name 
+    });
+    
+    // ✅ CORREÇÃO: Atualização otimista CORRETA
     if (isCurrentlyLiked) {
-      // Vai descurtir
+      // Vai DEScurtir - muda para outline
       button.classList.remove('btn-danger');
       button.classList.add('btn-outline-danger');
       icon.classList.remove('text-white');
-      countSpan.textContent = currentCount - 1;
+      countSpan.textContent = Math.max(0, currentCount - 1);
     } else {
-      // Vai curtir
+      // Vai curtir - muda para sólido
       button.classList.remove('btn-outline-danger');
       button.classList.add('btn-danger');
       icon.classList.add('text-white');
       countSpan.textContent = currentCount + 1;
     }
     
-    // Chamada API
+    // ✅ CORREÇÃO: Chamada API CORRETA
     const endpoint = isCurrentlyLiked ? 'unlike' : 'like';
+    console.log('Fazendo request para:', `/api/posts/${postId}/${endpoint}`);
+    
     const response = await fetch(`/api/posts/${postId}/${endpoint}`, {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${token}`
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
       }
     });
     
+    const data = await response.json();
+    console.log('Resposta da API:', data);
+    
     if (!response.ok) {
-      // Rollback se a API falhar
+      // ✅ CORREÇÃO: Rollback CORRETO se a API falhar
       if (isCurrentlyLiked) {
+        // Rollback do unlike (volta para curtido)
         button.classList.add('btn-danger');
         button.classList.remove('btn-outline-danger');
         icon.classList.add('text-white');
         countSpan.textContent = currentCount;
       } else {
+        // Rollback do like (volta para não curtido)
         button.classList.remove('btn-danger');
         button.classList.add('btn-outline-danger');
         icon.classList.remove('text-white');
         countSpan.textContent = currentCount;
       }
       
-      const data = await response.json();
-      showAlert(data.message || 'Erro ao curtir post', 'danger');
+      showAlert(data.message || 'Erro ao processar like', 'danger');
     } else {
-      const data = await response.json();
+      // ✅ CORREÇÃO: Sucesso - atualiza com dados reais da API
       showAlert(data.message, 'success');
       
       // Atualizar contador com valor real da API
-      countSpan.textContent = data.likes;
+      if (data.likes !== undefined) {
+        countSpan.textContent = data.likes;
+      }
+      
+      // ✅ CORREÇÃO: Garantir estado visual correto
+      if (endpoint === 'like') {
+        button.classList.remove('btn-outline-danger');
+        button.classList.add('btn-danger');
+        icon.classList.add('text-white');
+      } else {
+        button.classList.remove('btn-danger');
+        button.classList.add('btn-outline-danger');
+        icon.classList.remove('text-white');
+      }
     }
   } catch (error) {
-    showAlert('Erro de conexão ao curtir post', 'danger');
+    console.error('Erro no toggleLike:', error);
+    showAlert('Erro de conexão', 'danger');
   }
 }
 
