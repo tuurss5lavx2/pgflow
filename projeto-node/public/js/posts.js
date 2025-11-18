@@ -1,52 +1,28 @@
 document.addEventListener('DOMContentLoaded', function() {
     const token = localStorage.getItem('token');
     const user = JSON.parse(localStorage.getItem('user'));
-
-    // No posts.js - atualizar a parte do user
-if (user) {
-    // Atualizar todos os elementos de nome
-    document.querySelectorAll('#userName, #userNameMobile').forEach(element => {
-        element.textContent = user.name;
-    });
-    
-    // Atualizar email no mobile
-    const userEmailElement = document.getElementById('userEmailMobile');
-    if (userEmailElement) {
-        userEmailElement.textContent = user.email;
-    }
-
-    // Logout para desktop e mobile
-document.getElementById('logoutBtn').addEventListener('click', handleLogout);
-document.getElementById('logoutBtnMobile').addEventListener('click', handleLogout);
-
-function handleLogout() {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    window.location.href = '/';
-}
-    
-    // Atualizar avatares
-    document.querySelectorAll('#userAvatar, #userAvatarMobile, #userAvatarMobileLarge').forEach(img => {
-        if (user.avatar) {
-            img.src = user.avatar;
-        }
-    });
-}
     
     if (!token) {
         window.location.href = '/login';
         return;
     }
     
-    // Exibir nome do usuário
+    // ✅ CORREÇÃO: Atualizar dados do usuário na navbar
     if (user) {
-        const userElement = document.getElementById('userName');
-        if (userElement) {
-            userElement.textContent = user.name;
+        // Atualizar nome do usuário
+        const userNameElement = document.getElementById('userName');
+        if (userNameElement) {
+            userNameElement.textContent = user.name;
+        }
+        
+        // ✅ CORREÇÃO CRÍTICA: Atualizar avatar
+        const userAvatar = document.getElementById('userAvatar');
+        if (userAvatar && user.avatar) {
+            userAvatar.src = user.avatar;
         }
     }
     
-    // Logout
+    // ✅ CORREÇÃO: Event listener do logout
     const logoutBtn = document.getElementById('logoutBtn');
     if (logoutBtn) {
         logoutBtn.addEventListener('click', function() {
@@ -59,10 +35,12 @@ function handleLogout() {
     // Carregar posts
     loadPosts();
     
-    // Formulário de criação de posts
+    // ✅ CORREÇÃO: Event listener do formulário com verificação
     const postForm = document.getElementById('postForm');
     if (postForm) {
         postForm.addEventListener('submit', handleCreatePost);
+    } else {
+        console.error('Formulário de post não encontrado!');
     }
 });
 
@@ -87,6 +65,7 @@ async function loadPosts() {
             showAlert('Erro ao carregar posts', 'danger');
         }
     } catch (error) {
+        console.error('Erro ao carregar posts:', error);
         showAlert('Erro ao carregar posts', 'danger');
     }
 }
@@ -113,12 +92,10 @@ function displayPosts(posts) {
   posts.forEach(post => {
     const isOwner = user && post.author === user.name;
     
-    // ⬇️⬇️⬇️ CORREÇÃO CRÍTICA AQUI ⬇️⬇️⬇️
+    // ✅ CORREÇÃO: Verificação de likes melhorada
     const userLiked = user && post.likes && post.likes.some(like => {
-      // Verifica se like é string (ID) ou objeto com _id
-      return typeof like === 'string' ? like === user.id : like._id === user.id;
+      return typeof like === 'string' ? like === user.id : (like._id === user.id || like === user.id);
     });
-    // ⬆️⬆️⬆️ CORREÇÃO CRÍTICA AQUI ⬆️⬆️⬆️
     
     const likesCount = post.likes ? post.likes.length : 0;
     
