@@ -57,19 +57,37 @@ body {
     border-radius: 3px;
 }
 
-/* Navbar */
+/* ============================================= */
+/* NAVBAR MELHORADO COM SCROLL EFFECT */
+/* ============================================= */
+
 .navbar {
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(20px);
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    padding: 1rem 0;
-    transition: var(--transition);
+    padding: 1.2rem 0;
+    transition: var(--transition-slow);
     border-bottom: 1px solid rgba(241, 245, 249, 0.8);
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
 }
 
 .navbar.scrolled {
     padding: 0.8rem 0;
     background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(30px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(16, 185, 129, 0.1);
+}
+
+.navbar.scrolled .navbar-brand {
+    transform: scale(0.95);
+}
+
+.navbar.scrolled .nav-link {
+    padding: 0.4rem 0.8rem;
 }
 
 .navbar-brand {
@@ -79,6 +97,7 @@ body {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    transition: var(--transition);
 }
 
 .navbar-nav .nav-link {
@@ -87,16 +106,35 @@ body {
     border-radius: var(--radius);
     transition: var(--transition);
     color: var(--dark);
+    position: relative;
+    overflow: hidden;
+}
+
+.navbar-nav .nav-link::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: var(--gradient);
+    transition: var(--transition);
+    transform: translateX(-50%);
+}
+
+.navbar-nav .nav-link:hover::before,
+.navbar-nav .nav-link.active::before {
+    width: 80%;
 }
 
 .navbar-nav .nav-link:hover {
-    background: var(--primary);
-    color: white;
+    color: var(--primary-dark);
+    transform: translateY(-1px);
 }
 
 .navbar-nav .nav-link.active {
-    background: var(--primary);
-    color: white;
+    color: var(--primary-dark);
+    font-weight: 600;
 }
 
 .navbar-nav .nav-link.btn {
@@ -104,22 +142,68 @@ body {
     color: white;
     border: none;
     margin-left: 0.5rem;
+    padding: 0.5rem 1.5rem;
+    box-shadow: var(--shadow);
+}
+
+.navbar-nav .nav-link.btn::before {
+    display: none;
 }
 
 .navbar-nav .nav-link.btn:hover {
-    transform: translateY(-1px);
+    transform: translateY(-2px);
     box-shadow: var(--shadow-lg);
 }
 
 /* Navbar Dark para páginas de auth e dashboard */
 .navbar-dark {
     background: var(--gradient-dark) !important;
+    backdrop-filter: none;
 }
 
 .navbar-dark .navbar-brand {
     color: white !important;
     background: none !important;
     -webkit-text-fill-color: white !important;
+}
+
+.navbar-dark .nav-link {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.navbar-dark .nav-link:hover {
+    color: white;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.navbar-dark .nav-link.btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.navbar-dark .nav-link.btn:hover {
+    background: white;
+    color: var(--primary-dark);
+}
+
+/* Navbar Toggler */
+.navbar-toggler {
+    border: none;
+    padding: 0.25rem 0.5rem;
+    transition: var(--transition);
+}
+
+.navbar-toggler:focus {
+    box-shadow: none;
+}
+
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%2833, 37, 41, 0.75%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+    transition: var(--transition);
+}
+
+.navbar-dark .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.9%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
 }
 
 /* Hero Minimalista */
@@ -1025,6 +1109,20 @@ body {
     .hero-title {
         margin-top: 1rem;
     }
+    
+    /* Navbar mobile */
+    .navbar-collapse {
+        background: rgba(255, 255, 255, 0.98);
+        backdrop-filter: blur(20px);
+        border-radius: var(--radius-lg);
+        margin-top: 1rem;
+        padding: 1rem;
+        box-shadow: var(--shadow-xl);
+    }
+    
+    .navbar-dark .navbar-collapse {
+        background: rgba(30, 41, 59, 0.98);
+    }
 }
 
 /* Centralização dos feature cards em mobile */
@@ -1083,6 +1181,11 @@ body {
         width: 100%;
         max-width: 300px;
     }
+    
+    .navbar-nav .nav-link.btn {
+        margin-left: 0;
+        margin-top: 0.5rem;
+    }
 }
 
 @media (max-width: 768px) {
@@ -1123,6 +1226,10 @@ body {
     
     .card-float {
         display: none;
+    }
+    
+    .navbar-brand {
+        font-size: 1.3rem;
     }
 }
 
