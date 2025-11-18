@@ -1,4 +1,4 @@
-const rateLimit = require('express-rate-limit');
+/*const rateLimit = require('express-rate-limit');
 
 // Rate limiting para login
 const loginLimiter = rateLimit({
@@ -28,7 +28,7 @@ const commentLimiter = rateLimit({
     message: 'Muitos comentários em um curto período. Tente novamente em 15 minutos.'
   }
 });
-
+*/
 module.exports = {
   loginLimiter,
   postCreationLimiter,
