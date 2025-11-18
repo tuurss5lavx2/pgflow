@@ -25,6 +25,15 @@ document.addEventListener('DOMContentLoaded', function() {
                     top: targetPosition,
                     behavior: 'smooth'
                 });
+                
+                // Fechar navbar mobile após clicar em um link (apenas para links âncora)
+                if (window.innerWidth < 992) {
+                    const navbarCollapse = document.querySelector('.navbar-collapse');
+                    if (navbarCollapse && navbarCollapse.classList.contains('show')) {
+                        const bsCollapse = new bootstrap.Collapse(navbarCollapse);
+                        bsCollapse.hide();
+                    }
+                }
             }
         });
     });
@@ -63,25 +72,6 @@ document.addEventListener('DOMContentLoaded', function() {
         statsObserver.observe(item);
     });
 
-    // Mobile menu handling
-    const navbarToggler = document.querySelector('.navbar-toggler');
-    const navbarCollapse = document.querySelector('.navbar-collapse');
-    
-    if (navbarToggler && navbarCollapse) {
-        navbarToggler.addEventListener('click', function() {
-            navbarCollapse.classList.toggle('show');
-        });
-        
-        // Close mobile menu when clicking on a link
-        document.querySelectorAll('.navbar-nav .nav-link').forEach(link => {
-            link.addEventListener('click', function() {
-                if (navbarCollapse.classList.contains('show')) {
-                    navbarCollapse.classList.remove('show');
-                }
-            });
-        });
-    }
-
     // Button loading states for register
     document.querySelectorAll('.btn-primary').forEach(button => {
         if (button.getAttribute('href') === '/register') {
@@ -110,6 +100,20 @@ document.addEventListener('DOMContentLoaded', function() {
         item.addEventListener('mouseleave', function() {
             this.style.transform = 'translateY(0)';
         });
+    });
+    
+    // Fechar navbar ao clicar fora (event delegation)
+    document.addEventListener('click', function(e) {
+        const navbarCollapse = document.querySelector('.navbar-collapse');
+        const navbarToggler = document.querySelector('.navbar-toggler');
+        
+        if (navbarCollapse && navbarCollapse.classList.contains('show')) {
+            // Se o clique foi fora do navbar e fora do toggler
+            if (!e.target.closest('.navbar') && !e.target.closest('.navbar-toggler')) {
+                const bsCollapse = new bootstrap.Collapse(navbarCollapse);
+                bsCollapse.hide();
+            }
+        }
     });
 });
 
