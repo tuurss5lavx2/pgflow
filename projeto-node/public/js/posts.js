@@ -74,6 +74,8 @@ function displayPosts(posts) {
   const postsList = document.getElementById('postsList');
   if (!postsList) return;
   
+  console.log('Posts recebidos:', posts); // DEBUG
+  
   if (posts.length === 0) {
     postsList.innerHTML = `
       <div class="text-center py-5">
@@ -90,6 +92,9 @@ function displayPosts(posts) {
   const user = JSON.parse(localStorage.getItem('user'));
   
   posts.forEach(post => {
+    console.log('Post individual:', post); // DEBUG
+    console.log('authorAvatar:', post.authorAvatar); // DEBUG
+    
     const isOwner = user && post.author === user.name;
     
     // ✅ CORREÇÃO: Verificação de likes melhorada
@@ -100,7 +105,10 @@ function displayPosts(posts) {
     const likesCount = post.likes ? post.likes.length : 0;
     
     // ✅ CORREÇÃO: Usar avatar do autor do post
+    // Se não tiver authorAvatar, usar avatar gerado baseado no nome do autor
     const authorAvatar = post.authorAvatar || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(post.author) + '&background=10b981&color=fff&size=150';
+    
+    console.log('Avatar a ser usado:', authorAvatar); // DEBUG
     
     const postElement = document.createElement('div');
     postElement.className = 'post-card fade-in';
