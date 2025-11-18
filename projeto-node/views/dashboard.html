@@ -11,43 +11,379 @@
 
     <!-- Favicon PGFlow -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90' fill='%2310b981'>⚡</text></svg>" type="image/svg+xml">
+    
+    <style>
+        /* Dashboard Styles */
+        :root {
+            --primary: #10b981;
+            --primary-dark: #059669;
+            --primary-light: #34d399;
+            --gradient: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            --gradient-dark: linear-gradient(135deg, var(--primary-dark) 0%, #0f766e 100%);
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --radius: 8px;
+            --radius-lg: 12px;
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            background: #f8fafc;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* Navbar Dashboard */
+        .navbar-clean {
+            background: var(--gradient-dark) !important;
+            backdrop-filter: blur(20px);
+            box-shadow: var(--shadow-lg);
+            padding: 0.8rem 0;
+            border-bottom: none;
+        }
+
+        .logo-clean {
+            text-decoration: none;
+        }
+
+        .logo-content {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: var(--transition);
+        }
+
+        .logo-icon:hover {
+            transform: scale(1.05);
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        .logo-icon i {
+            font-size: 1.2rem;
+            color: white;
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.2;
+        }
+
+        .logo-main {
+            font-weight: 700;
+            font-size: 1.3rem;
+            color: white;
+            letter-spacing: -0.5px;
+        }
+
+        .logo-subtitle {
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 400;
+        }
+
+        /* User Section */
+        .user-section {
+            margin-left: auto;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem 1rem;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 50px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: var(--transition);
+        }
+
+        .user-profile:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-1px);
+        }
+
+        .avatar-wrapper {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            box-shadow: var(--shadow);
+        }
+
+        .user-avatar {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.2;
+        }
+
+        .user-name {
+            font-weight: 600;
+            color: white;
+            font-size: 0.9rem;
+        }
+
+        .user-badge {
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.9);
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .online-dot {
+            color: #4ade80;
+            font-size: 0.5rem;
+        }
+
+        .dropdown-btn {
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.7);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .dropdown-btn:hover {
+            color: white;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .clean-dropdown {
+            border: none;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.98);
+            padding: 0.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .clean-dropdown .dropdown-item {
+            border-radius: var(--radius);
+            padding: 0.75rem 1rem;
+            font-weight: 500;
+            color: #1e293b;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+        }
+
+        .clean-dropdown .dropdown-item:hover {
+            background: var(--gradient);
+            color: white;
+            transform: translateX(5px);
+        }
+
+        .logout-item {
+            color: #dc3545 !important;
+        }
+
+        .logout-item:hover {
+            background: #dc3545 !important;
+            color: white !important;
+        }
+
+        /* Dashboard Content */
+        .card {
+            border: none;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            margin-bottom: 1.5rem;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .card-header {
+            background: var(--gradient);
+            color: white;
+            border-radius: var(--radius-lg) var(--radius-lg) 0 0 !important;
+            border: none;
+            padding: 1.25rem 1.5rem;
+        }
+
+        .card-header h4 {
+            margin: 0;
+            font-weight: 600;
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        /* Posts List */
+        .post-item {
+            background: white;
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border-left: 4px solid var(--primary);
+            transition: var(--transition);
+        }
+
+        .post-item:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .post-title {
+            color: #1e293b;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .post-content {
+            color: #64748b;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .post-meta {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            font-size: 0.875rem;
+            color: #94a3b8;
+        }
+
+        .post-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        /* Animations */
+        .fade-in {
+            animation: fadeIn 0.6s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .user-profile {
+                padding: 0.4rem 0.8rem;
+            }
+            
+            .avatar-wrapper {
+                width: 38px;
+                height: 38px;
+            }
+            
+            .user-name {
+                font-size: 0.8rem;
+            }
+            
+            .user-badge {
+                font-size: 0.65rem;
+            }
+            
+            .logo-main {
+                font-size: 1.1rem;
+            }
+            
+            .logo-subtitle {
+                font-size: 0.65rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .user-profile {
+                gap: 0.5rem;
+                padding: 0.35rem 0.7rem;
+            }
+            
+            .avatar-wrapper {
+                width: 35px;
+                height: 35px;
+            }
+            
+            .user-info {
+                min-width: 80px;
+            }
+            
+            .user-name {
+                font-size: 0.75rem;
+            }
+            
+            .clean-dropdown {
+                min-width: 180px;
+                transform: translateX(-20px) !important;
+            }
+        }
+    </style>
 </head>
 <body>
-    <!-- Navbar Dashboard Premium -->
-    <nav class="navbar navbar-expand-lg navbar-dashboard">
+    <!-- Navbar Nova e Melhorada -->
+    <nav class="navbar navbar-expand-lg navbar-clean">
         <div class="container">
             <!-- Logo -->
-            <a class="navbar-brand dashboard-brand" href="/">
-                <div class="brand-content">
-                    <div class="brand-icon">
+            <a class="navbar-brand logo-clean" href="/">
+                <div class="logo-content">
+                    <div class="logo-icon">
                         <i class="fas fa-bolt"></i>
                     </div>
-                    <div class="brand-text">
-                        <span class="brand-name">PGFlow</span>
-                        <span class="brand-subtitle">Dashboard</span>
+                    <div class="logo-text">
+                        <span class="logo-main">PGFlow</span>
+                        <span class="logo-subtitle">Dashboard</span>
                     </div>
                 </div>
             </a>
 
-            <!-- User Menu Desktop -->
-            <div class="user-menu-desktop">
-                <div class="user-info">
-                    <div class="user-avatar-container">
+            <!-- User Menu -->
+            <div class="user-section">
+                <div class="user-profile">
+                    <div class="avatar-wrapper">
                         <img id="userAvatar" src="" alt="Avatar" 
                              class="user-avatar"
                              onerror="this.src='https://ui-avatars.com/api/?name=User&background=10b981&color=fff&size=40'">
                     </div>
-                    <div class="user-details">
+                    <div class="user-info">
                         <span class="user-name" id="userName">Carregando...</span>
-                        <span class="user-status">
-                            <i class="fas fa-circle status-online"></i> Online
+                        <span class="user-badge">
+                            <i class="fas fa-circle online-dot"></i> Online
                         </span>
                     </div>
                     <div class="dropdown">
-                        <button class="dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                        <button class="dropdown-btn" type="button" data-bs-toggle="dropdown">
                             <i class="fas fa-chevron-down"></i>
                         </button>
-                        <ul class="dropdown-menu dropdown-menu-dashboard">
+                        <ul class="dropdown-menu clean-dropdown">
                             <li>
                                 <a class="dropdown-item" href="/profile">
                                     <i class="fas fa-user-edit me-2"></i>Meu Perfil
@@ -60,7 +396,7 @@
                             </li>
                             <li><hr class="dropdown-divider"></li>
                             <li>
-                                <button class="dropdown-item text-danger" id="logoutBtn">
+                                <button class="dropdown-item logout-item" id="logoutBtn">
                                     <i class="fas fa-sign-out-alt me-2"></i>Sair
                                 </button>
                             </li>

@@ -8,6 +8,202 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="/css/style.css" rel="stylesheet">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90' fill='%2310b981'>⚡</text></svg>" type="image/svg+xml">
+    
+    <style>
+        /* Profile Styles */
+        :root {
+            --primary: #10b981;
+            --primary-dark: #059669;
+            --gradient: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            --gradient-dark: linear-gradient(135deg, var(--primary-dark) 0%, #0f766e 100%);
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --radius: 8px;
+            --radius-lg: 12px;
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            background: #f8fafc;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* Navbar Dark */
+        .navbar-dark {
+            background: var(--gradient-dark) !important;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-dark .navbar-brand {
+            color: white !important;
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+
+        .navbar-dark .navbar-brand i {
+            color: #34d399;
+        }
+
+        .navbar-dark .navbar-text {
+            color: rgba(255, 255, 255, 0.9) !important;
+        }
+
+        .navbar-dark .btn-outline-light {
+            border-color: rgba(255, 255, 255, 0.3);
+            color: white;
+        }
+
+        .navbar-dark .btn-outline-light:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* Card Styles */
+        .card {
+            border: none;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            margin-bottom: 1.5rem;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .card-header {
+            background: var(--gradient);
+            color: white;
+            border-radius: var(--radius-lg) var(--radius-lg) 0 0 !important;
+            border: none;
+            padding: 1.25rem 1.5rem;
+        }
+
+        .card-header h4 {
+            margin: 0;
+            font-weight: 600;
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        /* Avatar Section */
+        .avatar-preview {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #e5e7eb;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .avatar-preview:hover {
+            border-color: var(--primary);
+            transform: scale(1.05);
+        }
+
+        /* Form Styles */
+        .form-label {
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-control {
+            border: 1px solid #d1d5db;
+            padding: 0.75rem 1rem;
+            font-size: 0.95rem;
+            border-radius: var(--radius);
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
+            border-color: var(--primary);
+        }
+
+        .form-text {
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+
+        /* Button */
+        .btn-primary {
+            background: var(--gradient);
+            border: none;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* Animations */
+        .fade-in {
+            animation: fadeIn 0.6s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .card-body {
+                padding: 1.25rem;
+            }
+            
+            .card-header {
+                padding: 1rem 1.25rem;
+            }
+            
+            .avatar-preview {
+                width: 120px;
+                height: 120px;
+            }
+            
+            .navbar-nav {
+                text-align: center;
+            }
+            
+            .navbar-nav .btn {
+                margin: 0.25rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .card-body {
+                padding: 1rem;
+            }
+            
+            .card-header {
+                padding: 0.875rem 1rem;
+            }
+            
+            .avatar-preview {
+                width: 100px;
+                height: 100px;
+            }
+            
+            .btn {
+                width: 100%;
+                margin-bottom: 0.5rem;
+            }
+        }
+    </style>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark">
@@ -40,8 +236,7 @@
                     <div class="card-body text-center">
                         <div class="mb-4">
                             <img id="avatarPreview" src="" alt="Avatar" 
-                                 class="rounded-circle border shadow" 
-                                 style="width: 150px; height: 150px; object-fit: cover;"
+                                 class="avatar-preview"
                                  onerror="this.src='https://ui-avatars.com/api/?name=User&background=10b981&color=fff&size=150'">
                         </div>
                         <form id="avatarForm" enctype="multipart/form-data">
