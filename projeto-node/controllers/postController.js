@@ -26,6 +26,7 @@ const postController = {
           title: newPost.title,
           content: newPost.content,
           author: newPost.author.name,
+          likes: newPost.likes || [],
           createdAt: newPost.createdAt,
           updatedAt: newPost.updatedAt
         }
@@ -45,6 +46,7 @@ const postController = {
         title: post.title,
         content: post.content,
         author: post.author.name,
+        likes: post.likes || [],
         createdAt: post.createdAt,
         updatedAt: post.updatedAt
       }));
@@ -69,6 +71,7 @@ const postController = {
         title: post.title,
         content: post.content,
         author: post.author.name,
+        likes: post.likes || [],
         createdAt: post.createdAt,
         updatedAt: post.updatedAt
       };
@@ -113,6 +116,7 @@ const postController = {
           title: updatedPost.title,
           content: updatedPost.content,
           author: updatedPost.author.name,
+          likes: updatedPost.likes || [],
           createdAt: updatedPost.createdAt,
           updatedAt: updatedPost.updatedAt
         }
@@ -143,29 +147,92 @@ const postController = {
       res.status(500).json({ message: 'Erro ao excluir post' });
     }
   },
-  like: async (req, res) => {
-  try {
-    const post = await Post.findById(req.params.id);
-    if (!post.likes.includes(req.user.id)) {
-      post.likes.push(req.user.id);
-      await post.save();
-    }
-    res.json({ likes: post.likes.length });
-  } catch (error) {
-    res.status(500).json({ message: 'Erro ao curtir' });
-  }
-},
 
-unlike: async (req, res) => {
-  try {
-    const post = await Post.findById(req.params.id);
-    post.likes = post.likes.filter(id => id.toString() !== req.user.id);
-    await post.save();
-    res.json({ likes: post.likes.length });
-  } catch (error) {
-    res.status(500).json({ message: 'Erro ao descurtir' });
-  }
-},
+  // ⬇️⬇️⬇️ LIKES ATUALIZADOS E CORRETOS ⬇️⬇️⬇️
+  like: async (req, res) => {
+    try {
+      const postId = req.params.id;
+      const userId = req.user.id;
+      
+      const post = await Post.findById(postId);
+      if (!post) {
+        return res.status(404).json({ message: 'Post não encontrado' });
+      }
+      
+      // Verifica se usuário já curtiu
+      const alreadyLiked = post.likes.some(likeId => likeId.toString() === userId);
+      if (alreadyLiked) {
+        return res.status(400).json({ message: 'Você já curtiu este post' });
+      }
+      
+      // Adiciona like
+      post.likes.push(userId);
+      await post.save();
+      
+      // Busca post atualizado
+      const updatedPost = await Post.findById(postId).populate('author', 'name');
+      
+      res.json({ 
+        message: 'Post curtido com sucesso!',
+        likes: post.likes.length,
+        post: {
+          _id: updatedPost._id,
+          title: updatedPost.title,
+          content: updatedPost.content,
+          author: updatedPost.author.name,
+          likes: updatedPost.likes,
+          createdAt: updatedPost.createdAt,
+          updatedAt: updatedPost.updatedAt
+        }
+      });
+    } catch (error) {
+      console.error('Erro ao curtir post:', error);
+      res.status(500).json({ message: 'Erro interno ao curtir post' });
+    }
+  },
+
+  unlike: async (req, res) => {
+    try {
+      const postId = req.params.id;
+      const userId = req.user.id;
+      
+      const post = await Post.findById(postId);
+      if (!post) {
+        return res.status(404).json({ message: 'Post não encontrado' });
+      }
+      
+      // Verifica se usuário curtiu
+      const likedIndex = post.likes.findIndex(likeId => likeId.toString() === userId);
+      if (likedIndex === -1) {
+        return res.status(400).json({ message: 'Você não curtiu este post' });
+      }
+      
+      // Remove like
+      post.likes.splice(likedIndex, 1);
+      await post.save();
+      
+      // Busca post atualizado
+      const updatedPost = await Post.findById(postId).populate('author', 'name');
+      
+      res.json({ 
+        message: 'Like removido com sucesso!',
+        likes: post.likes.length,
+        post: {
+          _id: updatedPost._id,
+          title: updatedPost.title,
+          content: updatedPost.content,
+          author: updatedPost.author.name,
+          likes: updatedPost.likes,
+          createdAt: updatedPost.createdAt,
+          updatedAt: updatedPost.updatedAt
+        }
+      });
+    } catch (error) {
+      console.error('Erro ao remover like:', error);
+      res.status(500).json({ message: 'Erro interno ao remover like' });
+    }
+  },
+  // ⬆️⬆️⬆️ LIKES ATUALIZADOS E CORRETOS ⬆️⬆️⬆️
   
   getByUser: async (req, res) => {
     try {
@@ -179,6 +246,7 @@ unlike: async (req, res) => {
         title: post.title,
         content: post.content,
         author: post.author.name,
+        likes: post.likes || [],
         createdAt: post.createdAt,
         updatedAt: post.updatedAt
       }));
