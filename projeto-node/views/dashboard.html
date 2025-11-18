@@ -39,6 +39,8 @@
             box-shadow: var(--shadow-lg);
             padding: 0.8rem 0;
             border-bottom: 1px solid #e5e7eb;
+            position: relative;
+            z-index: 1030;
         }
 
         .logo-clean {
@@ -105,6 +107,7 @@
             border: 1px solid #e5e7eb;
             transition: var(--transition);
             position: relative;
+            cursor: pointer;
         }
 
         .user-profile:hover {
@@ -169,6 +172,7 @@
             justify-content: center;
             width: 32px;
             height: 32px;
+            cursor: pointer;
         }
 
         .dropdown-btn:hover {
@@ -176,7 +180,7 @@
             background: #f1f5f9;
         }
 
-        /* Dropdown Menu - CORRIGIDO POSIÇÃO */
+        /* Dropdown Menu - CORRIGIDO Z-INDEX */
         .user-dropdown {
             position: relative;
         }
@@ -193,7 +197,7 @@
             right: 0;
             top: 100%;
             margin-top: 0.5rem;
-            z-index: 1000;
+            z-index: 9999; /* Z-INDEX ALTO PARA FICAR NA FRENTE */
         }
 
         .clean-dropdown .dropdown-item {
@@ -209,6 +213,7 @@
             background: none;
             width: 100%;
             text-align: left;
+            cursor: pointer;
         }
 
         .clean-dropdown .dropdown-item:hover {
@@ -237,6 +242,11 @@
         }
 
         /* Dashboard Content */
+        .container.py-5 {
+            position: relative;
+            z-index: 1;
+        }
+
         .card {
             border: none;
             border-radius: var(--radius-lg);
@@ -267,19 +277,20 @@
             padding: 1.5rem;
         }
 
-        /* Posts List */
-        .post-item {
+        /* Posts List - VOLTADO COMO ESTAVA ANTES */
+        .post-card {
             background: white;
-            border-radius: var(--radius);
-            padding: 1.5rem;
-            margin-bottom: 1rem;
-            border-left: 4px solid var(--primary);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow);
             transition: var(--transition);
+            border-left: 4px solid var(--primary);
         }
 
-        .post-item:hover {
+        .post-card:hover {
             transform: translateY(-2px);
-            box-shadow: var(--shadow);
+            box-shadow: var(--shadow-lg);
         }
 
         .post-title {
@@ -288,10 +299,21 @@
             margin-bottom: 0.5rem;
         }
 
+        .post-author {
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
         .post-content {
             color: #64748b;
             line-height: 1.6;
             margin-bottom: 1rem;
+        }
+
+        .post-date {
+            color: #94a3b8;
+            font-size: 0.9rem;
         }
 
         .post-meta {
@@ -305,6 +327,21 @@
         .post-actions {
             display: flex;
             gap: 0.5rem;
+        }
+
+        /* Like Button */
+        .like-btn {
+            transition: all 0.3s ease;
+            border-radius: 20px;
+            padding: 0.375rem 0.75rem;
+        }
+
+        .like-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .like-btn:active {
+            transform: scale(0.95);
         }
 
         /* Animations */
@@ -364,13 +401,28 @@
             /* Dropdown em mobile */
             .clean-dropdown {
                 position: fixed;
-                top: auto !important;
+                top: 80px !important;
                 left: 50% !important;
                 transform: translateX(-50%) !important;
                 right: auto !important;
                 width: 90%;
                 max-width: 280px;
                 margin-top: 0.5rem;
+                z-index: 9999;
+            }
+            
+            /* Posts responsivos */
+            .post-card {
+                padding: 1.5rem;
+                margin-bottom: 1rem;
+            }
+            
+            .card-body {
+                padding: 1.25rem;
+            }
+            
+            .card-header {
+                padding: 1rem 1.25rem;
             }
         }
 
@@ -422,11 +474,33 @@
             }
             
             .card-body {
-                padding: 1.25rem;
+                padding: 1rem;
             }
             
             .card-header {
-                padding: 1rem 1.25rem;
+                padding: 0.875rem 1rem;
+            }
+            
+            .post-card {
+                padding: 1.25rem;
+            }
+            
+            .post-title {
+                font-size: 1.1rem;
+            }
+            
+            .post-content {
+                font-size: 0.9rem;
+            }
+            
+            .like-btn {
+                padding: 0.5rem 0.75rem;
+                font-size: 0.8rem;
+            }
+            
+            .container.py-5 {
+                padding-top: 2rem !important;
+                padding-bottom: 2rem !important;
             }
         }
 
@@ -444,6 +518,14 @@
                 width: 32px;
                 height: 32px;
             }
+            
+            .post-card {
+                padding: 1rem;
+            }
+            
+            .post-title {
+                font-size: 1rem;
+            }
         }
 
         /* Ajustes para o dropdown do Bootstrap */
@@ -451,7 +533,7 @@
             display: block !important;
         }
 
-        /* Garantir que o dropdown não quebre */
+        /* Garantir que o dropdown não quebre e fique na frente */
         .user-dropdown .dropdown-menu {
             transform: none !important;
         }
@@ -462,6 +544,15 @@
                 right: 0 !important;
                 transform: none !important;
             }
+        }
+
+        /* Garantir que o dropdown fique acima de tudo */
+        .navbar-clean {
+            z-index: 1030;
+        }
+
+        .clean-dropdown {
+            z-index: 9999 !important;
         }
     </style>
 </head>
@@ -583,6 +674,30 @@
                     e.stopPropagation();
                 });
             });
+
+            // Exemplo de posts (você pode remover isso depois)
+            setTimeout(() => {
+                const postsList = document.getElementById('postsList');
+                if (postsList) {
+                    postsList.innerHTML = `
+                        <div class="post-card">
+                            <div class="post-title">Meu Primeiro Post</div>
+                            <div class="post-author">Por Você</div>
+                            <div class="post-content">
+                                Este é um exemplo de post no PGFlow. Você pode criar, editar e excluir seus posts facilmente.
+                            </div>
+                            <div class="post-meta">
+                                <span class="post-date">Publicado em ${new Date().toLocaleDateString()}</span>
+                                <div class="post-actions">
+                                    <button class="btn btn-outline-danger btn-sm like-btn">
+                                        <i class="fas fa-heart"></i> <span class="likes-count">0</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+            }, 1000);
         });
     </script>
     <script src="/js/posts.js"></script>
