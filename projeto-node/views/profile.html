@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Perfil - PGFlow</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
+    
+    <!-- Favicon PGFlow -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90' fill='%2310b981'>⚡</text></svg>" type="image/svg+xml">
+</head>
+<body class="dashboard-body">
+    <!-- Header -->
+    <header class="dashboard-header">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <div class="dashboard-brand">
+                        <a href="/" class="brand-link">
+                            <i class="fas fa-bolt me-2"></i>PGFlow
+                        </a>
+                        <span class="dashboard-title">Meu Perfil</span>
+                    </div>
+                </div>
+                <div class="col-md-6 text-end">
+                    <div class="dashboard-user">
+                        <a href="/dashboard" class="btn btn-outline-primary btn-sm me-2">
+                            <i class="fas fa-tachometer-alt me-1"></i>Dashboard
+                        </a>
+                        <span class="user-greeting me-3">
+                            <i class="fas fa-user me-1"></i>Olá, <span id="headerUserName"></span>
+                        </span>
+                        <button id="logoutBtn" class="btn btn-outline-primary btn-sm">
+                            <i class="fas fa-sign-out-alt me-1"></i>Sair
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="dashboard-main">
+        <div class="container">
+            <div class="row">
+                <!-- Sidebar de Navegação -->
+                <div class="col-lg-3 mb-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h6 class="mb-0"><i class="fas fa-user-cog me-2"></i>Configurações</h6>
+                        </div>
+                        <div class="list-group list-group-flush">
+                            <a href="#profile" class="list-group-item list-group-item-action active" data-bs-toggle="tab">
+                                <i class="fas fa-user-edit me-2"></i>Editar Perfil
+                            </a>
+                            <a href="#avatar" class="list-group-item list-group-item-action" data-bs-toggle="tab">
+                                <i class="fas fa-camera me-2"></i>Foto de Perfil
+                            </a>
+                            <a href="#password" class="list-group-item list-group-item-action" data-bs-toggle="tab">
+                                <i class="fas fa-lock me-2"></i>Alterar Senha
+                            </a>
+                            <a href="#stats" class="list-group-item list-group-item-action" data-bs-toggle="tab">
+                                <i class="fas fa-chart-bar me-2"></i>Minhas Estatísticas
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Card de Estatísticas Rápidas -->
+                    <div class="card mt-4">
+                        <div class="card-header">
+                            <h6 class="mb-0"><i class="fas fa-chart-line me-2"></i>Resumo</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="profile-stats">
+                                <div class="stat-item">
+                                    <i class="fas fa-newspaper text-primary"></i>
+                                    <div>
+                                        <strong id="statsPosts">0</strong>
+                                        <small>Posts</small>
+                                    </div>
+                                </div>
+                                <div class="stat-item">
+                                    <i class="fas fa-comments text-success"></i>
+                                    <div>
+                                        <strong id="statsComments">0</strong>
+                                        <small>Comentários</small>
+                                    </div>
+                                </div>
+                                <div class="stat-item">
+                                    <i class="fas fa-heart text-danger"></i>
+                                    <div>
+                                        <strong id="statsLikes">0</strong>
+                                        <small>Curtidas</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Conteúdo Principal -->
+                <div class="col-lg-9">
+                    <div class="tab-content">
+                        <!-- Aba: Editar Perfil -->
+                        <div class="tab-pane fade show active" id="profile">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4 class="mb-0"><i class="fas fa-user-edit me-2"></i>Editar Perfil</h4>
+                                </div>
+                                <div class="card-body">
+                                    <form id="profileForm">
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <label for="displayName" class="form-label">Nome de Exibição</label>
+                                                <input type="text" class="form-control" id="displayName" 
+                                                       placeholder="Como você quer ser chamado">
+                                                <div class="form-text">Este nome será exibido publicamente</div>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label for="location" class="form-label">Localização</label>
+                                                <input type="text" class="form-control" id="location" 
+                                                       placeholder="Cidade, País">
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="mb-3">
+                                            <label for="website" class="form-label">Website</label>
+                                            <input type="url" class="form-control" id="website" 
+                                                   placeholder="https://exemplo.com">
+                                        </div>
+                                        
+                                        <div class="mb-4">
+                                            <label for="bio" class="form-label">Biografia</label>
+                                            <textarea class="form-control" id="bio" rows="4" 
+                                                      placeholder="Conte um pouco sobre você... (máximo 500 caracteres)"
+                                                      maxlength="500"></textarea>
+                                            <div class="form-text">
+                                                <span id="bioCounter">0</span>/500 caracteres
+                                            </div>
+                                        </div>
+                                        
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fas fa-save me-2"></i>Salvar Alterações
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Aba: Foto de Perfil -->
+                        <div class="tab-pane fade" id="avatar">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4 class="mb-0"><i class="fas fa-camera me-2"></i>Foto de Perfil</h4>
+                                </div>
+                                <div class="card-body text-center">
+                                    <div class="avatar-section mb-4">
+                                        <div class="avatar-preview mb-3">
+                                            <img id="avatarPreview" src="/images/default-avatar.png" 
+                                                 alt="Avatar" class="avatar-image">
+                                        </div>
+                                        <div class="avatar-actions">
+                                            <form id="avatarForm" enctype="multipart/form-data">
+                                                <div class="mb-3">
+                                                    <input type="file" class="form-control" id="avatarInput" 
+                                                           accept="image/*" style="display: none;">
+                                                    <button type="button" class="btn btn-primary me-2" onclick="document.getElementById('avatarInput').click()">
+                                                        <i class="fas fa-upload me-2"></i>Escolher Imagem
+                                                    </button>
+                                                    <button type="button" id="removeAvatarBtn" class="btn btn-outline-danger">
+                                                        <i class="fas fa-trash me-2"></i>Remover Avatar
+                                                    </button>
+                                                </div>
+                                                <div class="form-text">
+                                                    Formatos suportados: JPG, PNG, GIF, WebP. Tamanho máximo: 3MB
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="avatar-tips">
+                                        <h6><i class="fas fa-lightbulb me-2 text-warning"></i>Dicas para uma boa foto:</h6>
+                                        <ul class="list-unstyled small text-muted">
+                                            <li><i class="fas fa-check text-success me-2"></i>Use uma imagem quadrada</li>
+                                            <li><i class="fas fa-check text-success me-2"></i>Rosto bem iluminado e visível</li>
+                                            <li><i class="fas fa-check text-success me-2"></i>Fundo simples e limpo</li>
+                                            <li><i class="fas fa-check text-success me-2"></i>Resolução mínima: 200x200 pixels</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Aba: Alterar Senha -->
+                        <div class="tab-pane fade" id="password">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4 class="mb-0"><i class="fas fa-lock me-2"></i>Alterar Senha</h4>
+                                </div>
+                                <div class="card-body">
+                                    <form id="passwordForm">
+                                        <div class="mb-3">
+                                            <label for="currentPassword" class="form-label">Senha Atual</label>
+                                            <input type="password" class="form-control" id="currentPassword" 
+                                                   placeholder="Digite sua senha atual" required>
+                                        </div>
+                                        
+                                        <div class="mb-3">
+                                            <label for="newPassword" class="form-label">Nova Senha</label>
+                                            <input type="password" class="form-control" id="newPassword" 
+                                                   placeholder="Mínimo 8 caracteres" required minlength="8">
+                                            <div class="form-text">
+                                                <div class="password-strength mt-2">
+                                                    <div class="progress" style="height: 4px;">
+                                                        <div class="progress-bar" id="passwordStrengthBar" style="width: 0%"></div>
+                                                    </div>
+                                                    <small class="text-muted" id="passwordStrengthText">Força da senha</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="mb-4">
+                                            <label for="confirmPassword" class="form-label">Confirmar Nova Senha</label>
+                                            <input type="password" class="form-control" id="confirmPassword" 
+                                                   placeholder="Digite novamente a nova senha" required>
+                                            <div class="form-text" id="passwordMatchText"></div>
+                                        </div>
+                                        
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fas fa-key me-2"></i>Alterar Senha
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Aba: Estatísticas -->
+                        <div class="tab-pane fade" id="stats">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4 class="mb-0"><i class="fas fa-chart-bar me-2"></i>Minhas Estatísticas</h4>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-4 mb-4">
+                                            <div class="stat-card text-center">
+                                                <div class="stat-icon">
+                                                    <i class="fas fa-newspaper fa-2x text-primary"></i>
+                                                </div>
+                                                <h3 id="statPostsTotal">0</h3>
+                                                <p class="text-muted">Posts Publicados</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 mb-4">
+                                            <div class="stat-card text-center">
+                                                <div class="stat-icon">
+                                                    <i class="fas fa-comments fa-2x text-success"></i>
+                                                </div>
+                                                <h3 id="statCommentsTotal">0</h3>
+                                                <p class="text-muted">Comentários Feitos</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 mb-4">
+                                            <div class="stat-card text-center">
+                                                <div class="stat-icon">
+                                                    <i class="fas fa-heart fa-2x text-danger"></i>
+                                                </div>
+                                                <h3 id="statLikesTotal">0</h3>
+                                                <p class="text-muted">Curtidas Recebidas</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <h5 class="mb-3"><i class="fas fa-history me-2"></i>Atividade Recente</h5>
+                                            <div id="recentActivity" class="activity-feed">
+                                                <div class="text-center py-4">
+                                                    <i class="fas fa-spinner fa-spin fa-2x text-primary mb-3"></i>
+                                                    <p>Carregando atividades...</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Loading Spinner -->
+    <div id="loadingSpinner" class="loading-spinner" style="display: none;">
+        <div class="spinner-content">
+            <i class="fas fa-spinner fa-spin fa-3x text-primary mb-3"></i>
+            <p>Processando...</p>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/profile.js"></script>
+</body>
+</html>
