@@ -156,7 +156,6 @@ function displayPosts(posts) {
   addPostEventListeners();
   updatePostsCount(posts);
 }
-
 // Função para alternar like/unlike
 // ✅ CORREÇÃO FINAL: Função toggleLike super otimizada
 async function toggleLike(postId, button) {
