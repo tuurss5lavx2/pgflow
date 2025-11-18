@@ -17,7 +17,7 @@ const postController = {
       });
       
       // Buscar post com autor populado
-      const newPost = await Post.findById(post._id).populate('author', 'name');
+      const newPost = await Post.findById(post._id).populate('author', 'name avatar');
       
       res.status(201).json({ 
         message: 'Post criado com sucesso',
@@ -26,6 +26,7 @@ const postController = {
           title: newPost.title,
           content: newPost.content,
           author: newPost.author.name,
+          authorAvatar: newPost.author.avatar, // ⬅️ ADICIONAR AQUI
           likes: newPost.likes || [],
           createdAt: newPost.createdAt,
           updatedAt: newPost.updatedAt
@@ -46,6 +47,7 @@ const postController = {
         title: post.title,
         content: post.content,
         author: post.author.name,
+        authorAvatar: post.author.avatar, // ⬅️ ADICIONAR AQUI
         likes: post.likes || [],
         createdAt: post.createdAt,
         updatedAt: post.updatedAt
@@ -71,6 +73,7 @@ const postController = {
         title: post.title,
         content: post.content,
         author: post.author.name,
+        authorAvatar: post.author.avatar, // ⬅️ ADICIONAR AQUI
         likes: post.likes || [],
         createdAt: post.createdAt,
         updatedAt: post.updatedAt
@@ -107,7 +110,7 @@ const postController = {
       await post.save();
       
       // Buscar post atualizado
-      const updatedPost = await Post.findById(postId).populate('author', 'name');
+      const updatedPost = await Post.findById(postId).populate('author', 'name avatar');
       
       res.json({ 
         message: 'Post atualizado com sucesso',
@@ -116,6 +119,7 @@ const postController = {
           title: updatedPost.title,
           content: updatedPost.content,
           author: updatedPost.author.name,
+          authorAvatar: updatedPost.author.avatar, // ⬅️ ADICIONAR AQUI
           likes: updatedPost.likes || [],
           createdAt: updatedPost.createdAt,
           updatedAt: updatedPost.updatedAt
@@ -148,7 +152,7 @@ const postController = {
     }
   },
 
-  // ⬇️⬇️⬇️ LIKES ATUALIZADOS E CORRETOS ⬇️⬇️⬇️
+  // ⬇️⬇️⬇️ ATUALIZAR LIKES TAMBÉM ⬇️⬇️⬇️
   like: async (req, res) => {
     try {
       const postId = req.params.id;
@@ -170,7 +174,7 @@ const postController = {
       await post.save();
       
       // Busca post atualizado
-      const updatedPost = await Post.findById(postId).populate('author', 'name');
+      const updatedPost = await Post.findById(postId).populate('author', 'name avatar');
       
       res.json({ 
         message: 'Post curtido com sucesso!',
@@ -180,6 +184,7 @@ const postController = {
           title: updatedPost.title,
           content: updatedPost.content,
           author: updatedPost.author.name,
+          authorAvatar: updatedPost.author.avatar, // ⬅️ ADICIONAR AQUI
           likes: updatedPost.likes,
           createdAt: updatedPost.createdAt,
           updatedAt: updatedPost.updatedAt
@@ -212,7 +217,7 @@ const postController = {
       await post.save();
       
       // Busca post atualizado
-      const updatedPost = await Post.findById(postId).populate('author', 'name');
+      const updatedPost = await Post.findById(postId).populate('author', 'name avatar');
       
       res.json({ 
         message: 'Like removido com sucesso!',
@@ -222,6 +227,7 @@ const postController = {
           title: updatedPost.title,
           content: updatedPost.content,
           author: updatedPost.author.name,
+          authorAvatar: updatedPost.author.avatar, // ⬅️ ADICIONAR AQUI
           likes: updatedPost.likes,
           createdAt: updatedPost.createdAt,
           updatedAt: updatedPost.updatedAt
@@ -246,6 +252,7 @@ const postController = {
         title: post.title,
         content: post.content,
         author: post.author.name,
+        authorAvatar: post.author.avatar, // ⬅️ ADICIONAR AQUI
         likes: post.likes || [],
         createdAt: post.createdAt,
         updatedAt: post.updatedAt

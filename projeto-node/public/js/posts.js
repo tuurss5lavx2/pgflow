@@ -88,7 +88,6 @@ function displayPosts(posts) {
   postsList.innerHTML = '';
   
   const user = JSON.parse(localStorage.getItem('user'));
-  const userAvatar = user?.avatar || 'https://ui-avatars.com/api/?name=User&background=10b981&color=fff&size=150';
   
   posts.forEach(post => {
     const isOwner = user && post.author === user.name;
@@ -100,11 +99,14 @@ function displayPosts(posts) {
     
     const likesCount = post.likes ? post.likes.length : 0;
     
+    // ✅ CORREÇÃO: Usar avatar do autor do post
+    const authorAvatar = post.authorAvatar || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(post.author) + '&background=10b981&color=fff&size=150';
+    
     const postElement = document.createElement('div');
     postElement.className = 'post-card fade-in';
     postElement.innerHTML = `
       <div class="post-header">
-        <img src="${userAvatar}" alt="Avatar" class="post-avatar">
+        <img src="${authorAvatar}" alt="${post.author}" class="post-avatar" onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(post.author)}&background=10b981&color=fff&size=150'">
         <div class="post-author-info">
           <div class="post-author">${post.author}</div>
           <div class="post-date">
