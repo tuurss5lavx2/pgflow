@@ -36,6 +36,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 app.use('/api/auth', authRoutes);
+app.use(express.static(path.join(__dirname, 'public')));
 
 if (process.env.NODE_ENV !== 'production') {
   app.use('/api/posts', (req, res, next) => {
