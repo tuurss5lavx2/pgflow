@@ -31,31 +31,15 @@
             font-family: 'Poppins', sans-serif;
             min-height: 100vh;
             display: flex;
-            flex-direction: column;
-        }
-
-        /* Navbar Dark */
-        .navbar-dark {
-            background: var(--gradient-dark) !important;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .navbar-dark .navbar-brand {
-            color: white !important;
-            font-weight: 700;
-            font-size: 1.5rem;
-        }
-
-        .navbar-dark .navbar-brand i {
-            color: #34d399;
+            align-items: center;
         }
 
         /* Main Content */
         .min-vh-75 {
-            min-height: 75vh;
+            min-height: 100vh;
             display: flex;
             align-items: center;
-            flex: 1;
+            width: 100%;
         }
 
         /* Card Styles */
@@ -64,6 +48,9 @@
             border-radius: var(--radius-lg);
             box-shadow: var(--shadow-lg);
             overflow: hidden;
+            margin: 2rem auto;
+            max-width: 450px;
+            width: 90%;
         }
 
         .card-header {
@@ -153,6 +140,28 @@
             text-decoration: underline !important;
         }
 
+        /* Alert System Fix - POSIÇÃO FIXA */
+        .alert-fixed {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            min-width: 300px;
+            max-width: 500px;
+            animation: slideInRight 0.3s ease-out;
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             .card-body {
@@ -164,7 +173,14 @@
             }
             
             .min-vh-75 {
-                padding: 2rem 0;
+                padding: 1rem 0;
+            }
+            
+            .alert-fixed {
+                top: 10px;
+                right: 10px;
+                left: 10px;
+                min-width: auto;
             }
         }
 
@@ -180,19 +196,16 @@
             .card-header h3 {
                 font-size: 1.3rem;
             }
+            
+            .card {
+                margin: 1rem auto;
+                width: 95%;
+            }
         }
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark">
-        <div class="container">
-            <a class="navbar-brand" href="/">
-                <i class="fas fa-bolt me-2"></i>PGFlow
-            </a>
-        </div>
-    </nav>
-
-    <section class="min-vh-75 d-flex align-items-center py-5">
+    <section class="min-vh-75 py-5">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-md-8 col-lg-6">

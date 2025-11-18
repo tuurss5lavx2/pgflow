@@ -18,18 +18,10 @@ document.addEventListener('DOMContentLoaded', function() {
         // ✅ CORREÇÃO CRÍTICA: Atualizar avatar
         const userAvatar = document.getElementById('userAvatar');
         if (userAvatar && user.avatar) {
-            userAvatar.src = user.avatar;
+            const avatarUrl = user.avatar.startsWith('/uploads/') ? 
+                window.location.origin + user.avatar : user.avatar;
+            userAvatar.src = avatarUrl;
         }
-    }
-    
-    // ✅ CORREÇÃO: Event listener do logout
-    const logoutBtn = document.getElementById('logoutBtn');
-    if (logoutBtn) {
-        logoutBtn.addEventListener('click', function() {
-            localStorage.removeItem('token');
-            localStorage.removeItem('user');
-            window.location.href = '/';
-        });
     }
     
     // Carregar posts
@@ -74,8 +66,6 @@ function displayPosts(posts) {
   const postsList = document.getElementById('postsList');
   if (!postsList) return;
   
-  console.log('Posts recebidos:', posts);
-  
   if (posts.length === 0) {
     postsList.innerHTML = `
       <div class="text-center py-5">
@@ -92,9 +82,6 @@ function displayPosts(posts) {
   const user = JSON.parse(localStorage.getItem('user'));
   
   posts.forEach(post => {
-    console.log('Post individual:', post);
-    console.log('authorAvatar:', post.authorAvatar);
-    
     const isOwner = user && post.author === user.name;
     
     // ✅ CORREÇÃO: Verificação de likes melhorada
@@ -117,8 +104,6 @@ function displayPosts(posts) {
       // Avatar gerado baseado no nome do autor
       authorAvatar = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(post.author) + '&background=10b981&color=fff&size=150';
     }
-    
-    console.log('Avatar a ser usado:', authorAvatar);
     
     const postElement = document.createElement('div');
     postElement.className = 'post-card fade-in';
@@ -169,7 +154,6 @@ function displayPosts(posts) {
 }
 
 // Função para alternar like/unlike
-// ✅ CORREÇÃO FINAL: Função toggleLike super otimizada
 async function toggleLike(postId, button) {
   try {
     const token = localStorage.getItem('token');
@@ -418,7 +402,7 @@ function showLoading() {
     const postsList = document.getElementById('postsList');
     if (postsList) {
         postsList.innerHTML = `
-            <div class="col-12 text-center py-5">
+            <div class="text-center py-5">
                 <i class="fas fa-spinner fa-spin fa-2x text-primary mb-3"></i>
                 <p>Carregando posts...</p>
             </div>
@@ -426,21 +410,24 @@ function showLoading() {
     }
 }
 
+// ✅ SISTEMA DE ALERTAS FIXOS - ATUALIZADO
 function showAlert(message, type) {
     // Remover alertas existentes
-    const existingAlerts = document.querySelectorAll('.alert');
+    const existingAlerts = document.querySelectorAll('.alert-fixed');
     existingAlerts.forEach(alert => alert.remove());
     
     const alertDiv = document.createElement('div');
-    alertDiv.className = `alert alert-${type} alert-dismissible fade show`;
+    alertDiv.className = `alert alert-${type} alert-dismissible fade show alert-fixed`;
     alertDiv.role = 'alert';
     alertDiv.innerHTML = `
-        ${message}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        <div class="d-flex align-items-center">
+            <i class="fas ${getAlertIcon(type)} me-2"></i>
+            <div class="flex-grow-1">${message}</div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
     `;
     
-    const container = document.querySelector('.container');
-    container.insertBefore(alertDiv, container.firstChild);
+    document.body.appendChild(alertDiv);
     
     // Auto-close after 5 seconds
     setTimeout(() => {
@@ -448,4 +435,14 @@ function showAlert(message, type) {
             alertDiv.remove();
         }
     }, 5000);
+}
+
+function getAlertIcon(type) {
+    switch(type) {
+        case 'success': return 'fa-check-circle';
+        case 'danger': return 'fa-exclamation-circle';
+        case 'warning': return 'fa-exclamation-triangle';
+        case 'info': return 'fa-info-circle';
+        default: return 'fa-bell';
+    }
 }

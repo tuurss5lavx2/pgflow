@@ -6,15 +6,20 @@ document.addEventListener('DOMContentLoaded', function() {
         return;
     }
 
-    // Logout
-    document.getElementById('logoutBtn').addEventListener('click', function() {
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
-        window.location.href = '/';
-    });
-
-    // Carregar dados do perfil
-    loadProfile();
+    // Carregar dados do usuário na navbar
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (user) {
+        const userNameElement = document.getElementById('userName');
+        const userAvatarElement = document.getElementById('userAvatar');
+        
+        if (userNameElement) {
+            userNameElement.textContent = user.name;
+        }
+        if (userAvatarElement && user.avatar) {
+            userAvatarElement.src = user.avatar.startsWith('/uploads/') ? 
+                window.location.origin + user.avatar : user.avatar;
+        }
+    }
 
     // Formulário de avatar
     document.getElementById('avatarForm').addEventListener('submit', handleAvatarUpload);
@@ -33,6 +38,9 @@ document.addEventListener('DOMContentLoaded', function() {
             reader.readAsDataURL(file);
         }
     });
+
+    // Carregar dados do perfil
+    loadProfile();
 });
 
 async function loadProfile() {
@@ -54,7 +62,9 @@ async function loadProfile() {
             
             // Atualizar avatar
             if (user.avatar) {
-                document.getElementById('avatarPreview').src = user.avatar;
+                const avatarUrl = user.avatar.startsWith('/uploads/') ? 
+                    window.location.origin + user.avatar : user.avatar;
+                document.getElementById('avatarPreview').src = avatarUrl;
             }
             
             // Atualizar localStorage
@@ -105,7 +115,15 @@ async function handleAvatarUpload(e) {
             showAlert(data.message, 'success');
             
             // Atualizar avatar preview
-            document.getElementById('avatarPreview').src = data.avatar;
+            const avatarUrl = data.avatar.startsWith('/uploads/') ? 
+                window.location.origin + data.avatar : data.avatar;
+            document.getElementById('avatarPreview').src = avatarUrl;
+            
+            // Atualizar avatar na navbar
+            const userAvatarElement = document.getElementById('userAvatar');
+            if (userAvatarElement) {
+                userAvatarElement.src = avatarUrl;
+            }
             
             // Atualizar localStorage
             localStorage.setItem('user', JSON.stringify(data.user));
@@ -147,6 +165,12 @@ async function handleProfileUpdate(e) {
             const data = await response.json();
             showAlert(data.message, 'success');
             
+            // Atualizar nome na navbar
+            const userNameElement = document.getElementById('userName');
+            if (userNameElement) {
+                userNameElement.textContent = data.user.name;
+            }
+            
             // Atualizar localStorage
             localStorage.setItem('user', JSON.stringify(data.user));
             
@@ -159,24 +183,39 @@ async function handleProfileUpdate(e) {
     }
 }
 
+// ✅ SISTEMA DE ALERTAS FIXOS - ATUALIZADO
 function showAlert(message, type) {
-    const existingAlerts = document.querySelectorAll('.alert');
+    // Remover alertas existentes
+    const existingAlerts = document.querySelectorAll('.alert-fixed');
     existingAlerts.forEach(alert => alert.remove());
     
     const alertDiv = document.createElement('div');
-    alertDiv.className = `alert alert-${type} alert-dismissible fade show`;
+    alertDiv.className = `alert alert-${type} alert-dismissible fade show alert-fixed`;
     alertDiv.role = 'alert';
     alertDiv.innerHTML = `
-        ${message}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        <div class="d-flex align-items-center">
+            <i class="fas ${getAlertIcon(type)} me-2"></i>
+            <div class="flex-grow-1">${message}</div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
     `;
     
-    const container = document.querySelector('.container');
-    container.insertBefore(alertDiv, container.firstChild);
+    document.body.appendChild(alertDiv);
     
+    // Auto-close after 5 seconds
     setTimeout(() => {
         if (alertDiv.parentNode) {
             alertDiv.remove();
         }
     }, 5000);
+}
+
+function getAlertIcon(type) {
+    switch(type) {
+        case 'success': return 'fa-check-circle';
+        case 'danger': return 'fa-exclamation-circle';
+        case 'warning': return 'fa-exclamation-triangle';
+        case 'info': return 'fa-info-circle';
+        default: return 'fa-bell';
+    }
 }

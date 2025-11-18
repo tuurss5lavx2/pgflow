@@ -654,6 +654,38 @@
             }
         }
 
+        /* Alert System Fix - POSIÇÃO FIXA */
+.alert-fixed {
+    position: fixed;
+    top: 100px;
+    right: 20px;
+    z-index: 9999;
+    min-width: 300px;
+    max-width: 500px;
+    animation: slideInRight 0.3s ease-out;
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Responsive alerts */
+@media (max-width: 768px) {
+    .alert-fixed {
+        top: 80px;
+        right: 10px;
+        left: 10px;
+        min-width: auto;
+    }
+}
+
         /* Garantir que o dropdown fique acima de tudo */
         .navbar-clean {
             z-index: 1030;
