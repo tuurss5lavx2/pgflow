@@ -51,17 +51,23 @@
         }
 
         .logo-icon {
-            font-size: 1.8rem;
+            width: 40px;
+            height: 40px;
             background: var(--gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            font-weight: bold;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             transition: var(--transition);
         }
 
         .logo-icon:hover {
-            transform: scale(1.1);
+            transform: scale(1.05);
+        }
+
+        .logo-icon i {
+            font-size: 1.2rem;
+            color: white;
         }
 
         .logo-text {
@@ -339,37 +345,15 @@
             }
         }
 
-        /* Toast Notifications */
-        .toast-container {
+        /* Alert System Fix - POSIÇÃO FIXA */
+        .alert-fixed {
             position: fixed;
             top: 100px;
             right: 20px;
             z-index: 9999;
-        }
-
-        .custom-toast {
-            border: none;
-            border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-xl);
-            background: white;
-            border-left: 4px solid var(--primary);
+            min-width: 300px;
+            max-width: 500px;
             animation: slideInRight 0.3s ease-out;
-        }
-
-        .custom-toast.success {
-            border-left-color: #10b981;
-        }
-
-        .custom-toast.danger {
-            border-left-color: #ef4444;
-        }
-
-        .custom-toast.warning {
-            border-left-color: #f59e0b;
-        }
-
-        .custom-toast.info {
-            border-left-color: #3b82f6;
         }
 
         @keyframes slideInRight {
@@ -381,21 +365,6 @@
                 transform: translateX(0);
                 opacity: 1;
             }
-        }
-
-        @keyframes slideOutRight {
-            from {
-                transform: translateX(0);
-                opacity: 1;
-            }
-            to {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-        }
-
-        .toast-hide {
-            animation: slideOutRight 0.3s ease-in forwards;
         }
 
         /* RESPONSIVIDADE MELHORADA */
@@ -461,10 +430,11 @@
                 height: 120px;
             }
             
-            .toast-container {
+            .alert-fixed {
                 top: 80px;
                 right: 10px;
                 left: 10px;
+                min-width: auto;
             }
         }
 
@@ -494,7 +464,12 @@
             }
             
             .logo-icon {
-                font-size: 1.5rem;
+                width: 35px;
+                height: 35px;
+            }
+            
+            .logo-icon i {
+                font-size: 1rem;
             }
             
             .logo-main {
@@ -577,16 +552,15 @@
     </style>
 </head>
 <body>
-    <!-- Toast Container -->
-    <div class="toast-container"></div>
-
     <!-- Navbar Nova e Melhorada -->
     <nav class="navbar navbar-expand-lg navbar-clean">
         <div class="container">
             <!-- Logo -->
             <a class="navbar-brand logo-clean" href="/">
                 <div class="logo-content">
-                    <div class="logo-icon">⚡</div>
+                    <div class="logo-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
                     <div class="logo-text">
                         <span class="logo-main">PGFlow</span>
                         <span class="logo-subtitle">Perfil</span>
@@ -691,12 +665,6 @@
         </div>
     </div>
 
-    <!-- Audio para notificações -->
-    <audio id="notificationSound" preload="auto">
-        <source src="/sounds/notification.mp3" type="audio/mpeg">
-        <source src="/sounds/notification.wav" type="audio/wav">
-    </audio>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         // Script para garantir que o dropdown funcione corretamente
@@ -718,66 +686,6 @@
                 });
             });
         });
-
-        // Sistema de Notificações Toast com Som
-        function showToast(message, type = 'success') {
-            const toastContainer = document.querySelector('.toast-container');
-            const toastId = 'toast-' + Date.now();
-            
-            const toastHTML = `
-                <div id="${toastId}" class="custom-toast ${type} mb-3">
-                    <div class="toast-body p-3">
-                        <div class="d-flex align-items-center">
-                            <i class="fas ${getToastIcon(type)} me-3 text-${type}"></i>
-                            <div class="flex-grow-1">
-                                <div class="fw-semibold">${message}</div>
-                            </div>
-                            <button type="button" class="btn-close ms-3" onclick="closeToast('${toastId}')"></button>
-                        </div>
-                    </div>
-                </div>
-            `;
-            
-            toastContainer.insertAdjacentHTML('beforeend', toastHTML);
-            
-            // Tocar som de notificação
-            playNotificationSound();
-            
-            // Auto-remove após 3 segundos
-            setTimeout(() => {
-                closeToast(toastId);
-            }, 3000);
-        }
-
-        function closeToast(toastId) {
-            const toast = document.getElementById(toastId);
-            if (toast) {
-                toast.classList.add('toast-hide');
-                setTimeout(() => {
-                    if (toast.parentNode) {
-                        toast.remove();
-                    }
-                }, 300);
-            }
-        }
-
-        function getToastIcon(type) {
-            switch(type) {
-                case 'success': return 'fa-check-circle';
-                case 'danger': return 'fa-exclamation-circle';
-                case 'warning': return 'fa-exclamation-triangle';
-                case 'info': return 'fa-info-circle';
-                default: return 'fa-bell';
-            }
-        }
-
-        function playNotificationSound() {
-            const audio = document.getElementById('notificationSound');
-            if (audio) {
-                audio.currentTime = 0;
-                audio.play().catch(e => console.log('Audio play failed:', e));
-            }
-        }
     </script>
     <script src="/js/profile.js"></script>
 </body>

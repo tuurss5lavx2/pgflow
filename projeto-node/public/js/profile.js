@@ -16,9 +16,8 @@ document.addEventListener('DOMContentLoaded', function() {
             userNameElement.textContent = user.name;
         }
         if (userAvatarElement && user.avatar) {
-            const avatarUrl = user.avatar.startsWith('/uploads/') ? 
+            userAvatarElement.src = user.avatar.startsWith('/uploads/') ? 
                 window.location.origin + user.avatar : user.avatar;
-            userAvatarElement.src = avatarUrl;
         }
     }
 
@@ -74,10 +73,10 @@ async function loadProfile() {
         } else if (response.status === 401) {
             window.location.href = '/login';
         } else {
-            showToast('Erro ao carregar perfil', 'danger');
+            showAlert('Erro ao carregar perfil', 'danger');
         }
     } catch (error) {
-        showToast('Erro ao carregar perfil', 'danger');
+        showAlert('Erro ao carregar perfil', 'danger');
     }
 }
 
@@ -88,7 +87,7 @@ async function handleAvatarUpload(e) {
     const file = fileInput.files[0];
     
     if (!file) {
-        showToast('Selecione uma imagem para upload', 'warning');
+        showAlert('Selecione uma imagem para upload', 'warning');
         return;
     }
 
@@ -113,7 +112,7 @@ async function handleAvatarUpload(e) {
 
         if (response.ok) {
             const data = await response.json();
-            showToast(data.message, 'success');
+            showAlert(data.message, 'success');
             
             // Atualizar avatar preview
             const avatarUrl = data.avatar.startsWith('/uploads/') ? 
@@ -134,10 +133,10 @@ async function handleAvatarUpload(e) {
             
         } else {
             const data = await response.json();
-            showToast(data.message || 'Erro ao fazer upload', 'danger');
+            showAlert(data.message || 'Erro ao fazer upload', 'danger');
         }
     } catch (error) {
-        showToast('Erro de conexão ao fazer upload', 'danger');
+        showAlert('Erro de conexão ao fazer upload', 'danger');
     } finally {
         const uploadBtn = document.getElementById('uploadBtn');
         uploadBtn.innerHTML = '<i class="fas fa-upload me-2"></i>Upload Avatar';
@@ -164,7 +163,7 @@ async function handleProfileUpdate(e) {
 
         if (response.ok) {
             const data = await response.json();
-            showToast(data.message, 'success');
+            showAlert(data.message, 'success');
             
             // Atualizar nome na navbar
             const userNameElement = document.getElementById('userName');
@@ -177,83 +176,46 @@ async function handleProfileUpdate(e) {
             
         } else {
             const data = await response.json();
-            showToast(data.message || 'Erro ao atualizar perfil', 'danger');
+            showAlert(data.message || 'Erro ao atualizar perfil', 'danger');
         }
     } catch (error) {
-        showToast('Erro ao atualizar perfil', 'danger');
+        showAlert('Erro ao atualizar perfil', 'danger');
     }
 }
 
-// ✅ SISTEMA DE NOTIFICAÇÕES TOAST
-function showToast(message, type = 'success') {
-    // Usar a função global se existir
-    if (typeof window.showToast === 'function') {
-        window.showToast(message, type);
-        return;
-    }
+// ✅ SISTEMA DE ALERTAS FIXOS - ATUALIZADO
+function showAlert(message, type) {
+    // Remover alertas existentes
+    const existingAlerts = document.querySelectorAll('.alert-fixed');
+    existingAlerts.forEach(alert => alert.remove());
     
-    // Fallback local
-    const toastContainer = document.querySelector('.toast-container') || createToastContainer();
-    const toastId = 'toast-' + Date.now();
-    
-    const toastHTML = `
-        <div id="${toastId}" class="custom-toast ${type} mb-3">
-            <div class="toast-body p-3">
-                <div class="d-flex align-items-center">
-                    <i class="fas ${getToastIcon(type)} me-3 text-${type}"></i>
-                    <div class="flex-grow-1">
-                        <div class="fw-semibold">${message}</div>
-                    </div>
-                    <button type="button" class="btn-close ms-3" onclick="closeToast('${toastId}')"></button>
-                </div>
-            </div>
+    const alertDiv = document.createElement('div');
+    alertDiv.className = `alert alert-${type} alert-dismissible fade show alert-fixed`;
+    alertDiv.role = 'alert';
+    alertDiv.innerHTML = `
+        <div class="d-flex align-items-center">
+            <i class="fas ${getAlertIcon(type)} me-2"></i>
+            <div class="flex-grow-1">${message}</div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     `;
     
-    toastContainer.insertAdjacentHTML('beforeend', toastHTML);
+    document.body.appendChild(alertDiv);
     
-    // Tocar som de notificação
-    playNotificationSound();
-    
-    // Auto-remove após 3 segundos
+    // Auto-close after 5 seconds
     setTimeout(() => {
-        closeToast(toastId);
-    }, 3000);
+        if (alertDiv.parentNode) {
+            alertDiv.remove();
+        }
+    }, 5000);
 }
 
-function createToastContainer() {
-    const container = document.createElement('div');
-    container.className = 'toast-container';
-    document.body.appendChild(container);
-    return container;
-}
-
-function closeToast(toastId) {
-    const toast = document.getElementById(toastId);
-    if (toast) {
-        toast.classList.add('toast-hide');
-        setTimeout(() => {
-            if (toast.parentNode) {
-                toast.remove();
-            }
-        }, 300);
-    }
-}
-
-function getToastIcon(type) {
+function getAlertIcon(type) {
     switch(type) {
         case 'success': return 'fa-check-circle';
         case 'danger': return 'fa-exclamation-circle';
         case 'warning': return 'fa-exclamation-triangle';
         case 'info': return 'fa-info-circle';
         default: return 'fa-bell';
-    }
-}
-
-function playNotificationSound() {
-    const audio = document.getElementById('notificationSound');
-    if (audio) {
-        audio.currentTime = 0;
-        audio.play().catch(e => console.log('Audio play failed:', e));
     }
 }

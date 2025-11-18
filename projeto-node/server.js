@@ -36,7 +36,6 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 app.use('/api/auth', authRoutes);
-app.use('/sounds', express.static(path.join(__dirname, 'public', 'sounds')));
 
 if (process.env.NODE_ENV !== 'production') {
   app.use('/api/posts', (req, res, next) => {
