@@ -819,24 +819,31 @@
 
     <!-- Audio para notificações -->
     <audio id="notificationSound" preload="auto">
-        <source src="/sounds/notificacao-dragon.mp3" type="audio/mpeg">
+        <source src="/sounds/notification.mp3" type="audio/mpeg">
+        <source src="/sounds/notification.wav" type="audio/wav">
     </audio>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Verificar se o áudio está carregado
-        function checkAudioLoad() {
-            const audio = document.getElementById('notificationSound');
-            if (audio) {
-                audio.addEventListener('error', function(e) {
-                    console.log('Erro ao carregar áudio:', e);
-                });
-                
-                audio.addEventListener('canplaythrough', function() {
-                    console.log('Áudio carregado e pronto para reprodução');
+        // Script para garantir que o dropdown funcione corretamente
+        document.addEventListener('DOMContentLoaded', function() {
+            // Logout button
+            const logoutBtn = document.getElementById('logoutBtn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', function() {
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('user');
+                    window.location.href = '/';
                 });
             }
-        }
+
+            // Prevenir que o dropdown feche quando clicar dentro dele
+            document.querySelectorAll('.clean-dropdown').forEach(function(dropdown) {
+                dropdown.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                });
+            });
+        });
 
         // Sistema de Notificações Toast com Som
         function showToast(message, type = 'success') {
@@ -868,34 +875,6 @@
             }, 3000);
         }
 
-        function playNotificationSound() {
-            const audio = document.getElementById('notificationSound');
-            if (audio) {
-                console.log('Tentando reproduzir áudio...');
-                audio.currentTime = 0;
-                
-                const playPromise = audio.play();
-                
-                if (playPromise !== undefined) {
-                    playPromise.catch(error => {
-                        console.log('Erro ao reproduzir áudio:', error);
-                        
-                        // Tentar fallback com Audio API
-                        try {
-                            const fallbackAudio = new Audio('/sounds/notificacao-dragon.mp3');
-                            fallbackAudio.play().catch(e => {
-                                console.log('Fallback audio também falhou:', e);
-                            });
-                        } catch (fallbackError) {
-                            console.log('Erro no fallback:', fallbackError);
-                        }
-                    });
-                }
-            } else {
-                console.log('Elemento de áudio não encontrado no DOM');
-            }
-        }
-
         function closeToast(toastId) {
             const toast = document.getElementById(toastId);
             if (toast) {
@@ -918,41 +897,13 @@
             }
         }
 
-        // Script para garantir que o dropdown funcione corretamente
-        document.addEventListener('DOMContentLoaded', function() {
-            // Logout button
-            const logoutBtn = document.getElementById('logoutBtn');
-            if (logoutBtn) {
-                logoutBtn.addEventListener('click', function() {
-                    localStorage.removeItem('token');
-                    localStorage.removeItem('user');
-                    window.location.href = '/';
-                });
+        function playNotificationSound() {
+            const audio = document.getElementById('notificationSound');
+            if (audio) {
+                audio.currentTime = 0;
+                audio.play().catch(e => console.log('Audio play failed:', e));
             }
-
-            // Prevenir que o dropdown feche quando clicar dentro dele
-            document.querySelectorAll('.clean-dropdown').forEach(function(dropdown) {
-                dropdown.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                });
-            });
-
-            // Inicializar verificação de áudio
-            checkAudioLoad();
-        });
-
-        // Testar se o arquivo de áudio está acessível
-        fetch('/sounds/notificacao-dragon.mp3')
-            .then(response => {
-                if (response.ok) {
-                    console.log('✅ Arquivo de áudio encontrado e acessível');
-                } else {
-                    console.log('❌ Arquivo de áudio não encontrado');
-                }
-            })
-            .catch(error => {
-                console.log('❌ Erro ao acessar arquivo de áudio:', error);
-            });
+        }
     </script>
     <script src="/js/posts.js"></script>
 </body>
