@@ -959,3 +959,77 @@ body {
         margin-right: 1rem !important;
     }
 }
+
+/* Adicione estas regras ao seu style.css */
+
+/* Quick Stats atualizado */
+.quick-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.quick-stats .stat {
+    background: white;
+    border-radius: var(--radius-lg);
+    padding: 1.5rem 1rem;
+    text-align: center;
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+    border: 1px solid #f1f5f9;
+}
+
+.quick-stats .stat:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lg);
+}
+
+.quick-stats .stat-icon {
+    width: 40px;
+    height: 40px;
+    background: var(--gradient-light);
+    border-radius: var(--radius);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 0.75rem;
+}
+
+.quick-stats .stat-icon i {
+    font-size: 1rem;
+    color: white;
+}
+
+.quick-stats .stat-number {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--dark);
+    margin-bottom: 0.25rem;
+}
+
+.quick-stats .stat-label {
+    font-size: 0.75rem;
+    color: var(--gray);
+    font-weight: 500;
+}
+
+/* Responsive para Quick Stats */
+@media (max-width: 768px) {
+    .quick-stats {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+    
+    .quick-stats .stat {
+        padding: 1.25rem 0.75rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .quick-stats {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+    }
+}
