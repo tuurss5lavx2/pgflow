@@ -1977,3 +1977,35 @@ body {
     font-weight: 600;
     margin-left: 0.25rem;
 }
+
+/* ============================================= */
+/* CORREÇÃO GARANTIDA DAS CORES BRANCAS */
+/* ============================================= */
+
+/* ✅ GARANTINDO que o texto seja BRANCO */
+.navbar-dashboard .brand-name,
+.navbar-dashboard .brand-subtitle {
+    color: #ffffff !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* ✅ Garantindo user info branco */
+.navbar-dashboard .user-name,
+.navbar-dashboard .user-status {
+    color: #ffffff !important;
+}
+
+/* ✅ Garantindo ícones brancos */
+.navbar-dashboard .brand-icon i {
+    color: #ffffff !important;
+}
+
+/* ✅ Dropdown item danger */
+.dropdown-menu-dashboard .dropdown-item.text-danger {
+    color: #dc3545 !important;
+}
+
+.dropdown-menu-dashboard .dropdown-item.text-danger:hover {
+    color: #ffffff !important;
+    background: #dc3545;
+}
