@@ -6,34 +6,35 @@ document.addEventListener('DOMContentLoaded', function() {
         return;
     }
 
-    // Carregar dados do usuário na navbar
-    const user = JSON.parse(localStorage.getItem('user'));
-    if (user) {
-        const userNameElement = document.getElementById('userName');
-        const userAvatarElement = document.getElementById('userAvatar');
-        
-        if (userNameElement) {
-            userNameElement.textContent = user.name;
-        }
-        if (userAvatarElement && user.avatar) {
-            userAvatarElement.src = user.avatar.startsWith('/uploads/') ? 
-                window.location.origin + user.avatar : user.avatar;
-        }
+    // ✅ VERIFICA SE OS ELEMENTOS EXISTEM ANTES DE USAR
+    const avatarForm = document.getElementById('avatarForm');
+    const profileForm = document.getElementById('profileForm');
+    const avatarInput = document.getElementById('avatarInput');
+    
+    if (!avatarForm || !profileForm || !avatarInput) {
+        console.error('Elementos do formulário não encontrados!');
+        return;
     }
 
+    // Carregar dados do usuário
+    loadUserData();
+
     // Formulário de avatar
-    document.getElementById('avatarForm').addEventListener('submit', handleAvatarUpload);
+    avatarForm.addEventListener('submit', handleAvatarUpload);
     
     // Formulário de perfil
-    document.getElementById('profileForm').addEventListener('submit', handleProfileUpdate);
+    profileForm.addEventListener('submit', handleProfileUpdate);
 
     // Preview da imagem selecionada
-    document.getElementById('avatarInput').addEventListener('change', function(e) {
+    avatarInput.addEventListener('change', function(e) {
         const file = e.target.files[0];
         if (file) {
             const reader = new FileReader();
             reader.onload = function(e) {
-                document.getElementById('avatarPreview').src = e.target.result;
+                const avatarPreview = document.getElementById('avatarPreview');
+                if (avatarPreview) {
+                    avatarPreview.src = e.target.result;
+                }
             }
             reader.readAsDataURL(file);
         }
@@ -42,6 +43,22 @@ document.addEventListener('DOMContentLoaded', function() {
     // Carregar dados do perfil
     loadProfile();
 });
+
+function loadUserData() {
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    
+    // ✅ VERIFICA SE OS ELEMENTOS EXISTEM
+    const userNameElement = document.getElementById('userName');
+    const userAvatarElement = document.getElementById('userAvatar');
+    
+    if (userNameElement && user.name) {
+        userNameElement.textContent = user.name;
+    }
+    if (userAvatarElement && user.avatar) {
+        userAvatarElement.src = user.avatar.startsWith('/uploads/') ? 
+            window.location.origin + user.avatar : user.avatar;
+    }
+}
 
 async function loadProfile() {
     try {
@@ -56,15 +73,18 @@ async function loadProfile() {
             const data = await response.json();
             const user = data.user;
             
-            // Preencher formulário
-            document.getElementById('name').value = user.name;
-            document.getElementById('email').value = user.email;
+            // ✅ VERIFICA SE OS ELEMENTOS EXISTEM
+            const nameInput = document.getElementById('name');
+            const emailInput = document.getElementById('email');
+            const avatarPreview = document.getElementById('avatarPreview');
             
-            // Atualizar avatar
-            if (user.avatar) {
+            if (nameInput) nameInput.value = user.name || '';
+            if (emailInput) emailInput.value = user.email || '';
+            
+            if (avatarPreview && user.avatar) {
                 const avatarUrl = user.avatar.startsWith('/uploads/') ? 
                     window.location.origin + user.avatar : user.avatar;
-                document.getElementById('avatarPreview').src = avatarUrl;
+                avatarPreview.src = avatarUrl;
             }
             
             // Atualizar localStorage
@@ -84,10 +104,30 @@ async function handleAvatarUpload(e) {
     e.preventDefault();
     
     const fileInput = document.getElementById('avatarInput');
+    const uploadBtn = e.target.querySelector('button[type="submit"]'); // ✅ CORREÇÃO AQUI!
+    
+    // ✅ VERIFICA SE OS ELEMENTOS EXISTEM
+    if (!fileInput || !uploadBtn) {
+        showAlert('Elementos do formulário não encontrados', 'danger');
+        return;
+    }
+
     const file = fileInput.files[0];
     
     if (!file) {
         showAlert('Selecione uma imagem para upload', 'warning');
+        return;
+    }
+
+    // ✅ VALIDAÇÕES DE ARQUIVO
+    if (file.size > 5 * 1024 * 1024) {
+        showAlert('A imagem deve ter no máximo 5MB', 'warning');
+        return;
+    }
+
+    const validTypes = ['image/jpeg', 'image/png', 'image/gif'];
+    if (!validTypes.includes(file.type)) {
+        showAlert('Formato inválido. Use JPG, PNG ou GIF', 'warning');
         return;
     }
 
@@ -96,9 +136,9 @@ async function handleAvatarUpload(e) {
 
     try {
         const token = localStorage.getItem('token');
-        const uploadBtn = document.getElementById('uploadBtn');
         const originalText = uploadBtn.innerHTML;
         
+        // ✅ USA O BOTÃO DO FORMULÁRIO CORRETAMENTE
         uploadBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Enviando...';
         uploadBtn.disabled = true;
 
@@ -114,15 +154,19 @@ async function handleAvatarUpload(e) {
             const data = await response.json();
             showAlert(data.message, 'success');
             
-            // Atualizar avatar preview
-            const avatarUrl = data.avatar.startsWith('/uploads/') ? 
-                window.location.origin + data.avatar : data.avatar;
-            document.getElementById('avatarPreview').src = avatarUrl;
+            // ✅ ATUALIZA AVATAR PREVIEW
+            const avatarPreview = document.getElementById('avatarPreview');
+            if (avatarPreview && data.avatar) {
+                const avatarUrl = data.avatar.startsWith('/uploads/') ? 
+                    window.location.origin + data.avatar : data.avatar;
+                avatarPreview.src = avatarUrl;
+            }
             
-            // Atualizar avatar na navbar
+            // ✅ ATUALIZA AVATAR NA NAVBAR
             const userAvatarElement = document.getElementById('userAvatar');
-            if (userAvatarElement) {
-                userAvatarElement.src = avatarUrl;
+            if (userAvatarElement && data.avatar) {
+                userAvatarElement.src = data.avatar.startsWith('/uploads/') ? 
+                    window.location.origin + data.avatar : data.avatar;
             }
             
             // Atualizar localStorage
@@ -136,9 +180,10 @@ async function handleAvatarUpload(e) {
             showAlert(data.message || 'Erro ao fazer upload', 'danger');
         }
     } catch (error) {
+        console.error('Erro no upload:', error);
         showAlert('Erro de conexão ao fazer upload', 'danger');
     } finally {
-        const uploadBtn = document.getElementById('uploadBtn');
+        // ✅ RESTAURA O BOTÃO CORRETAMENTE
         uploadBtn.innerHTML = '<i class="fas fa-upload me-2"></i>Upload Avatar';
         uploadBtn.disabled = false;
     }
@@ -149,9 +194,16 @@ async function handleProfileUpdate(e) {
     
     const name = document.getElementById('name').value;
     const email = document.getElementById('email').value;
+    const submitBtn = e.target.querySelector('button[type="submit"]'); // ✅ CORREÇÃO AQUI!
     
     try {
         const token = localStorage.getItem('token');
+        const originalText = submitBtn.innerHTML;
+        
+        // ✅ MOSTRA LOADING NO BOTÃO CORRETO
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Salvando...';
+        submitBtn.disabled = true;
+
         const response = await fetch('/api/auth/profile', {
             method: 'PUT',
             headers: {
@@ -165,7 +217,7 @@ async function handleProfileUpdate(e) {
             const data = await response.json();
             showAlert(data.message, 'success');
             
-            // Atualizar nome na navbar
+            // ✅ ATUALIZA NOME NA NAVBAR
             const userNameElement = document.getElementById('userName');
             if (userNameElement) {
                 userNameElement.textContent = data.user.name;
@@ -179,13 +231,17 @@ async function handleProfileUpdate(e) {
             showAlert(data.message || 'Erro ao atualizar perfil', 'danger');
         }
     } catch (error) {
+        console.error('Erro:', error);
         showAlert('Erro ao atualizar perfil', 'danger');
+    } finally {
+        // ✅ RESTAURA O BOTÃO CORRETAMENTE
+        submitBtn.innerHTML = '<i class="fas fa-save me-2"></i>Salvar Alterações';
+        submitBtn.disabled = false;
     }
 }
 
-// ✅ SISTEMA DE ALERTAS FIXOS - ATUALIZADO (APENAS UMA FUNÇÃO!)
+// ✅ SISTEMA DE ALERTAS (MANTIDO)
 function showAlert(message, type) {
-    // Remover alertas existentes
     const existingAlerts = document.querySelectorAll('.alert-fixed');
     existingAlerts.forEach(alert => alert.remove());
     
@@ -202,12 +258,10 @@ function showAlert(message, type) {
     
     document.body.appendChild(alertDiv);
     
-    // ✅ TOCA SOM APENAS PARA ALERTAS DE SUCESSO
     if (type === 'success') {
         playNotificationSound();
     }
     
-    // Auto-close after 5 seconds
     setTimeout(() => {
         if (alertDiv.parentNode) {
             alertDiv.remove();
@@ -228,8 +282,6 @@ function getAlertIcon(type) {
 function playNotificationSound() {
     try {
         const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        
-        // Múltiplos osciladores para som cristalino
         const osc1 = audioContext.createOscillator();
         const osc2 = audioContext.createOscillator();
         const gainNode = audioContext.createGain();
@@ -239,10 +291,10 @@ function playNotificationSound() {
         gainNode.connect(audioContext.destination);
         
         osc1.type = 'sine';
-        osc1.frequency.setValueAtTime(1046.50, audioContext.currentTime); // C6
+        osc1.frequency.setValueAtTime(1046.50, audioContext.currentTime);
         
         osc2.type = 'sine';
-        osc2.frequency.setValueAtTime(1567.98, audioContext.currentTime); // G6
+        osc2.frequency.setValueAtTime(1567.98, audioContext.currentTime);
         
         gainNode.gain.setValueAtTime(0.07, audioContext.currentTime);
         gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.4);
