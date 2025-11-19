@@ -17,60 +17,81 @@
             --gradient-dark: linear-gradient(135deg, #0f766e 0%, var(--primary-dark) 100%);
         }
 
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             background: var(--gradient-dark);
             font-family: 'Poppins', sans-serif;
             min-height: 100vh;
-            margin: 0;
-            padding: 0;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .navbar {
+            padding: 1rem 0;
+            background: transparent !important;
         }
 
         .navbar-brand {
             color: white !important;
             font-weight: 700;
             font-size: 1.5rem;
+            padding: 0.5rem 0;
         }
 
         .auth-container {
-            min-height: 100vh;
+            flex: 1;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 2rem;
+            padding: 1rem;
+            min-height: calc(100vh - 80px);
         }
 
         .auth-card {
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(20px);
-            border-radius: 15px;
+            border-radius: 20px;
             border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            max-width: 400px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+            max-width: 420px;
             width: 100%;
+            margin: 0 auto;
         }
 
         .card-header {
             background: rgba(255, 255, 255, 0.15);
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 2rem;
+            padding: 2.5rem 2rem;
             text-align: center;
+            border-radius: 20px 20px 0 0 !important;
         }
 
         .card-header h3 {
             margin: 0;
             color: white;
             font-weight: 600;
+            font-size: 1.8rem;
         }
 
         .card-body {
-            padding: 2rem;
+            padding: 2.5rem;
         }
 
         .form-control {
             background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
             color: white;
-            padding: 0.75rem 1rem;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+            height: 55px;
         }
 
         .form-control::placeholder {
@@ -79,25 +100,89 @@
 
         .form-control:focus {
             background: rgba(255, 255, 255, 0.15);
-            border-color: rgba(255, 255, 255, 0.4);
+            border-color: rgba(255, 255, 255, 0.5);
             color: white;
-            box-shadow: none;
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
+            outline: none;
         }
 
         .btn-primary {
             background: var(--gradient);
             border: none;
-            padding: 0.75rem 2rem;
+            padding: 1rem 2rem;
             width: 100%;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            height: 55px;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
         }
 
         .auth-link {
             color: rgba(255, 255, 255, 0.9);
             text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
         }
 
         .auth-link:hover {
             color: white;
+            text-decoration: underline;
+        }
+
+        /* Responsividade */
+        @media (max-width: 576px) {
+            .auth-container {
+                padding: 0.5rem;
+            }
+            
+            .auth-card {
+                max-width: 100%;
+                margin: 0 1rem;
+            }
+            
+            .card-header {
+                padding: 2rem 1.5rem;
+            }
+            
+            .card-body {
+                padding: 2rem 1.5rem;
+            }
+            
+            .card-header h3 {
+                font-size: 1.5rem;
+            }
+            
+            .form-control {
+                padding: 0.875rem 1.25rem;
+                height: 50px;
+            }
+            
+            .btn-primary {
+                padding: 0.875rem 1.5rem;
+                height: 50px;
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-height: 700px) {
+            .auth-container {
+                padding: 0.5rem;
+            }
+            
+            .card-header {
+                padding: 1.5rem 2rem;
+            }
+            
+            .card-body {
+                padding: 1.5rem 2rem;
+            }
         }
     </style>
 </head>
@@ -117,13 +202,9 @@
             </div>
             <div class="card-body">
                 <form id="loginForm">
-                    <div class="mb-3">
-                        <input type="email" class="form-control" id="email" placeholder="Email" required>
-                    </div>
-                    <div class="mb-3">
-                        <input type="password" class="form-control" id="password" placeholder="Senha" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary mb-3">
+                    <input type="email" class="form-control" id="email" placeholder="Email" required>
+                    <input type="password" class="form-control" id="password" placeholder="Senha" required>
+                    <button type="submit" class="btn btn-primary">
                         Entrar
                     </button>
                     <div class="text-center">
