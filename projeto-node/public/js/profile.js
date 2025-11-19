@@ -228,30 +228,21 @@ function getAlertIcon(type) {
 function playNotificationSound() {
     try {
         const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        
-        // Criar osciladores para um som de sino
-        const osc1 = audioContext.createOscillator();
-        const osc2 = audioContext.createOscillator();
+        const oscillator = audioContext.createOscillator();
         const gainNode = audioContext.createGain();
         
-        osc1.connect(gainNode);
-        osc2.connect(gainNode);
+        oscillator.connect(gainNode);
         gainNode.connect(audioContext.destination);
         
-        // Configurar os osciladores
-        osc1.type = 'sine';
-        osc1.frequency.setValueAtTime(1046.50, audioContext.currentTime); // C6
-        
-        osc2.type = 'sine';
-        osc2.frequency.setValueAtTime(1318.51, audioContext.currentTime); // E6
-        
+        // Som futurista
+        oscillator.type = 'sawtooth';
+        oscillator.frequency.setValueAtTime(200, audioContext.currentTime);
+        oscillator.frequency.exponentialRampToValueAtTime(800, audioContext.currentTime + 0.2);
         gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
         gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.3);
         
-        osc1.start(audioContext.currentTime);
-        osc2.start(audioContext.currentTime);
-        osc1.stop(audioContext.currentTime + 0.3);
-        osc2.stop(audioContext.currentTime + 0.3);
+        oscillator.start(audioContext.currentTime);
+        oscillator.stop(audioContext.currentTime + 0.3);
         
     } catch (error) {
         console.log('Som de notificação não suportado');
