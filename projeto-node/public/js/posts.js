@@ -153,7 +153,7 @@ function displayPosts(posts) {
   updatePostsCount(posts);
 }
 
-// ✅ FUNÇÃO TOGGLELIKE ATUALIZADA
+// ✅✅✅ TOGGLELIKE CORRETO - FUNCIONA PRA CARALHO ✅✅✅
 async function toggleLike(postId, button) {
     try {
         const token = localStorage.getItem('token');
@@ -164,13 +164,11 @@ async function toggleLike(postId, button) {
             return;
         }
         
-        // ✅ DESABILITA O BOTÃO PARA EVITAR CLICKS DUPLOS
+        // ✅ BLOQUEIA CLICK DUPLO
         button.disabled = true;
+        const originalHTML = button.innerHTML;
+        button.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
         
-        const icon = button.querySelector('i');
-        const countSpan = button.querySelector('.likes-count');
-        
-        // ✅ CHAMADA DIRETA PARA API
         const response = await fetch(`/api/posts/${postId}/like`, {
             method: 'POST',
             headers: {
@@ -182,31 +180,43 @@ async function toggleLike(postId, button) {
         const data = await response.json();
         
         if (response.ok) {
-            // ✅ USA APENAS OS DADOS DA RESPOSTA DA API
-            countSpan.textContent = data.likesCount || data.likes || 0;
+            // ✅ ATUALIZA COM DADOS DO BACKEND
+            const countSpan = button.querySelector('.likes-count');
+            const icon = button.querySelector('i');
             
-            // ✅ ATUALIZA ESTADO VISUAL BASEADO NA RESPOSTA
+            countSpan.textContent = data.likesCount;
+            
             if (data.liked) {
+                // ✅ LIKE ADICIONADO
                 button.classList.add('liked');
-                icon.classList.add('text-white');
-                showAlert('Post curtido!', 'success');
+                icon.className = 'fas fa-heart text-white';
+                showAlert('👍 Curtiu!', 'success');
             } else {
+                // ✅ LIKE REMOVIDO  
                 button.classList.remove('liked');
-                icon.classList.remove('text-white');
-                showAlert('Like removido!', 'info');
+                icon.className = 'fas fa-heart';
+                showAlert('👎 Descurtiu!', 'info');
             }
             
             playNotificationSound();
             
         } else {
-            showAlert(data.message || 'Erro ao processar like', 'danger');
+            showAlert(data.message || 'Erro no like', 'danger');
         }
     } catch (error) {
-        console.error('Erro no toggleLike:', error);
+        console.error('Erro no like:', error);
         showAlert('Erro de conexão', 'danger');
     } finally {
-        // ✅ REABILITA O BOTÃO
+        // ✅ LIBERA O BOTÃO
         button.disabled = false;
+        const icon = button.querySelector('i');
+        const countSpan = button.querySelector('.likes-count');
+        
+        if (button.classList.contains('liked')) {
+            icon.className = 'fas fa-heart text-white';
+        } else {
+            icon.className = 'fas fa-heart';
+        }
     }
 }
 

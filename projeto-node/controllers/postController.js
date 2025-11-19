@@ -152,78 +152,57 @@ const postController = {
     }
   },
 
-  // ✅✅✅ MÉTODO LIKE CORRIGIDO - PROBLEMA RESOLVIDO ✅✅✅
+  // ✅✅✅ MÉTODO LIKE CORRETO - TOGGLE FUNCIONANDO ✅✅✅
   like: async (req, res) => {
     try {
         const postId = req.params.id;
         const userId = req.user.id;
         
+        console.log('🔍 DEBUG LIKE:', { postId, userId });
+
         const post = await Post.findById(postId);
         if (!post) {
             return res.status(404).json({ message: 'Post não encontrado' });
         }
-        
-        // ✅ CORREÇÃO CRÍTICA: Comparação correta de IDs
-        const alreadyLiked = post.likes.some(likeId => 
+
+        // ✅ VERIFICAÇÃO CORRETA - CONVERTE TUDO PRA STRING
+        const userLikedIndex = post.likes.findIndex(likeId => 
             likeId.toString() === userId.toString()
         );
-        
-        console.log('DEBUG like:', { 
-            postId, 
-            userId, 
+
+        console.log('🔍 DEBUG LIKES ARRAY:', {
             currentLikes: post.likes.map(id => id.toString()),
-            alreadyLiked 
+            userLikedIndex,
+            userLiked: userLikedIndex !== -1
         });
 
-        if (alreadyLiked) {
-            // ✅ REMOVE like - CORREÇÃO: usa userId diretamente
-            post.likes = post.likes.filter(likeId => 
-                likeId.toString() !== userId.toString()
-            );
+        if (userLikedIndex !== -1) {
+            // ✅ REMOVE O LIKE - CLICA DE NOVO PRA REMOVER
+            post.likes.splice(userLikedIndex, 1);
             await post.save();
             
-            const updatedPost = await Post.findById(postId).populate('author', 'name avatar');
-            
+            console.log('✅ LIKE REMOVIDO - LIKES AGORA:', post.likes.length);
+
             return res.json({ 
-                message: 'Like removido com sucesso!',
-                likesCount: post.likes.length, // ✅ Nome consistente
-                liked: false,
-                post: {
-                    _id: updatedPost._id,
-                    title: updatedPost.title,
-                    content: updatedPost.content,
-                    author: updatedPost.author.name,
-                    authorAvatar: updatedPost.author.avatar,
-                    likes: updatedPost.likes,
-                    createdAt: updatedPost.createdAt,
-                    updatedAt: updatedPost.updatedAt
-                }
+                message: 'Like removido!',
+                likesCount: post.likes.length,
+                liked: false
             });
         } else {
-            // ✅ ADICIONA like - CORREÇÃO: usa userId diretamente
+            // ✅ ADICIONA O LIKE - PRIMEIRO CLIQUE
             post.likes.push(userId);
             await post.save();
             
-            const updatedPost = await Post.findById(postId).populate('author', 'name avatar');
-            
+            console.log('✅ LIKE ADICIONADO - LIKES AGORA:', post.likes.length);
+
             return res.json({ 
-                message: 'Post curtido com sucesso!',
-                likesCount: post.likes.length, // ✅ Nome consistente
-                liked: true,
-                post: {
-                    _id: updatedPost._id,
-                    title: updatedPost.title,
-                    content: updatedPost.content,
-                    author: updatedPost.author.name,
-                    authorAvatar: updatedPost.author.avatar,
-                    likes: updatedPost.likes,
-                    createdAt: updatedPost.createdAt,
-                    updatedAt: updatedPost.updatedAt
-                }
+                message: 'Post curtido!',
+                likesCount: post.likes.length,
+                liked: true
             });
         }
     } catch (error) {
-        console.error('Erro ao curtir post:', error);
+        console.error('❌ ERRO NO LIKE:', error);
         res.status(500).json({ message: 'Erro interno ao curtir post' });
     }
   },
