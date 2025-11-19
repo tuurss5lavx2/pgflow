@@ -1,0 +1,23 @@
+{
+  "version": 2,
+  "name": "pgflow-frontend",
+  "builds": [
+    {
+      "src": "**/*.html",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "public/**/*",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
+  ],
+  "env": {
+    "API_URL": "https://userflow-backend-0004.onrender.com"
+  }
+}

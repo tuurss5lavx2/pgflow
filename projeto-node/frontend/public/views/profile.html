@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Perfil - PGFlow</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90' fill='%2310b981'>⚡</text></svg>" type="image/svg+xml">
+    
+    <style>
+        /* Profile Styles */
+        :root {
+            --primary: #10b981;
+            --primary-dark: #059669;
+            --primary-light: #34d399;
+            --gradient: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            --radius: 8px;
+            --radius-lg: 12px;
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            background: #f8fafc;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* Navbar Profile - COR BRANCA IGUAL DASHBOARD */
+        .navbar-clean {
+            background: #ffffff !important;
+            backdrop-filter: blur(20px);
+            box-shadow: var(--shadow-lg);
+            padding: 0.8rem 0;
+            border-bottom: 1px solid #e5e7eb;
+            position: relative;
+            z-index: 1030;
+        }
+
+        .logo-clean {
+            text-decoration: none;
+        }
+
+        .logo-content {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--gradient);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .logo-icon:hover {
+            transform: scale(1.05);
+        }
+
+        .logo-icon i {
+            font-size: 1.2rem;
+            color: white;
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.2;
+        }
+
+        .logo-main {
+            font-weight: 700;
+            font-size: 1.3rem;
+            color: #1e293b;
+            letter-spacing: -0.5px;
+        }
+
+        .logo-subtitle {
+            font-size: 0.7rem;
+            color: #64748b;
+            font-weight: 400;
+        }
+
+        /* User Section */
+        .user-section {
+            margin-left: auto;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem 1rem;
+            background: #f8fafc;
+            border-radius: 50px;
+            border: 1px solid #e5e7eb;
+            transition: var(--transition);
+            position: relative;
+            cursor: pointer;
+        }
+
+        .user-profile:hover {
+            background: #f1f5f9;
+            transform: translateY(-1px);
+        }
+
+        .avatar-wrapper {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 2px solid #e5e7eb;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .avatar-wrapper:hover {
+            border-color: var(--primary);
+        }
+
+        .user-avatar {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.2;
+        }
+
+        .user-name {
+            font-weight: 600;
+            color: #1e293b;
+            font-size: 0.9rem;
+        }
+
+        .user-badge {
+            font-size: 0.7rem;
+            color: #64748b;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .online-dot {
+            color: #10b981;
+            font-size: 0.5rem;
+        }
+
+        .dropdown-btn {
+            background: none;
+            border: none;
+            color: #64748b;
+            padding: 0.5rem;
+            border-radius: 6px;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            cursor: pointer;
+        }
+
+        .dropdown-btn:hover {
+            color: var(--primary);
+            background: #f1f5f9;
+        }
+
+        /* Dropdown Menu */
+        .user-dropdown {
+            position: relative;
+        }
+
+        .clean-dropdown {
+            border: none;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-xl);
+            background: #ffffff;
+            padding: 0.5rem;
+            border: 1px solid #e5e7eb;
+            min-width: 200px;
+            position: absolute;
+            right: 0;
+            top: 100%;
+            margin-top: 0.5rem;
+            z-index: 9999;
+        }
+
+        .clean-dropdown .dropdown-item {
+            border-radius: var(--radius);
+            padding: 0.75rem 1rem;
+            font-weight: 500;
+            color: #1e293b;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            border: none;
+            background: none;
+            width: 100%;
+            text-align: left;
+            cursor: pointer;
+        }
+
+        .clean-dropdown .dropdown-item:hover {
+            background: var(--gradient);
+            color: white;
+            transform: translateX(5px);
+        }
+
+        .clean-dropdown .dropdown-item i {
+            width: 16px;
+            margin-right: 0.75rem;
+        }
+
+        .logout-item {
+            color: #dc3545 !important;
+        }
+
+        .logout-item:hover {
+            background: #dc3545 !important;
+            color: white !important;
+        }
+
+        .dropdown-divider {
+            margin: 0.5rem 0;
+            border-color: #e5e7eb;
+        }
+
+        /* Profile Content */
+        .container.py-5 {
+            position: relative;
+            z-index: 1;
+        }
+
+        .card {
+            border: none;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            margin-bottom: 1.5rem;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .card-header {
+            background: var(--gradient);
+            color: white;
+            border-radius: var(--radius-lg) var(--radius-lg) 0 0 !important;
+            border: none;
+            padding: 1.25rem 1.5rem;
+        }
+
+        .card-header h4 {
+            margin: 0;
+            font-weight: 600;
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        /* Avatar Section */
+        .avatar-preview {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #e5e7eb;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .avatar-preview:hover {
+            border-color: var(--primary);
+            transform: scale(1.05);
+        }
+
+        /* Form Styles */
+        .form-label {
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-control {
+            border: 1px solid #d1d5db;
+            padding: 0.75rem 1rem;
+            font-size: 0.95rem;
+            border-radius: var(--radius);
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
+            border-color: var(--primary);
+        }
+
+        .form-text {
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+
+        /* Button */
+        .btn-primary {
+            background: var(--gradient);
+            border: none;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* Animations */
+        .fade-in {
+            animation: fadeIn 0.6s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Alert System Fix - POSIÇÃO FIXA */
+        .alert-fixed {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            z-index: 9999;
+            min-width: 300px;
+            max-width: 500px;
+            animation: slideInRight 0.3s ease-out;
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* RESPONSIVIDADE MELHORADA */
+        @media (max-width: 768px) {
+            .user-profile {
+                padding: 0.4rem 0.8rem;
+                gap: 0.5rem;
+            }
+            
+            .avatar-wrapper {
+                width: 38px;
+                height: 38px;
+            }
+            
+            .user-info {
+                display: none;
+            }
+            
+            .user-name {
+                font-size: 0.8rem;
+            }
+            
+            .user-badge {
+                font-size: 0.65rem;
+            }
+            
+            .logo-main {
+                font-size: 1.1rem;
+            }
+            
+            .logo-subtitle {
+                font-size: 0.65rem;
+            }
+            
+            .dropdown-btn {
+                width: 28px;
+                height: 28px;
+                padding: 0.4rem;
+            }
+            
+            .clean-dropdown {
+                position: fixed;
+                top: 80px !important;
+                left: 50% !important;
+                transform: translateX(-50%) !important;
+                right: auto !important;
+                width: 90%;
+                max-width: 280px;
+                margin-top: 0.5rem;
+                z-index: 9999;
+            }
+            
+            .card-body {
+                padding: 1.25rem;
+            }
+            
+            .card-header {
+                padding: 1rem 1.25rem;
+            }
+            
+            .avatar-preview {
+                width: 120px;
+                height: 120px;
+            }
+            
+            .alert-fixed {
+                top: 80px;
+                right: 10px;
+                left: 10px;
+                min-width: auto;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .navbar-clean .container {
+                padding: 0 12px;
+            }
+            
+            .user-profile {
+                gap: 0.4rem;
+                padding: 0.35rem 0.6rem;
+            }
+            
+            .avatar-wrapper {
+                width: 35px;
+                height: 35px;
+            }
+            
+            .dropdown-btn {
+                width: 26px;
+                height: 26px;
+                padding: 0.3rem;
+            }
+            
+            .logo-content {
+                gap: 0.5rem;
+            }
+            
+            .logo-icon {
+                width: 35px;
+                height: 35px;
+            }
+            
+            .logo-icon i {
+                font-size: 1rem;
+            }
+            
+            .logo-main {
+                font-size: 1rem;
+            }
+            
+            .logo-subtitle {
+                font-size: 0.6rem;
+            }
+            
+            .clean-dropdown {
+                min-width: 180px;
+                width: 85%;
+            }
+            
+            .card-body {
+                padding: 1rem;
+            }
+            
+            .card-header {
+                padding: 0.875rem 1rem;
+            }
+            
+            .avatar-preview {
+                width: 100px;
+                height: 100px;
+            }
+            
+            .container.py-5 {
+                padding-top: 2rem !important;
+                padding-bottom: 2rem !important;
+            }
+        }
+
+        /* Para telas muito pequenas */
+        @media (max-width: 360px) {
+            .logo-text {
+                display: none;
+            }
+            
+            .user-profile {
+                padding: 0.3rem 0.5rem;
+            }
+            
+            .avatar-wrapper {
+                width: 32px;
+                height: 32px;
+            }
+            
+            .avatar-preview {
+                width: 80px;
+                height: 80px;
+            }
+        }
+
+        /* Ajustes para o dropdown */
+        .dropdown-menu.show {
+            display: block !important;
+        }
+
+        .user-dropdown .dropdown-menu {
+            transform: none !important;
+        }
+
+        @media (min-width: 769px) {
+            .user-dropdown .dropdown-menu {
+                left: auto !important;
+                right: 0 !important;
+                transform: none !important;
+            }
+        }
+
+        .navbar-clean {
+            z-index: 1030;
+        }
+
+        .clean-dropdown {
+            z-index: 9999 !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar Nova e Melhorada -->
+    <nav class="navbar navbar-expand-lg navbar-clean">
+        <div class="container">
+            <!-- Logo -->
+            <a class="navbar-brand logo-clean" href="/">
+                <div class="logo-content">
+                    <div class="logo-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <div class="logo-text">
+                        <span class="logo-main">PGFlow</span>
+                        <span class="logo-subtitle">Perfil</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- User Menu -->
+            <div class="user-section">
+                <div class="user-dropdown">
+                    <div class="user-profile" data-bs-toggle="dropdown" aria-expanded="false">
+                        <div class="avatar-wrapper">
+                            <img id="userAvatar" src="" alt="Avatar" 
+                                 class="user-avatar"
+                                 onerror="this.src='https://ui-avatars.com/api/?name=User&background=10b981&color=fff&size=40'">
+                        </div>
+                        <div class="user-info">
+                            <span class="user-name" id="userName">Carregando...</span>
+                            <span class="user-badge">
+                                <i class="fas fa-circle online-dot"></i> Online
+                            </span>
+                        </div>
+                        <button class="dropdown-btn" type="button">
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                    </div>
+                    <ul class="dropdown-menu clean-dropdown">
+                        <li>
+                            <a class="dropdown-item" href="/dashboard">
+                                <i class="fas fa-home"></i>Dashboard
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="/">
+                                <i class="fas fa-globe"></i>Página Inicial
+                            </a>
+                        </li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <button class="dropdown-item logout-item" id="logoutBtn">
+                                <i class="fas fa-sign-out-alt"></i>Sair
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <!-- Avatar Section -->
+                <div class="card mb-4 fade-in">
+                    <div class="card-header">
+                        <h4 class="mb-0"><i class="fas fa-user-circle me-2"></i>Foto de Perfil</h4>
+                    </div>
+                    <div class="card-body text-center">
+                        <div class="mb-4">
+                            <img id="avatarPreview" src="" alt="Avatar" 
+                                 class="avatar-preview"
+                                 onerror="this.src='https://ui-avatars.com/api/?name=User&background=10b981&color=fff&size=150'">
+                        </div>
+                        <form id="avatarForm" enctype="multipart/form-data">
+                            <div class="mb-3">
+                                <input type="file" id="avatarInput" name="avatar" 
+                                       accept="image/*" class="form-control" 
+                                       style="max-width: 300px; margin: 0 auto;">
+                                <div class="form-text">
+                                    Formatos: JPG, PNG, GIF. Tamanho máximo: 5MB
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary" id="uploadBtn">
+                                <i class="fas fa-upload me-2"></i>Upload Avatar
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Profile Info -->
+                <div class="card fade-in" style="animation-delay: 0.2s">
+                    <div class="card-header">
+                        <h4 class="mb-0"><i class="fas fa-user-edit me-2"></i>Informações Pessoais</h4>
+                    </div>
+                    <div class="card-body">
+                        <form id="profileForm">
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Nome Completo</label>
+                                <input type="text" class="form-control" id="name" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-2"></i>Salvar Alterações
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Adicione no final do body antes dos scripts -->
+<audio id="notificationSound" preload="auto">
+    <source src="/sounds/notification.mp3" type="audio/mpeg">
+</audio>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Script para garantir que o dropdown funcione corretamente
+        document.addEventListener('DOMContentLoaded', function() {
+            // Logout button
+            const logoutBtn = document.getElementById('logoutBtn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', function() {
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('user');
+                    window.location.href = '/';
+                });
+            }
+
+            // Prevenir que o dropdown feche quando clicar dentro dele
+            document.querySelectorAll('.clean-dropdown').forEach(function(dropdown) {
+                dropdown.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                });
+            });
+        });
+    </script>
+    <script src="/js/profile.js"></script>
+</body>
+</html>
