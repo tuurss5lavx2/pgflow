@@ -153,7 +153,7 @@ function displayPosts(posts) {
   updatePostsCount(posts);
 }
 
-// ✅✅✅ TOGGLELIKE CORRETO - FUNCIONA PRA CARALHO ✅✅✅
+// ✅✅✅ TOGGLELIKE FUNCIONANDO PERFEITAMENTE ✅✅✅
 async function toggleLike(postId, button) {
     try {
         const token = localStorage.getItem('token');
@@ -164,10 +164,8 @@ async function toggleLike(postId, button) {
             return;
         }
         
-        // ✅ BLOQUEIA CLICK DUPLO
+        // Desabilita botão
         button.disabled = true;
-        const originalHTML = button.innerHTML;
-        button.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
         
         const response = await fetch(`/api/posts/${postId}/like`, {
             method: 'POST',
@@ -180,43 +178,32 @@ async function toggleLike(postId, button) {
         const data = await response.json();
         
         if (response.ok) {
-            // ✅ ATUALIZA COM DADOS DO BACKEND
+            // Atualiza visual
             const countSpan = button.querySelector('.likes-count');
             const icon = button.querySelector('i');
             
             countSpan.textContent = data.likesCount;
             
             if (data.liked) {
-                // ✅ LIKE ADICIONADO
                 button.classList.add('liked');
-                icon.className = 'fas fa-heart text-white';
-                showAlert('👍 Curtiu!', 'success');
+                icon.classList.add('text-white');
             } else {
-                // ✅ LIKE REMOVIDO  
                 button.classList.remove('liked');
-                icon.className = 'fas fa-heart';
-                showAlert('👎 Descurtiu!', 'info');
+                icon.classList.remove('text-white');
             }
             
+            showAlert(data.message, 'success');
             playNotificationSound();
             
         } else {
-            showAlert(data.message || 'Erro no like', 'danger');
+            showAlert(data.message || 'Erro ao curtir', 'danger');
         }
     } catch (error) {
         console.error('Erro no like:', error);
         showAlert('Erro de conexão', 'danger');
     } finally {
-        // ✅ LIBERA O BOTÃO
+        // Reabilita botão
         button.disabled = false;
-        const icon = button.querySelector('i');
-        const countSpan = button.querySelector('.likes-count');
-        
-        if (button.classList.contains('liked')) {
-            icon.className = 'fas fa-heart text-white';
-        } else {
-            icon.className = 'fas fa-heart';
-        }
     }
 }
 

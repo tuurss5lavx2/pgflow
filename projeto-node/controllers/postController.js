@@ -16,7 +16,6 @@ const postController = {
         author: userId 
       });
       
-      // Buscar post com autor populado
       const newPost = await Post.findById(post._id).populate('author', 'name avatar');
       
       res.status(201).json({ 
@@ -33,15 +32,17 @@ const postController = {
         }
       });
     } catch (error) {
+      console.error('Erro ao criar post:', error);
       res.status(500).json({ message: 'Erro ao criar post' });
     }
   },
   
   getAll: async (req, res) => {
     try {
-      const posts = await Post.findAll();
+      const posts = await Post.find()
+        .populate('author', 'name avatar')
+        .sort({ createdAt: -1 });
       
-      // Formatar resposta
       const formattedPosts = posts.map(post => ({
         _id: post._id,
         title: post.title,
@@ -55,6 +56,7 @@ const postController = {
       
       res.json(formattedPosts);
     } catch (error) {
+      console.error('Erro ao buscar posts:', error);
       res.status(500).json({ message: 'Erro ao buscar posts' });
     }
   },
@@ -63,7 +65,7 @@ const postController = {
     try {
       const postId = req.params.id;
       
-      const post = await Post.findById(postId);
+      const post = await Post.findById(postId).populate('author', 'name avatar');
       if (!post) {
         return res.status(404).json({ message: 'Post não encontrado' });
       }
@@ -81,6 +83,7 @@ const postController = {
       
       res.json(formattedPost);
     } catch (error) {
+      console.error('Erro ao buscar post:', error);
       res.status(500).json({ message: 'Erro ao buscar post' });
     }
   },
@@ -100,7 +103,6 @@ const postController = {
         return res.status(404).json({ message: 'Post não encontrado' });
       }
       
-      // Verifica se o usuário é o autor
       if (post.author._id.toString() !== userId) {
         return res.status(403).json({ message: 'Você não tem permissão para editar este post' });
       }
@@ -109,7 +111,6 @@ const postController = {
       post.content = content;
       await post.save();
       
-      // Buscar post atualizado
       const updatedPost = await Post.findById(postId).populate('author', 'name avatar');
       
       res.json({ 
@@ -126,6 +127,7 @@ const postController = {
         }
       });
     } catch (error) {
+      console.error('Erro ao atualizar post:', error);
       res.status(500).json({ message: 'Erro ao atualizar post' });
     }
   },
@@ -148,53 +150,43 @@ const postController = {
       
       res.json({ message: 'Post excluído com sucesso' });
     } catch (error) {
+      console.error('Erro ao excluir post:', error);
       res.status(500).json({ message: 'Erro ao excluir post' });
     }
   },
 
-  // ✅✅✅ MÉTODO LIKE CORRETO - TOGGLE FUNCIONANDO ✅✅✅
+  // ✅✅✅ LIKE FUNCIONANDO PERFEITAMENTE ✅✅✅
   like: async (req, res) => {
     try {
         const postId = req.params.id;
         const userId = req.user.id;
-        
-        console.log('🔍 DEBUG LIKE:', { postId, userId });
 
         const post = await Post.findById(postId);
         if (!post) {
             return res.status(404).json({ message: 'Post não encontrado' });
         }
 
-        // ✅ VERIFICAÇÃO CORRETA - CONVERTE TUDO PRA STRING
-        const userLikedIndex = post.likes.findIndex(likeId => 
-            likeId.toString() === userId.toString()
-        );
+        // Verifica se usuário já curtiu
+        const userAlreadyLiked = post.likes.includes(userId);
 
-        console.log('🔍 DEBUG LIKES ARRAY:', {
-            currentLikes: post.likes.map(id => id.toString()),
-            userLikedIndex,
-            userLiked: userLikedIndex !== -1
-        });
-
-        if (userLikedIndex !== -1) {
-            // ✅ REMOVE O LIKE - CLICA DE NOVO PRA REMOVER
-            post.likes.splice(userLikedIndex, 1);
+        if (userAlreadyLiked) {
+            // REMOVE o like
+            post.likes = post.likes.filter(likeUserId => 
+                likeUserId.toString() !== userId
+            );
             await post.save();
             
-            console.log('✅ LIKE REMOVIDO - LIKES AGORA:', post.likes.length);
-
             return res.json({ 
                 message: 'Like removido!',
                 likesCount: post.likes.length,
                 liked: false
             });
+            
         } else {
-            // ✅ ADICIONA O LIKE - PRIMEIRO CLIQUE
+            // ADICIONA o like
             post.likes.push(userId);
             await post.save();
             
-            console.log('✅ LIKE ADICIONADO - LIKES AGORA:', post.likes.length);
-
             return res.json({ 
                 message: 'Post curtido!',
                 likesCount: post.likes.length,
@@ -202,7 +194,7 @@ const postController = {
             });
         }
     } catch (error) {
-        console.error('❌ ERRO NO LIKE:', error);
+        console.error('Erro no like:', error);
         res.status(500).json({ message: 'Erro interno ao curtir post' });
     }
   },
@@ -211,9 +203,10 @@ const postController = {
     try {
       const userId = req.user.id;
       
-      const posts = await Post.findByUserId(userId);
+      const posts = await Post.find({ author: userId })
+        .populate('author', 'name avatar')
+        .sort({ createdAt: -1 });
       
-      // Formatar resposta
       const formattedPosts = posts.map(post => ({
         _id: post._id,
         title: post.title,
@@ -227,6 +220,7 @@ const postController = {
       
       res.json(formattedPosts);
     } catch (error) {
+      console.error('Erro ao buscar posts do usuário:', error);
       res.status(500).json({ message: 'Erro ao buscar posts' });
     }
   }
