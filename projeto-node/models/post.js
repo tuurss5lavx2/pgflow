@@ -23,7 +23,29 @@ const postSchema = new mongoose.Schema({
   timestamps: true
 });
 
-// Métodos atualizados
+// ✅ MÉTODO PARA TOGGLE LIKE GARANTINDO UNICIDADE
+postSchema.methods.toggleLike = function(userId) {
+  const userObjectId = new mongoose.Types.ObjectId(userId);
+  
+  // Verifica se usuário já deu like
+  const userAlreadyLiked = this.likes.some(likeId => 
+    likeId.toString() === userObjectId.toString()
+  );
+  
+  if (userAlreadyLiked) {
+    // Remove like
+    this.likes = this.likes.filter(likeId => 
+      likeId.toString() !== userObjectId.toString()
+    );
+    return false; // like removido
+  } else {
+    // Adiciona like
+    this.likes.push(userObjectId);
+    return true; // like adicionado
+  }
+};
+
+// Métodos estáticos
 postSchema.statics.findByUserId = function(userId) {
   return this.find({ author: userId })
     .populate('author', 'name avatar')

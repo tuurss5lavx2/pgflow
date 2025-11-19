@@ -82,9 +82,14 @@ function displayPosts(posts) {
   posts.forEach(post => {
     const isOwner = user && post.author === user.name;
     
-    // ✅ CORREÇÃO CRÍTICA: Verificação de likes
+    // ✅ VERIFICAÇÃO CORRETA DE LIKES
     const userLiked = user && post.likes && Array.isArray(post.likes) && 
-                     post.likes.some(likeId => likeId === user.id);
+                     post.likes.some(likeId => {
+                       // Converte ambos para string para comparação
+                       const likeIdStr = likeId.toString ? likeId.toString() : likeId;
+                       const userIdStr = user.id.toString();
+                       return likeIdStr === userIdStr;
+                     });
     
     const likesCount = post.likesCount || (post.likes ? post.likes.length : 0);
     
@@ -148,12 +153,18 @@ function displayPosts(posts) {
   updatePostsCount(posts);
 }
 
-// ✅ FUNÇÃO LIKE CORRIGIDA - IMPEDE MÚLTIPLOS LIKES
+// ✅ FUNÇÃO LIKE CORRIGIDA - GARANTE APENAS 1 LIKE
 async function toggleLike(postId, button) {
     try {
         const token = localStorage.getItem('token');
+        const user = JSON.parse(localStorage.getItem('user'));
         
-        // Desabilita botão temporariamente para evitar múltiplos cliques
+        if (!user) {
+            showAlert('Você precisa estar logado para curtir posts', 'warning');
+            return;
+        }
+        
+        // Desabilita botão temporariamente
         button.disabled = true;
         
         const response = await fetch(`/api/posts/${postId}/like`, {
@@ -167,7 +178,7 @@ async function toggleLike(postId, button) {
         const data = await response.json();
         
         if (response.ok) {
-            // Atualiza visual do botão
+            // Atualiza visual do botão baseado na resposta do servidor
             const countSpan = button.querySelector('.likes-count');
             const icon = button.querySelector('i');
             
@@ -246,7 +257,7 @@ async function editPost(postId) {
             form.setAttribute('data-edit-mode', 'true');
             form.setAttribute('data-post-id', postId);
             
-            const submitButton = form.querySelector('button[type="submit"]');
+            const submitButton = form.querySelector('button[type="submit']');
             submitButton.innerHTML = '<i class="fas fa-save me-2"></i>Salvar Edição';
             submitButton.className = 'btn btn-warning';
             
