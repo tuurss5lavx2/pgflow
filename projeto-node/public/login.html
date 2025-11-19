@@ -111,6 +111,7 @@
             padding: 2rem 0;
             position: relative;
             overflow: hidden;
+            flex: 1;
         }
 
         /* Background Animation */
@@ -361,27 +362,6 @@
             font-size: 0.9rem;
         }
 
-        /* Features List */
-        .features-list {
-            list-style: none;
-            padding: 0;
-            margin: 1.5rem 0;
-        }
-
-        .features-list li {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            margin-bottom: 0.75rem;
-            color: rgba(255, 255, 255, 0.9);
-            font-size: 0.9rem;
-        }
-
-        .features-list li i {
-            color: var(--primary-light);
-            font-size: 0.8rem;
-        }
-
         /* Responsive */
         @media (max-width: 768px) {
             .auth-container {
@@ -530,7 +510,6 @@
                             </div>
 
                             <div class="text-center">
-                                <p class="mb-3" style="color: rgba(255, 255, 255, 0.8);">Crie sua conta e descubra todos os recursos</p>
                                 <a href="/register" class="auth-link">
                                     <i class="fas fa-arrow-right me-1"></i>Criar Conta Gratuita
                                 </a>
