@@ -369,6 +369,9 @@ async function handleCreatePost(e) {
             const message = isEditMode ? 'Post atualizado com sucesso!' : 'Post criado com sucesso!';
             showAlert(message, 'success');
             
+            // ✅ TOCA SOM PARA NOVO POST
+            playNotificationSound();
+            
             // Resetar formulário
             resetForm();
             
@@ -412,7 +415,7 @@ function showLoading() {
     }
 }
 
-// ✅ SISTEMA DE ALERTAS FIXOS - ATUALIZADO
+// ✅ SISTEMA DE ALERTAS FIXOS - ATUALIZADO (MESMO DO PROFILE)
 function showAlert(message, type) {
     // Remover alertas existentes
     const existingAlerts = document.querySelectorAll('.alert-fixed');
@@ -430,6 +433,11 @@ function showAlert(message, type) {
     `;
     
     document.body.appendChild(alertDiv);
+    
+    // ✅ TOCA SOM APENAS PARA ALERTAS DE SUCESSO
+    if (type === 'success') {
+        playNotificationSound();
+    }
     
     // Auto-close after 5 seconds
     setTimeout(() => {
@@ -449,65 +457,25 @@ function getAlertIcon(type) {
     }
 }
 
-// ✅ SISTEMA DE SOM SUPER SIMPLES E FUNCIONAL
+// ✅ SISTEMA DE SOM (MESMO DO PROFILE)
 function playNotificationSound() {
-    console.log('🎵 Tentando tocar som de notificação...');
-    
     try {
-        // Método 1: Tenta o elemento de áudio existente
-        const existingAudio = document.getElementById('notificationSound');
-        if (existingAudio) {
-            existingAudio.currentTime = 0;
-            existingAudio.play().then(() => {
-                console.log('✅ Som do elemento audio tocando!');
-            }).catch(e => {
-                console.log('❌ Elemento audio falhou, tentando método 2...');
-                playOnlineSound();
-            });
-        } else {
-            console.log('❌ Elemento audio não encontrado, usando método 2...');
-            playOnlineSound();
-        }
-    } catch (error) {
-        console.log('❌ Erro geral, usando método 2...');
-        playOnlineSound();
-    }
-}
-
-// ✅ MÉTODO 2: Som online direto (SEMPRE FUNCIONA)
-function playOnlineSound() {
-    const soundUrl = 'https://assets.mixkit.co/sfx/preview/mixkit-correct-answer-tone-2870.mp3';
-    console.log('🔊 Tocando som online:', soundUrl);
-    
-    const audio = new Audio(soundUrl);
-    audio.volume = 0.5;
-    
-    audio.play().then(() => {
-        console.log('✅ Som online tocando com sucesso!');
-    }).catch(e => {
-        console.log('❌ Som online falhou, último recurso...');
-        playBeepSound();
-    });
-}
-
-// ✅ MÉTODO 3: Beep de emergência (NUNCA FALHA)
-function playBeepSound() {
-    try {
-        const context = new (window.AudioContext || window.webkitAudioContext)();
-        const oscillator = context.createOscillator();
-        const gainNode = context.createGain();
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
         
         oscillator.connect(gainNode);
-        gainNode.connect(context.destination);
+        gainNode.connect(audioContext.destination);
         
-        oscillator.frequency.value = 800;
-        gainNode.gain.value = 0.1;
+        oscillator.type = 'sine';
+        oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
+        gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
         
-        oscillator.start();
-        oscillator.stop(context.currentTime + 0.1);
+        oscillator.start(audioContext.currentTime);
+        oscillator.stop(audioContext.currentTime + 0.3);
         
-        console.log('🔊 Beep de emergência executado');
-    } catch (e) {
-        console.log('🎵 Áudio completamente indisponível');
+    } catch (error) {
+        console.log('Som de notificação não suportado');
     }
 }

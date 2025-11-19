@@ -113,9 +113,6 @@ async function handleAvatarUpload(e) {
         if (response.ok) {
             const data = await response.json();
             showAlert(data.message, 'success');
-
-            // ✅ TOCA SOM ESPECÍFICO PARA AVATAR
-    playNotificationSound();
             
             // Atualizar avatar preview
             const avatarUrl = data.avatar.startsWith('/uploads/') ? 
@@ -186,7 +183,7 @@ async function handleProfileUpdate(e) {
     }
 }
 
-// ✅ SISTEMA DE ALERTAS FIXOS - ATUALIZADO
+// ✅ SISTEMA DE ALERTAS FIXOS - ATUALIZADO (APENAS UMA FUNÇÃO!)
 function showAlert(message, type) {
     // Remover alertas existentes
     const existingAlerts = document.querySelectorAll('.alert-fixed');
@@ -204,6 +201,11 @@ function showAlert(message, type) {
     `;
     
     document.body.appendChild(alertDiv);
+    
+    // ✅ TOCA SOM APENAS PARA ALERTAS DE SUCESSO
+    if (type === 'success') {
+        playNotificationSound();
+    }
     
     // Auto-close after 5 seconds
     setTimeout(() => {
@@ -223,10 +225,9 @@ function getAlertIcon(type) {
     }
 }
 
-// ✅ SISTEMA DE NOTIFICAÇÕES COM SOM - ADICIONE ESTA FUNÇÃO
+// ✅ SISTEMA DE SOM (MESMO DO DASHBOARD)
 function playNotificationSound() {
     try {
-        // Cria um contexto de áudio
         const audioContext = new (window.AudioContext || window.webkitAudioContext)();
         const oscillator = audioContext.createOscillator();
         const gainNode = audioContext.createGain();
@@ -234,10 +235,9 @@ function playNotificationSound() {
         oscillator.connect(gainNode);
         gainNode.connect(audioContext.destination);
         
-        // Configura o som (beep suave)
         oscillator.type = 'sine';
-        oscillator.frequency.setValueAtTime(800, audioContext.currentTime); // Frequência
-        gainNode.gain.setValueAtTime(0.3, audioContext.currentTime); // Volume
+        oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
+        gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
         gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
         
         oscillator.start(audioContext.currentTime);
@@ -246,34 +246,4 @@ function playNotificationSound() {
     } catch (error) {
         console.log('Som de notificação não suportado');
     }
-}
-
-// ✅ SISTEMA DE ALERTAS FIXOS COM SOM - ATUALIZADO
-function showAlert(message, type) {
-    // Remover alertas existentes
-    const existingAlerts = document.querySelectorAll('.alert-fixed');
-    existingAlerts.forEach(alert => alert.remove());
-    
-    const alertDiv = document.createElement('div');
-    alertDiv.className = `alert alert-${type} alert-dismissible fade show alert-fixed`;
-    alertDiv.role = 'alert';
-    alertDiv.innerHTML = `
-        <div class="d-flex align-items-center">
-            <i class="fas ${getAlertIcon(type)} me-2"></i>
-            <div class="flex-grow-1">${message}</div>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    `;
-    
-    document.body.appendChild(alertDiv);
-    
-    // ✅ TOCA SOM PARA TODAS AS NOTIFICAÇÕES
-    playNotificationSound();
-    
-    // Auto-close after 5 seconds
-    setTimeout(() => {
-        if (alertDiv.parentNode) {
-            alertDiv.remove();
-        }
-    }, 5000);
 }
