@@ -29,7 +29,7 @@
             font-family: 'Poppins', sans-serif;
         }
 
-        /* Navbar Dashboard - COR BRANCA */
+        /* Navbar Dashboard */
         .navbar-clean {
             background: #ffffff !important;
             backdrop-filter: blur(20px);
@@ -50,7 +50,6 @@
             gap: 0.75rem;
         }
 
-        /* ✅ LOGO ICON CORRIGIDO - SEM FUNDO VERDE E HOVER MELHOR */
         .logo-icon {
             width: 40px;
             height: 40px;
@@ -90,7 +89,7 @@
             font-weight: 400;
         }
 
-        /* ✅ USER SECTION - VISUAL ANTERIOR MELHORADO */
+        /* User Section */
         .user-section {
             margin-left: auto;
         }
@@ -242,12 +241,52 @@
             border-color: #e5e7eb;
         }
 
-        /* Dashboard Content */
-        .container.py-5 {
-            position: relative;
-            z-index: 1;
+        /* Dashboard Tabs */
+        .dashboard-tabs {
+            background: white;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+            overflow: hidden;
         }
 
+        .nav-tabs-custom {
+            border: none;
+            background: #f8fafc;
+            padding: 0.5rem;
+        }
+
+        .nav-tabs-custom .nav-link {
+            border: none;
+            border-radius: var(--radius);
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            color: #64748b;
+            transition: var(--transition);
+            margin: 0 0.25rem;
+        }
+
+        .nav-tabs-custom .nav-link:hover {
+            color: var(--primary);
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        .nav-tabs-custom .nav-link.active {
+            background: var(--gradient);
+            color: white;
+            box-shadow: var(--shadow);
+        }
+
+        .tab-badge {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border-radius: 20px;
+            padding: 0.2rem 0.6rem;
+            font-size: 0.75rem;
+            margin-left: 0.5rem;
+        }
+
+        /* Cards */
         .card {
             border: none;
             border-radius: var(--radius-lg);
@@ -363,7 +402,7 @@
             align-items: center;
         }
 
-        /* ✅ LIKE BUTTON CORRIGIDO */
+        /* Like Button */
         .like-btn {
             transition: all 0.3s ease;
             border-radius: 25px;
@@ -416,6 +455,181 @@
             font-weight: 600;
             min-width: 20px;
             text-align: center;
+        }
+
+        /* Comment System */
+        .comment-section {
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #f1f5f9;
+        }
+
+        .comment-form {
+            margin-bottom: 2rem;
+        }
+
+        .comment-input-group {
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+
+        .comment-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #e5e7eb;
+        }
+
+        .comment-input-wrapper {
+            flex: 1;
+        }
+
+        .comment-input {
+            border-radius: 25px;
+            border: 2px solid #e5e7eb;
+            padding: 0.75rem 1.5rem;
+            resize: none;
+            transition: var(--transition);
+        }
+
+        .comment-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+        }
+
+        .comment-btn {
+            border-radius: 25px;
+            padding: 0.75rem 1.5rem;
+            background: var(--gradient);
+            color: white;
+            border: none;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .comment-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .comment-btn:disabled {
+            background: #94a3b8;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .comments-list {
+            space-y: 1.5rem;
+        }
+
+        .comment-card {
+            background: #f8fafc;
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border-left: 3px solid var(--primary-light);
+        }
+
+        .comment-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .comment-author-avatar {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .comment-author {
+            font-weight: 600;
+            color: #1e293b;
+            font-size: 0.9rem;
+        }
+
+        .comment-date {
+            color: #94a3b8;
+            font-size: 0.8rem;
+        }
+
+        .comment-content {
+            color: #475569;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .comment-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .comment-like-btn {
+            background: none;
+            border: none;
+            color: #64748b;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            cursor: pointer;
+            transition: var(--transition);
+            padding: 0.25rem 0.5rem;
+            border-radius: 15px;
+        }
+
+        .comment-like-btn:hover {
+            color: var(--primary);
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        .comment-like-btn.liked {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .comment-delete-btn {
+            background: none;
+            border: none;
+            color: #dc3545;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: var(--transition);
+            padding: 0.25rem 0.5rem;
+            border-radius: 15px;
+        }
+
+        .comment-delete-btn:hover {
+            background: rgba(220, 53, 69, 0.1);
+        }
+
+        .no-comments {
+            text-align: center;
+            color: #94a3b8;
+            padding: 2rem;
+        }
+
+        .view-comments-btn {
+            background: none;
+            border: none;
+            color: var(--primary);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .view-comments-btn:hover {
+            background: rgba(16, 185, 129, 0.1);
         }
 
         /* Botões de editar/excluir */
@@ -490,6 +704,15 @@
                 width: 100%;
                 justify-content: space-between;
             }
+
+            .comment-input-group {
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+
+            .comment-avatar {
+                align-self: flex-start;
+            }
         }
 
         @media (max-width: 576px) {
@@ -548,6 +771,11 @@
                 padding: 0.4rem 0.8rem;
                 font-size: 0.85rem;
             }
+
+            .nav-tabs-custom .nav-link {
+                padding: 0.5rem 1rem;
+                font-size: 0.9rem;
+            }
         }
 
         /* Alert System */
@@ -580,6 +808,28 @@
                 min-width: auto;
             }
         }
+
+        /* Loading States */
+        .loading {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .skeleton {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+            border-radius: 4px;
+        }
+
+        @keyframes loading {
+            0% {
+                background-position: 200% 0;
+            }
+            100% {
+                background-position: -200% 0;
+            }
+        }
     </style>
 </head>
 <body>
@@ -599,7 +849,7 @@
                 </div>
             </a>
 
-            <!-- User Menu Melhorado -->
+            <!-- User Menu -->
             <div class="user-section">
                 <div class="user-dropdown">
                     <div class="user-profile" data-bs-toggle="dropdown" aria-expanded="false">
@@ -644,36 +894,72 @@
     <div class="container py-5">
         <div class="row">
             <div class="col-lg-10 mx-auto">
-                <div class="card mb-4 fade-in">
-                    <div class="card-header">
-                        <h4 class="mb-0"><i class="fas fa-plus-circle me-2"></i>Criar Novo Post</h4>
-                    </div>
-                    <div class="card-body">
-                        <form id="postForm">
-                            <div class="mb-3">
-                                <label for="title" class="form-label">Título do Post</label>
-                                <input type="text" class="form-control" id="title" placeholder="Digite um título criativo..." required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="content" class="form-label">Conteúdo</label>
-                                <textarea class="form-control" id="content" rows="4" placeholder="Compartilhe suas ideias..." required></textarea>
-                            </div>
-                            <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-paper-plane me-2"></i>Publicar Post
+                <!-- Dashboard Tabs -->
+                <div class="dashboard-tabs">
+                    <ul class="nav nav-tabs nav-tabs-custom nav-justified" id="dashboardTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="feed-tab" data-bs-toggle="tab" data-bs-target="#feed" type="button" role="tab">
+                                <i class="fas fa-newspaper me-2"></i>Feed da Comunidade
+                                <span class="tab-badge" id="feedCount">0</span>
                             </button>
-                        </form>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="my-posts-tab" data-bs-toggle="tab" data-bs-target="#my-posts" type="button" role="tab">
+                                <i class="fas fa-user me-2"></i>Meus Posts
+                                <span class="tab-badge" id="myPostsCount">0</span>
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Tab Content -->
+                <div class="tab-content" id="dashboardTabsContent">
+                    <!-- Feed da Comunidade -->
+                    <div class="tab-pane fade show active" id="feed" role="tabpanel">
+                        <!-- Criar Post -->
+                        <div class="card mb-4 fade-in">
+                            <div class="card-header">
+                                <h4 class="mb-0"><i class="fas fa-plus-circle me-2"></i>Criar Novo Post</h4>
+                            </div>
+                            <div class="card-body">
+                                <form id="postForm">
+                                    <div class="mb-3">
+                                        <label for="title" class="form-label">Título do Post</label>
+                                        <input type="text" class="form-control" id="title" placeholder="Digite um título criativo..." required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="content" class="form-label">Conteúdo</label>
+                                        <textarea class="form-control" id="content" rows="4" placeholder="Compartilhe suas ideias..." required></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-paper-plane me-2"></i>Publicar Post
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+
+                        <!-- Feed de Posts -->
+                        <h4 class="mb-4"><i class="fas fa-users me-2"></i>Posts da Comunidade</h4>
+                        <div id="communityFeed" class="fade-in">
+                            <div class="text-center py-5">
+                                <i class="fas fa-spinner fa-spin fa-2x text-primary mb-3"></i>
+                                <p>Carregando feed da comunidade...</p>
+                            </div>
+                        </div>
                     </div>
-                </div>
 
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h4 class="mb-0"><i class="fas fa-newspaper me-2"></i>Meus Posts</h4>
-                    <span class="badge bg-primary rounded-pill p-2" id="postsCount">0 posts</span>
-                </div>
-
-                <div id="postsList" class="fade-in" style="animation-delay: 0.3s;">
-                    <div class="text-center py-5">
-                        <i class="fas fa-spinner fa-spin fa-2x text-primary mb-3"></i>
-                        <p>Carregando seus posts...</p>
+                    <!-- Meus Posts -->
+                    <div class="tab-pane fade" id="my-posts" role="tabpanel">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h4 class="mb-0"><i class="fas fa-history me-2"></i>Histórico dos Meus Posts</h4>
+                            <span class="badge bg-primary rounded-pill p-2" id="myPostsBadge">0 posts</span>
+                        </div>
+                        <div id="myPostsList" class="fade-in">
+                            <div class="text-center py-5">
+                                <i class="fas fa-spinner fa-spin fa-2x text-primary mb-3"></i>
+                                <p>Carregando seus posts...</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -703,8 +989,27 @@
                     e.stopPropagation();
                 });
             });
+
+            // Tab switching logic
+            const feedTab = document.getElementById('feed-tab');
+            const myPostsTab = document.getElementById('my-posts-tab');
+
+            if (feedTab) {
+                feedTab.addEventListener('click', function() {
+                    loadCommunityFeed();
+                });
+            }
+
+            if (myPostsTab) {
+                myPostsTab.addEventListener('click', function() {
+                    loadMyPosts();
+                });
+            }
+
+            // Load initial data
+            loadCommunityFeed();
         });
     </script>
-    <script src="/js/posts.js"></script>
+    <script src="/js/dashboard.js"></script>
 </body>
 </html>
