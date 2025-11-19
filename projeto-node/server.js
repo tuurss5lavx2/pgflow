@@ -17,7 +17,7 @@ const app = express();
 app.use(cors({
   origin: [
     'http://localhost:3000',
-    'https://userflow-backend.onrender.com',
+    'https://userflow-backend-0004.onrender.com',
     'https://userflow-frontend.onrender.com' // se tiver frontend separado
   ],
   credentials: true
