@@ -223,29 +223,73 @@ function getAlertIcon(type) {
     }
 }
 
-// ✅ SISTEMA DE SOM COM SEU ARQUIVO - ATUALIZADO
-function playNotificationSound() {
+// ✅ FUNÇÃO OTIMIZADA PARA RENDER
+async function playNotificationSound() {
+    console.log('🔊 Tentando tocar som no Render...');
+    
     try {
         const sound = document.getElementById('notificationSound');
-        if (sound) {
-            sound.currentTime = 0; // Reinicia o som
-            sound.play().catch(error => {
-                console.log('Não foi possível tocar o som:', error);
-                // Fallback para som gerado se o arquivo falhar
-                playFallbackSound();
-            });
-        } else {
-            // Fallback se o elemento de áudio não existir
-            playFallbackSound();
+        
+        if (!sound) {
+            console.log('❌ Elemento de áudio não encontrado');
+            return playFallbackSound();
         }
+        
+        // Para e reinicia
+        sound.pause();
+        sound.currentTime = 0;
+        
+        // Tenta tocar com tratamento de erro
+        try {
+            await sound.play();
+            console.log('✅ Som online tocando!');
+        } catch (playError) {
+            console.log('❌ Erro ao tocar som online:', playError);
+            
+            // Fallback: tenta carregar um som online dinamicamente
+            await playOnlineSoundFallback();
+        }
+        
     } catch (error) {
-        console.log('Erro ao tocar som:', error);
+        console.log('❌ Erro geral:', error);
         playFallbackSound();
     }
 }
 
-// ✅ SOM DE FALLBACK (caso seu arquivo não carregue)
-function playFallbackSound() {
+// ✅ FALLBACK COM SOM ONLINE DINÂMICO
+async function playOnlineSoundFallback() {
+    return new Promise((resolve) => {
+        try {
+            // Sons online gratuitos como fallback
+            const onlineSounds = [
+                'https://assets.mixkit.co/sfx/preview/mixkit-positive-notification-951.mp3',
+                'https://assets.mixkit.co/sfx/preview/mixkit-unlock-game-notification-253.mp3',
+                'https://assets.mixkit.co/sfx/preview/mixkit-correct-answer-tone-2870.mp3'
+            ];
+            
+            const randomSound = onlineSounds[Math.floor(Math.random() * onlineSounds.length)];
+            const audio = new Audio(randomSound);
+            audio.volume = 0.3;
+            
+            audio.play().then(() => {
+                console.log('✅ Som de fallback online tocando!');
+                resolve();
+            }).catch(e => {
+                console.log('❌ Fallback online também falhou');
+                playFallbackBeep();
+                resolve();
+            });
+            
+        } catch (error) {
+            console.log('❌ Erro no fallback online');
+            playFallbackBeep();
+            resolve();
+        }
+    });
+}
+
+// ✅ FALLBACK BEEP (sempre funciona)
+function playFallbackBeep() {
     try {
         const audioContext = new (window.AudioContext || window.webkitAudioContext)();
         const oscillator = audioContext.createOscillator();
@@ -256,12 +300,14 @@ function playFallbackSound() {
         
         oscillator.type = 'sine';
         oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
-        gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+        gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.1);
         
         oscillator.start(audioContext.currentTime);
-        oscillator.stop(audioContext.currentTime + 0.3);
+        oscillator.stop(audioContext.currentTime + 0.1);
+        
+        console.log('🔊 Beep de fallback executado');
     } catch (error) {
-        console.log('Som de fallback também falhou');
+        console.log('❌ Até o beep falhou - sem áudio disponível');
     }
 }
