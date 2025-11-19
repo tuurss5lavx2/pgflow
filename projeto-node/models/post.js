@@ -23,27 +23,26 @@ const postSchema = new mongoose.Schema({
   timestamps: true
 });
 
-// ⬇️⬇️⬇️ ATUALIZAR ESTES MÉTODOS PARA INCLUIR AVATAR ⬇️⬇️⬇️
+// Métodos atualizados
 postSchema.statics.findByUserId = function(userId) {
   return this.find({ author: userId })
-    .populate('author', 'name avatar') // ⬅️ ADICIONAR avatar AQUI
+    .populate('author', 'name avatar')
     .populate('likes', 'name')
     .sort({ createdAt: -1 });
 };
 
 postSchema.statics.findAll = function() {
   return this.find()
-    .populate('author', 'name avatar') // ⬅️ ADICIONAR avatar AQUI
+    .populate('author', 'name avatar')
     .populate('likes', 'name')
     .sort({ createdAt: -1 });
 };
 
 postSchema.statics.findById = function(id) {
   return this.findOne({ _id: id })
-    .populate('author', 'name avatar') // ⬅️ ADICIONAR avatar AQUI
+    .populate('author', 'name avatar')
     .populate('likes', 'name');
 };
-// ⬆️⬆️⬆️ ATUALIZAR ESTES MÉTODOS ⬆️⬆️⬆️
 
 const Post = mongoose.model('Post', postSchema);
 

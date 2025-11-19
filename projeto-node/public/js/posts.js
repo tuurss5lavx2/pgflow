@@ -7,15 +7,13 @@ document.addEventListener('DOMContentLoaded', function() {
         return;
     }
     
-    // ✅ CORREÇÃO: Atualizar dados do usuário na navbar
+    // Atualizar dados do usuário na navbar
     if (user) {
-        // Atualizar nome do usuário
         const userNameElement = document.getElementById('userName');
         if (userNameElement) {
             userNameElement.textContent = user.name;
         }
         
-        // ✅ CORREÇÃO CRÍTICA: Atualizar avatar
         const userAvatar = document.getElementById('userAvatar');
         if (userAvatar && user.avatar) {
             const avatarUrl = user.avatar.startsWith('/uploads/') ? 
@@ -27,7 +25,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Carregar posts
     loadPosts();
     
-    // ✅ CORREÇÃO: Event listener do formulário com verificação
+    // Event listener do formulário
     const postForm = document.getElementById('postForm');
     if (postForm) {
         postForm.addEventListener('submit', handleCreatePost);
@@ -84,24 +82,19 @@ function displayPosts(posts) {
   posts.forEach(post => {
     const isOwner = user && post.author === user.name;
     
-    // ✅ CORREÇÃO: Verificação de likes melhorada
-    const userLiked = user && post.likes && post.likes.some(like => {
-      return typeof like === 'string' ? like === user.id : (like._id === user.id || like === user.id);
-    });
+    // Verificação de likes
+    const userLiked = user && post.likes && post.likes.includes(user.id);
+    const likesCount = post.likesCount || (post.likes ? post.likes.length : 0);
     
-    const likesCount = post.likes ? post.likes.length : 0;
-    
-    // ✅ CORREÇÃO: URL completa do avatar
+    // URL do avatar
     let authorAvatar;
     if (post.authorAvatar) {
-      // Se o avatar começar com /uploads/, adiciona a base URL
       if (post.authorAvatar.startsWith('/uploads/')) {
         authorAvatar = window.location.origin + post.authorAvatar;
       } else {
         authorAvatar = post.authorAvatar;
       }
     } else {
-      // Avatar gerado baseado no nome do autor
       authorAvatar = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(post.author) + '&background=10b981&color=fff&size=150';
     }
     
@@ -153,18 +146,12 @@ function displayPosts(posts) {
   updatePostsCount(posts);
 }
 
-// ✅✅✅ TOGGLELIKE FUNCIONANDO PERFEITAMENTE ✅✅✅
+// ✅ FUNÇÃO LIKE SIMPLIFICADA E FUNCIONAL
 async function toggleLike(postId, button) {
     try {
         const token = localStorage.getItem('token');
-        const user = JSON.parse(localStorage.getItem('user'));
         
-        if (!user) {
-            showAlert('Você precisa estar logado para curtir posts', 'warning');
-            return;
-        }
-        
-        // Desabilita botão
+        // Desabilita botão temporariamente
         button.disabled = true;
         
         const response = await fetch(`/api/posts/${postId}/like`, {
@@ -178,7 +165,7 @@ async function toggleLike(postId, button) {
         const data = await response.json();
         
         if (response.ok) {
-            // Atualiza visual
+            // Atualiza visual do botão
             const countSpan = button.querySelector('.likes-count');
             const icon = button.querySelector('i');
             
@@ -187,14 +174,13 @@ async function toggleLike(postId, button) {
             if (data.liked) {
                 button.classList.add('liked');
                 icon.classList.add('text-white');
+                // ✅ SOM APENAS QUANDO DÁ LIKE (não quando remove)
+                playNotificationSound();
             } else {
                 button.classList.remove('liked');
                 icon.classList.remove('text-white');
+                // ❌ NÃO TOCA SOM QUANDO REMOVE O LIKE
             }
-            
-            showAlert(data.message, 'success');
-            playNotificationSound();
-            
         } else {
             showAlert(data.message || 'Erro ao curtir', 'danger');
         }
@@ -217,7 +203,6 @@ function addLikeEventListeners() {
   });
 }
 
-// Atualizar addPostEventListeners para incluir likes
 function addPostEventListeners() {
   // Botões de editar
   document.querySelectorAll('.edit-post').forEach(button => {
@@ -235,7 +220,7 @@ function addPostEventListeners() {
     });
   });
   
-  // Botões de like (NOVO)
+  // Botões de like
   addLikeEventListeners();
 }
 
@@ -251,21 +236,17 @@ async function editPost(postId) {
         if (response.ok) {
             const post = await response.json();
             
-            // Preencher formulário com dados atuais
             document.getElementById('title').value = post.title;
             document.getElementById('content').value = post.content;
             
-            // Alterar formulário para modo edição
             const form = document.getElementById('postForm');
             form.setAttribute('data-edit-mode', 'true');
             form.setAttribute('data-post-id', postId);
             
-            // Alterar botão
             const submitButton = form.querySelector('button[type="submit"]');
             submitButton.innerHTML = '<i class="fas fa-save me-2"></i>Salvar Edição';
             submitButton.className = 'btn btn-warning';
             
-            // Scroll para o formulário
             form.scrollIntoView({ behavior: 'smooth' });
             
             showAlert('Preencha os campos e clique em "Salvar Edição" para atualizar o post', 'info');
@@ -293,7 +274,7 @@ async function deletePost(postId) {
         
         if (response.ok) {
             showAlert('Post excluído com sucesso!', 'success');
-            loadPosts(); // Recarregar a lista
+            loadPosts();
         } else {
             const data = await response.json();
             showAlert(data.message || 'Erro ao excluir post', 'danger');
@@ -317,7 +298,6 @@ async function handleCreatePost(e) {
         let response;
         
         if (isEditMode) {
-            // Modo edição
             response = await fetch(`/api/posts/${postId}`, {
                 method: 'PUT',
                 headers: {
@@ -327,7 +307,6 @@ async function handleCreatePost(e) {
                 body: JSON.stringify({ title, content })
             });
         } else {
-            // Modo criação
             response = await fetch('/api/posts', {
                 method: 'POST',
                 headers: {
@@ -342,13 +321,7 @@ async function handleCreatePost(e) {
             const message = isEditMode ? 'Post atualizado com sucesso!' : 'Post criado com sucesso!';
             showAlert(message, 'success');
             
-            // ✅ TOCA SOM PARA NOVO POST
-            playNotificationSound();
-            
-            // Resetar formulário
             resetForm();
-            
-            // Recarregar posts
             loadPosts();
         } else {
             const data = await response.json();
@@ -388,9 +361,8 @@ function showLoading() {
     }
 }
 
-// ✅ SISTEMA DE ALERTAS FIXOS - ATUALIZADO (MESMO DO PROFILE)
+// ✅ SISTEMA DE ALERTAS (SEM ALERT PARA LIKES)
 function showAlert(message, type) {
-    // Remover alertas existentes
     const existingAlerts = document.querySelectorAll('.alert-fixed');
     existingAlerts.forEach(alert => alert.remove());
     
@@ -406,11 +378,6 @@ function showAlert(message, type) {
     `;
     
     document.body.appendChild(alertDiv);
-    
-    // ✅ TOCA SOM APENAS PARA ALERTAS DE SUCESSO
-    if (type === 'success') {
-        playNotificationSound();
-    }
     
     // Auto-close after 5 seconds
     setTimeout(() => {
@@ -430,11 +397,11 @@ function getAlertIcon(type) {
     }
 }
 
+// ✅ FUNÇÃO DO SOM (APENAS PARA LIKES)
 function playNotificationSound() {
     try {
         const audioContext = new (window.AudioContext || window.webkitAudioContext)();
         
-        // Múltiplos osciladores para som cristalino
         const osc1 = audioContext.createOscillator();
         const osc2 = audioContext.createOscillator();
         const gainNode = audioContext.createGain();
@@ -444,10 +411,10 @@ function playNotificationSound() {
         gainNode.connect(audioContext.destination);
         
         osc1.type = 'sine';
-        osc1.frequency.setValueAtTime(1046.50, audioContext.currentTime); // C6
+        osc1.frequency.setValueAtTime(1046.50, audioContext.currentTime);
         
         osc2.type = 'sine';
-        osc2.frequency.setValueAtTime(1567.98, audioContext.currentTime); // G6
+        osc2.frequency.setValueAtTime(1567.98, audioContext.currentTime);
         
         gainNode.gain.setValueAtTime(0.07, audioContext.currentTime);
         gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.4);

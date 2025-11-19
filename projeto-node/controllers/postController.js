@@ -27,6 +27,7 @@ const postController = {
           author: newPost.author.name,
           authorAvatar: newPost.author.avatar,
           likes: newPost.likes || [],
+          likesCount: newPost.likes.length,
           createdAt: newPost.createdAt,
           updatedAt: newPost.updatedAt
         }
@@ -50,6 +51,7 @@ const postController = {
         author: post.author.name,
         authorAvatar: post.author.avatar,
         likes: post.likes || [],
+        likesCount: post.likes.length,
         createdAt: post.createdAt,
         updatedAt: post.updatedAt
       }));
@@ -77,6 +79,7 @@ const postController = {
         author: post.author.name,
         authorAvatar: post.author.avatar,
         likes: post.likes || [],
+        likesCount: post.likes.length,
         createdAt: post.createdAt,
         updatedAt: post.updatedAt
       };
@@ -122,6 +125,7 @@ const postController = {
           author: updatedPost.author.name,
           authorAvatar: updatedPost.author.avatar,
           likes: updatedPost.likes || [],
+          likesCount: updatedPost.likes.length,
           createdAt: updatedPost.createdAt,
           updatedAt: updatedPost.updatedAt
         }
@@ -155,47 +159,42 @@ const postController = {
     }
   },
 
-  // ✅✅✅ LIKE FUNCIONANDO PERFEITAMENTE ✅✅✅
+  // ✅ LIKE SIMPLIFICADO E FUNCIONAL
   like: async (req, res) => {
     try {
-        const postId = req.params.id;
-        const userId = req.user.id;
+      const postId = req.params.id;
+      const userId = req.user.id;
 
-        const post = await Post.findById(postId);
-        if (!post) {
-            return res.status(404).json({ message: 'Post não encontrado' });
-        }
+      const post = await Post.findById(postId);
+      if (!post) {
+        return res.status(404).json({ message: 'Post não encontrado' });
+      }
 
-        // Verifica se usuário já curtiu
-        const userAlreadyLiked = post.likes.includes(userId);
+      // Verifica se usuário já curtiu
+      const userIndex = post.likes.indexOf(userId);
 
-        if (userAlreadyLiked) {
-            // REMOVE o like
-            post.likes = post.likes.filter(likeUserId => 
-                likeUserId.toString() !== userId
-            );
-            await post.save();
-            
-            return res.json({ 
-                message: 'Like removido!',
-                likesCount: post.likes.length,
-                liked: false
-            });
-            
-        } else {
-            // ADICIONA o like
-            post.likes.push(userId);
-            await post.save();
-            
-            return res.json({ 
-                message: 'Post curtido!',
-                likesCount: post.likes.length,
-                liked: true
-            });
-        }
+      if (userIndex > -1) {
+        // Remove o like
+        post.likes.splice(userIndex, 1);
+        await post.save();
+        
+        return res.json({ 
+          likesCount: post.likes.length,
+          liked: false
+        });
+      } else {
+        // Adiciona o like
+        post.likes.push(userId);
+        await post.save();
+        
+        return res.json({ 
+          likesCount: post.likes.length,
+          liked: true
+        });
+      }
     } catch (error) {
-        console.error('Erro no like:', error);
-        res.status(500).json({ message: 'Erro interno ao curtir post' });
+      console.error('Erro no like:', error);
+      res.status(500).json({ message: 'Erro interno ao curtir post' });
     }
   },
   
@@ -214,6 +213,7 @@ const postController = {
         author: post.author.name,
         authorAvatar: post.author.avatar,
         likes: post.likes || [],
+        likesCount: post.likes.length,
         createdAt: post.createdAt,
         updatedAt: post.updatedAt
       }));
