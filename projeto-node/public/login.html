@@ -35,15 +35,14 @@
         }
 
         .navbar {
-            padding: 1rem 0;
+            padding: 0.75rem 0;
             background: transparent !important;
         }
 
         .navbar-brand {
             color: white !important;
             font-weight: 700;
-            font-size: 1.5rem;
-            padding: 0.5rem 0;
+            font-size: 1.4rem;
         }
 
         .auth-container {
@@ -51,8 +50,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 1rem;
-            min-height: calc(100vh - 80px);
+            padding: 1.5rem 1rem;
+            min-height: calc(100vh - 70px);
         }
 
         .auth-card {
@@ -60,8 +59,8 @@
             border-radius: 16px;
             border: 1px solid var(--border-light);
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            max-width: 380px;
             width: 100%;
+            max-width: 400px;
             margin: 0 auto;
         }
 
@@ -138,40 +137,134 @@
             text-decoration: underline;
         }
 
-        /* Responsividade */
-        @media (max-width: 576px) {
-            .auth-container {
-                padding: 0.5rem;
+        /* RESPONSIVIDADE PERFEITA */
+        
+        /* Desktop Grande */
+        @media (min-width: 1200px) {
+            .auth-card {
+                max-width: 380px;
             }
-            
+        }
+
+        /* Desktop */
+        @media (min-width: 992px) {
+            .auth-card {
+                max-width: 380px;
+            }
+        }
+
+        /* Tablet */
+        @media (min-width: 768px) and (max-width: 991px) {
+            .auth-container {
+                padding: 2rem 1.5rem;
+            }
+            .auth-card {
+                max-width: 400px;
+            }
+        }
+
+        /* Mobile Grande */
+        @media (min-width: 576px) and (max-width: 767px) {
+            .auth-container {
+                padding: 1.5rem 1rem;
+            }
+            .auth-card {
+                max-width: 400px;
+            }
+            .card-header {
+                padding: 1.75rem 1.5rem;
+            }
+            .card-body {
+                padding: 1.75rem 1.5rem;
+            }
+        }
+
+        /* Mobile Pequeno */
+        @media (max-width: 575px) {
+            .auth-container {
+                padding: 1rem 0.75rem;
+            }
             .auth-card {
                 max-width: 100%;
-                margin: 0 1rem;
+                margin: 0 0.5rem;
             }
-            
             .card-header {
                 padding: 1.5rem 1.25rem;
             }
-            
             .card-body {
                 padding: 1.5rem 1.25rem;
             }
-            
             .card-header h3 {
                 font-size: 1.3rem;
             }
-            
             .form-control {
                 padding: 0.75rem 1rem;
                 height: 48px;
                 margin-bottom: 1rem;
+                font-size: 0.9rem;
             }
-            
             .btn-primary {
                 padding: 0.75rem 1.5rem;
                 height: 48px;
                 font-size: 0.95rem;
                 margin-bottom: 1rem;
+            }
+            .navbar-brand {
+                font-size: 1.3rem;
+            }
+        }
+
+        /* Mobile Muito Pequeno */
+        @media (max-width: 375px) {
+            .auth-container {
+                padding: 0.75rem 0.5rem;
+            }
+            .card-header {
+                padding: 1.25rem 1rem;
+            }
+            .card-body {
+                padding: 1.25rem 1rem;
+            }
+            .card-header h3 {
+                font-size: 1.25rem;
+            }
+            .form-control {
+                padding: 0.7rem 0.875rem;
+                height: 46px;
+                font-size: 0.875rem;
+            }
+            .btn-primary {
+                padding: 0.7rem 1.25rem;
+                height: 46px;
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Ajuste para telas muito altas */
+        @media (min-height: 900px) {
+            .auth-container {
+                padding: 3rem 1rem;
+            }
+        }
+
+        /* Ajuste para telas muito baixas */
+        @media (max-height: 600px) {
+            .auth-container {
+                padding: 0.5rem;
+            }
+            .card-header {
+                padding: 1.25rem 1.5rem;
+            }
+            .card-body {
+                padding: 1.25rem 1.5rem;
+            }
+            .form-control {
+                margin-bottom: 0.875rem;
+                height: 46px;
+            }
+            .btn-primary {
+                margin-bottom: 0.875rem;
+                height: 46px;
             }
         }
     </style>
