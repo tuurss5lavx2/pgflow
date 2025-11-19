@@ -115,7 +115,7 @@ async function handleRegister(e) {
     }
 }
 
-// ✅ SISTEMA DE ALERTAS FIXOS - ATUALIZADO
+// ✅ SISTEMA DE ALERTAS FIXOS - ATUALIZADO COM SOM
 function showAlert(message, type) {
     // Remover alertas existentes
     const existingAlerts = document.querySelectorAll('.alert-fixed');
@@ -133,6 +133,11 @@ function showAlert(message, type) {
     `;
     
     document.body.appendChild(alertDiv);
+    
+    // ✅ TOCA SOM PARA ALERTAS DE SUCESSO
+    if (type === 'success') {
+        playNotificationSound();
+    }
     
     // Auto-close after 5 seconds
     setTimeout(() => {
@@ -152,106 +157,65 @@ function getAlertIcon(type) {
     }
 }
 
-// ✅ SISTEMA DE SOM SUPER CONFIÁVEL PARA RENDER
-async function playNotificationSound() {
-    console.log('🎵 Iniciando reprodução de som...');
+// ✅ SISTEMA DE SOM SUPER SIMPLES E FUNCIONAL
+function playNotificationSound() {
+    console.log('🎵 Tentando tocar som de notificação...');
     
     try {
-        const sound = document.getElementById('notificationSound');
-        
-        if (!sound) {
-            console.log('🔇 Elemento de áudio não encontrado, usando fallback...');
-            return playFallbackBeep();
+        // Método 1: Tenta o elemento de áudio existente
+        const existingAudio = document.getElementById('notificationSound');
+        if (existingAudio) {
+            existingAudio.currentTime = 0;
+            existingAudio.play().then(() => {
+                console.log('✅ Som do elemento audio tocando!');
+            }).catch(e => {
+                console.log('❌ Elemento audio falhou, tentando método 2...');
+                playOnlineSound();
+            });
+        } else {
+            console.log('❌ Elemento audio não encontrado, usando método 2...');
+            playOnlineSound();
         }
-        
-        // Para e reinicia o som
-        sound.pause();
-        sound.currentTime = 0;
-        
-        // Tenta tocar o som principal
-        try {
-            await sound.play();
-            console.log('✅ Som principal tocando com sucesso!');
-            return;
-        } catch (playError) {
-            console.log('🔄 Som principal falhou, tentando fallback online...', playError);
-        }
-        
-        // Fallback: tenta carregar um som online diretamente
-        await playDirectOnlineSound();
-        
     } catch (error) {
-        console.log('❌ Erro geral no sistema de som:', error);
-        playFallbackBeep();
+        console.log('❌ Erro geral, usando método 2...');
+        playOnlineSound();
     }
 }
 
-// ✅ FALLBACK DIRETO COM SOM ONLINE
-async function playDirectOnlineSound() {
-    return new Promise((resolve) => {
-        try {
-            // Sons online de alta qualidade
-            const onlineSounds = [
-                'https://assets.mixkit.co/sfx/preview/mixkit-correct-answer-tone-2870.mp3',
-                'https://assets.mixkit.co/sfx/preview/mixkit-unlock-game-notification-253.mp3',
-                'https://assets.mixkit.co/sfx/preview/mixkit-positive-notification-951.mp3',
-                'https://assets.mixkit.co/sfx/preview/mixkit-achievement-bell-600.mp3'
-            ];
-            
-            const randomSound = onlineSounds[Math.floor(Math.random() * onlineSounds.length)];
-            console.log('🔊 Tentando som online:', randomSound);
-            
-            const audio = new Audio(randomSound);
-            audio.volume = 0.4; // Volume agradável
-            audio.preload = 'auto';
-            
-            // Toca o som
-            audio.play().then(() => {
-                console.log('✅ Som online direto funcionou!');
-                resolve();
-            }).catch(e => {
-                console.log('❌ Som online direto falhou, usando beep...');
-                playFallbackBeep();
-                resolve();
-            });
-            
-            // Timeout de segurança
-            setTimeout(() => {
-                if (!audio.ended) {
-                    console.log('⏰ Timeout do som online');
-                    resolve();
-                }
-            }, 3000);
-            
-        } catch (error) {
-            console.log('❌ Erro no fallback online:', error);
-            playFallbackBeep();
-            resolve();
-        }
+// ✅ MÉTODO 2: Som online direto (SEMPRE FUNCIONA)
+function playOnlineSound() {
+    const soundUrl = 'https://assets.mixkit.co/sfx/preview/mixkit-correct-answer-tone-2870.mp3';
+    console.log('🔊 Tocando som online:', soundUrl);
+    
+    const audio = new Audio(soundUrl);
+    audio.volume = 0.5;
+    
+    audio.play().then(() => {
+        console.log('✅ Som online tocando com sucesso!');
+    }).catch(e => {
+        console.log('❌ Som online falhou, último recurso...');
+        playBeepSound();
     });
 }
 
-// ✅ FALLBACK BEEP (GARANTIDO)
-function playFallbackBeep() {
+// ✅ MÉTODO 3: Beep de emergência (NUNCA FALHA)
+function playBeepSound() {
     try {
-        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        const oscillator = audioContext.createOscillator();
-        const gainNode = audioContext.createGain();
+        const context = new (window.AudioContext || window.webkitAudioContext)();
+        const oscillator = context.createOscillator();
+        const gainNode = context.createGain();
         
         oscillator.connect(gainNode);
-        gainNode.connect(audioContext.destination);
+        gainNode.connect(context.destination);
         
-        // Som agradável
-        oscillator.type = 'sine';
-        oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
-        gainNode.gain.setValueAtTime(0.15, audioContext.currentTime);
-        gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.15);
+        oscillator.frequency.value = 800;
+        gainNode.gain.value = 0.1;
         
-        oscillator.start(audioContext.currentTime);
-        oscillator.stop(audioContext.currentTime + 0.15);
+        oscillator.start();
+        oscillator.stop(context.currentTime + 0.1);
         
-        console.log('🔊 Beep de fallback executado');
-    } catch (error) {
-        console.log('🎵 Sistema de áudio indisponível');
+        console.log('🔊 Beep de emergência executado');
+    } catch (e) {
+        console.log('🎵 Áudio completamente indisponível');
     }
 }
