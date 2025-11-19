@@ -228,21 +228,30 @@ function getAlertIcon(type) {
 function playNotificationSound() {
     try {
         const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        const oscillator = audioContext.createOscillator();
+        
+        // Criar osciladores para um som de sino
+        const osc1 = audioContext.createOscillator();
+        const osc2 = audioContext.createOscillator();
         const gainNode = audioContext.createGain();
         
-        oscillator.connect(gainNode);
+        osc1.connect(gainNode);
+        osc2.connect(gainNode);
         gainNode.connect(audioContext.destination);
         
-        // Som pop moderno
-        oscillator.type = 'sine';
-        oscillator.frequency.setValueAtTime(784.00, audioContext.currentTime); // Nota G5
-        oscillator.frequency.exponentialRampToValueAtTime(523.25, audioContext.currentTime + 0.1); // C5
-        gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
-        gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.2);
+        // Configurar os osciladores
+        osc1.type = 'sine';
+        osc1.frequency.setValueAtTime(1046.50, audioContext.currentTime); // C6
         
-        oscillator.start(audioContext.currentTime);
-        oscillator.stop(audioContext.currentTime + 0.2);
+        osc2.type = 'sine';
+        osc2.frequency.setValueAtTime(1318.51, audioContext.currentTime); // E6
+        
+        gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.3);
+        
+        osc1.start(audioContext.currentTime);
+        osc2.start(audioContext.currentTime);
+        osc1.stop(audioContext.currentTime + 0.3);
+        osc2.stop(audioContext.currentTime + 0.3);
         
     } catch (error) {
         console.log('Som de notificação não suportado');
