@@ -152,29 +152,87 @@ function getAlertIcon(type) {
     }
 }
 
-// ✅ SISTEMA DE SOM COM SEU ARQUIVO - ATUALIZADO
-function playNotificationSound() {
+// ✅ SISTEMA DE SOM SUPER CONFIÁVEL PARA RENDER
+async function playNotificationSound() {
+    console.log('🎵 Iniciando reprodução de som...');
+    
     try {
         const sound = document.getElementById('notificationSound');
-        if (sound) {
-            sound.currentTime = 0; // Reinicia o som
-            sound.play().catch(error => {
-                console.log('Não foi possível tocar o som:', error);
-                // Fallback para som gerado se o arquivo falhar
-                playFallbackSound();
-            });
-        } else {
-            // Fallback se o elemento de áudio não existir
-            playFallbackSound();
+        
+        if (!sound) {
+            console.log('🔇 Elemento de áudio não encontrado, usando fallback...');
+            return playFallbackBeep();
         }
+        
+        // Para e reinicia o som
+        sound.pause();
+        sound.currentTime = 0;
+        
+        // Tenta tocar o som principal
+        try {
+            await sound.play();
+            console.log('✅ Som principal tocando com sucesso!');
+            return;
+        } catch (playError) {
+            console.log('🔄 Som principal falhou, tentando fallback online...', playError);
+        }
+        
+        // Fallback: tenta carregar um som online diretamente
+        await playDirectOnlineSound();
+        
     } catch (error) {
-        console.log('Erro ao tocar som:', error);
-        playFallbackSound();
+        console.log('❌ Erro geral no sistema de som:', error);
+        playFallbackBeep();
     }
 }
 
-// ✅ SOM DE FALLBACK (caso seu arquivo não carregue)
-function playFallbackSound() {
+// ✅ FALLBACK DIRETO COM SOM ONLINE
+async function playDirectOnlineSound() {
+    return new Promise((resolve) => {
+        try {
+            // Sons online de alta qualidade
+            const onlineSounds = [
+                'https://assets.mixkit.co/sfx/preview/mixkit-correct-answer-tone-2870.mp3',
+                'https://assets.mixkit.co/sfx/preview/mixkit-unlock-game-notification-253.mp3',
+                'https://assets.mixkit.co/sfx/preview/mixkit-positive-notification-951.mp3',
+                'https://assets.mixkit.co/sfx/preview/mixkit-achievement-bell-600.mp3'
+            ];
+            
+            const randomSound = onlineSounds[Math.floor(Math.random() * onlineSounds.length)];
+            console.log('🔊 Tentando som online:', randomSound);
+            
+            const audio = new Audio(randomSound);
+            audio.volume = 0.4; // Volume agradável
+            audio.preload = 'auto';
+            
+            // Toca o som
+            audio.play().then(() => {
+                console.log('✅ Som online direto funcionou!');
+                resolve();
+            }).catch(e => {
+                console.log('❌ Som online direto falhou, usando beep...');
+                playFallbackBeep();
+                resolve();
+            });
+            
+            // Timeout de segurança
+            setTimeout(() => {
+                if (!audio.ended) {
+                    console.log('⏰ Timeout do som online');
+                    resolve();
+                }
+            }, 3000);
+            
+        } catch (error) {
+            console.log('❌ Erro no fallback online:', error);
+            playFallbackBeep();
+            resolve();
+        }
+    });
+}
+
+// ✅ FALLBACK BEEP (GARANTIDO)
+function playFallbackBeep() {
     try {
         const audioContext = new (window.AudioContext || window.webkitAudioContext)();
         const oscillator = audioContext.createOscillator();
@@ -183,14 +241,17 @@ function playFallbackSound() {
         oscillator.connect(gainNode);
         gainNode.connect(audioContext.destination);
         
+        // Som agradável
         oscillator.type = 'sine';
         oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
-        gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+        gainNode.gain.setValueAtTime(0.15, audioContext.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.15);
         
         oscillator.start(audioContext.currentTime);
-        oscillator.stop(audioContext.currentTime + 0.3);
+        oscillator.stop(audioContext.currentTime + 0.15);
+        
+        console.log('🔊 Beep de fallback executado');
     } catch (error) {
-        console.log('Som de fallback também falhou');
+        console.log('🎵 Sistema de áudio indisponível');
     }
 }

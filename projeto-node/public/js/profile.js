@@ -223,72 +223,86 @@ function getAlertIcon(type) {
     }
 }
 
-// ✅ FUNÇÃO OTIMIZADA PARA RENDER
+// ✅ SISTEMA DE SOM SUPER CONFIÁVEL PARA RENDER
 async function playNotificationSound() {
-    console.log('🔊 Tentando tocar som no Render...');
+    console.log('🎵 Iniciando reprodução de som...');
     
     try {
         const sound = document.getElementById('notificationSound');
         
         if (!sound) {
-            console.log('❌ Elemento de áudio não encontrado');
-            return playFallbackSound();
+            console.log('🔇 Elemento de áudio não encontrado, usando fallback...');
+            return playFallbackBeep();
         }
         
-        // Para e reinicia
+        // Para e reinicia o som
         sound.pause();
         sound.currentTime = 0;
         
-        // Tenta tocar com tratamento de erro
+        // Tenta tocar o som principal
         try {
             await sound.play();
-            console.log('✅ Som online tocando!');
+            console.log('✅ Som principal tocando com sucesso!');
+            return;
         } catch (playError) {
-            console.log('❌ Erro ao tocar som online:', playError);
-            
-            // Fallback: tenta carregar um som online dinamicamente
-            await playOnlineSoundFallback();
+            console.log('🔄 Som principal falhou, tentando fallback online...', playError);
         }
         
+        // Fallback: tenta carregar um som online diretamente
+        await playDirectOnlineSound();
+        
     } catch (error) {
-        console.log('❌ Erro geral:', error);
-        playFallbackSound();
+        console.log('❌ Erro geral no sistema de som:', error);
+        playFallbackBeep();
     }
 }
 
-// ✅ FALLBACK COM SOM ONLINE DINÂMICO
-async function playOnlineSoundFallback() {
+// ✅ FALLBACK DIRETO COM SOM ONLINE
+async function playDirectOnlineSound() {
     return new Promise((resolve) => {
         try {
-            // Sons online gratuitos como fallback
+            // Sons online de alta qualidade
             const onlineSounds = [
-                'https://assets.mixkit.co/sfx/preview/mixkit-positive-notification-951.mp3',
+                'https://assets.mixkit.co/sfx/preview/mixkit-correct-answer-tone-2870.mp3',
                 'https://assets.mixkit.co/sfx/preview/mixkit-unlock-game-notification-253.mp3',
-                'https://assets.mixkit.co/sfx/preview/mixkit-correct-answer-tone-2870.mp3'
+                'https://assets.mixkit.co/sfx/preview/mixkit-positive-notification-951.mp3',
+                'https://assets.mixkit.co/sfx/preview/mixkit-achievement-bell-600.mp3'
             ];
             
             const randomSound = onlineSounds[Math.floor(Math.random() * onlineSounds.length)];
-            const audio = new Audio(randomSound);
-            audio.volume = 0.3;
+            console.log('🔊 Tentando som online:', randomSound);
             
+            const audio = new Audio(randomSound);
+            audio.volume = 0.4; // Volume agradável
+            audio.preload = 'auto';
+            
+            // Toca o som
             audio.play().then(() => {
-                console.log('✅ Som de fallback online tocando!');
+                console.log('✅ Som online direto funcionou!');
                 resolve();
             }).catch(e => {
-                console.log('❌ Fallback online também falhou');
+                console.log('❌ Som online direto falhou, usando beep...');
                 playFallbackBeep();
                 resolve();
             });
             
+            // Timeout de segurança
+            setTimeout(() => {
+                if (!audio.ended) {
+                    console.log('⏰ Timeout do som online');
+                    resolve();
+                }
+            }, 3000);
+            
         } catch (error) {
-            console.log('❌ Erro no fallback online');
+            console.log('❌ Erro no fallback online:', error);
             playFallbackBeep();
             resolve();
         }
     });
 }
 
-// ✅ FALLBACK BEEP (sempre funciona)
+// ✅ FALLBACK BEEP (GARANTIDO)
 function playFallbackBeep() {
     try {
         const audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -298,16 +312,17 @@ function playFallbackBeep() {
         oscillator.connect(gainNode);
         gainNode.connect(audioContext.destination);
         
+        // Som agradável
         oscillator.type = 'sine';
         oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
-        gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
-        gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.1);
+        gainNode.gain.setValueAtTime(0.15, audioContext.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.15);
         
         oscillator.start(audioContext.currentTime);
-        oscillator.stop(audioContext.currentTime + 0.1);
+        oscillator.stop(audioContext.currentTime + 0.15);
         
         console.log('🔊 Beep de fallback executado');
     } catch (error) {
-        console.log('❌ Até o beep falhou - sem áudio disponível');
+        console.log('🎵 Sistema de áudio indisponível');
     }
 }
