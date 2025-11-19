@@ -82,8 +82,10 @@ function displayPosts(posts) {
   posts.forEach(post => {
     const isOwner = user && post.author === user.name;
     
-    // Verificação de likes
-    const userLiked = user && post.likes && post.likes.includes(user.id);
+    // ✅ CORREÇÃO CRÍTICA: Verificação de likes
+    const userLiked = user && post.likes && Array.isArray(post.likes) && 
+                     post.likes.some(likeId => likeId === user.id);
+    
     const likesCount = post.likesCount || (post.likes ? post.likes.length : 0);
     
     // URL do avatar
@@ -146,12 +148,12 @@ function displayPosts(posts) {
   updatePostsCount(posts);
 }
 
-// ✅ FUNÇÃO LIKE SIMPLIFICADA E FUNCIONAL
+// ✅ FUNÇÃO LIKE CORRIGIDA - IMPEDE MÚLTIPLOS LIKES
 async function toggleLike(postId, button) {
     try {
         const token = localStorage.getItem('token');
         
-        // Desabilita botão temporariamente
+        // Desabilita botão temporariamente para evitar múltiplos cliques
         button.disabled = true;
         
         const response = await fetch(`/api/posts/${postId}/like`, {
@@ -174,12 +176,11 @@ async function toggleLike(postId, button) {
             if (data.liked) {
                 button.classList.add('liked');
                 icon.classList.add('text-white');
-                // ✅ SOM APENAS QUANDO DÁ LIKE (não quando remove)
+                // ✅ SOM APENAS QUANDO DÁ LIKE
                 playNotificationSound();
             } else {
                 button.classList.remove('liked');
                 icon.classList.remove('text-white');
-                // ❌ NÃO TOCA SOM QUANDO REMOVE O LIKE
             }
         } else {
             showAlert(data.message || 'Erro ao curtir', 'danger');
@@ -188,8 +189,10 @@ async function toggleLike(postId, button) {
         console.error('Erro no like:', error);
         showAlert('Erro de conexão', 'danger');
     } finally {
-        // Reabilita botão
-        button.disabled = false;
+        // Reabilita botão após 500ms para evitar spam
+        setTimeout(() => {
+            button.disabled = false;
+        }, 500);
     }
 }
 
@@ -361,7 +364,7 @@ function showLoading() {
     }
 }
 
-// ✅ SISTEMA DE ALERTAS (SEM ALERT PARA LIKES)
+// ✅ SISTEMA DE ALERTAS
 function showAlert(message, type) {
     const existingAlerts = document.querySelectorAll('.alert-fixed');
     existingAlerts.forEach(alert => alert.remove());

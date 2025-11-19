@@ -159,7 +159,7 @@ const postController = {
     }
   },
 
-  // ✅ LIKE SIMPLIFICADO E FUNCIONAL
+   // ✅ LIKE CORRIGIDO - SÓ PERMITE 1 LIKE POR USUÁRIO
   like: async (req, res) => {
     try {
       const postId = req.params.id;
@@ -170,12 +170,16 @@ const postController = {
         return res.status(404).json({ message: 'Post não encontrado' });
       }
 
-      // Verifica se usuário já curtiu
-      const userIndex = post.likes.indexOf(userId);
+      // Verifica se usuário já curtiu - CORREÇÃO AQUI
+      const userAlreadyLiked = post.likes.some(like => 
+        like.toString() === userId.toString()
+      );
 
-      if (userIndex > -1) {
+      if (userAlreadyLiked) {
         // Remove o like
-        post.likes.splice(userIndex, 1);
+        post.likes = post.likes.filter(like => 
+          like.toString() !== userId.toString()
+        );
         await post.save();
         
         return res.json({ 
