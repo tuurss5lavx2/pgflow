@@ -13,8 +13,10 @@
         :root {
             --primary: #10b981;
             --primary-dark: #059669;
-            --gradient: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            --gradient-dark: linear-gradient(135deg, #0f766e 0%, var(--primary-dark) 100%);
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --text-dark: #1f2937;
+            --text-muted: #6b7280;
+            --border-light: #e5e7eb;
         }
 
         * {
@@ -24,7 +26,7 @@
         }
 
         body {
-            background: var(--gradient-dark);
+            background: linear-gradient(135deg, #0f766e 0%, var(--primary-dark) 100%);
             font-family: 'Poppins', sans-serif;
             min-height: 100vh;
             overflow: hidden;
@@ -54,19 +56,18 @@
         }
 
         .auth-card {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(20px);
+            background: var(--card-bg);
             border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--border-light);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
             max-width: 420px;
             width: 100%;
             margin: 0 auto;
         }
 
         .card-header {
-            background: rgba(255, 255, 255, 0.15);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            border-bottom: 1px solid var(--border-light);
             padding: 2.5rem 2rem;
             text-align: center;
             border-radius: 20px 20px 0 0 !important;
@@ -84,30 +85,31 @@
         }
 
         .form-control {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            color: white;
+            background: white;
+            border: 2px solid var(--border-light);
+            color: var(--text-dark);
             padding: 1rem 1.5rem;
             border-radius: 12px;
             font-size: 1rem;
             margin-bottom: 1.5rem;
             height: 55px;
+            transition: all 0.3s ease;
         }
 
         .form-control::placeholder {
-            color: rgba(255, 255, 255, 0.6);
+            color: var(--text-muted);
         }
 
         .form-control:focus {
-            background: rgba(255, 255, 255, 0.15);
-            border-color: rgba(255, 255, 255, 0.5);
-            color: white;
-            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
+            background: white;
+            border-color: var(--primary);
+            color: var(--text-dark);
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
             outline: none;
         }
 
         .btn-primary {
-            background: var(--gradient);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
             border: none;
             padding: 1rem 2rem;
             width: 100%;
@@ -121,18 +123,18 @@
 
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3);
         }
 
         .auth-link {
-            color: rgba(255, 255, 255, 0.9);
+            color: var(--primary);
             text-decoration: none;
             font-weight: 500;
             transition: all 0.3s ease;
         }
 
         .auth-link:hover {
-            color: white;
+            color: var(--primary-dark);
             text-decoration: underline;
         }
 
@@ -168,20 +170,6 @@
                 padding: 0.875rem 1.5rem;
                 height: 50px;
                 font-size: 1rem;
-            }
-        }
-
-        @media (max-height: 700px) {
-            .auth-container {
-                padding: 0.5rem;
-            }
-            
-            .card-header {
-                padding: 1.5rem 2rem;
-            }
-            
-            .card-body {
-                padding: 1.5rem 2rem;
             }
         }
     </style>
