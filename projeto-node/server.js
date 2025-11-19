@@ -18,7 +18,7 @@ app.use(cors({
   origin: [
     'http://localhost:3000',
     'https://userflow-backend-0004.onrender.com',
-    'https://seu-frontend.vercel.app'  // ← SEU NOVO DOMÍNIO VERCEL
+    'https://userflow-backend.vercel.app/'  // ← SEU NOVO DOMÍNIO VERCEL
   ],
   credentials: true
 }));
