@@ -160,21 +160,29 @@ function getAlertIcon(type) {
 function playNotificationSound() {
     try {
         const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        const oscillator = audioContext.createOscillator();
+        
+        // Múltiplos osciladores para som cristalino
+        const osc1 = audioContext.createOscillator();
+        const osc2 = audioContext.createOscillator();
         const gainNode = audioContext.createGain();
         
-        oscillator.connect(gainNode);
+        osc1.connect(gainNode);
+        osc2.connect(gainNode);
         gainNode.connect(audioContext.destination);
         
-        // Som de bolha
-        oscillator.type = 'sine';
-        oscillator.frequency.setValueAtTime(300, audioContext.currentTime);
-        oscillator.frequency.exponentialRampToValueAtTime(100, audioContext.currentTime + 0.15);
-        gainNode.gain.setValueAtTime(0.08, audioContext.currentTime);
-        gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.2);
+        osc1.type = 'sine';
+        osc1.frequency.setValueAtTime(1046.50, audioContext.currentTime); // C6
         
-        oscillator.start(audioContext.currentTime);
-        oscillator.stop(audioContext.currentTime + 0.2);
+        osc2.type = 'sine';
+        osc2.frequency.setValueAtTime(1567.98, audioContext.currentTime); // G6
+        
+        gainNode.gain.setValueAtTime(0.07, audioContext.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.4);
+        
+        osc1.start(audioContext.currentTime);
+        osc2.start(audioContext.currentTime);
+        osc1.stop(audioContext.currentTime + 0.4);
+        osc2.stop(audioContext.currentTime + 0.4);
         
     } catch (error) {
         console.log('Som de notificação não suportado');
