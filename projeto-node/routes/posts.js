@@ -12,6 +12,6 @@ router.get('/user', postController.getByUser);
 router.get('/:id', postController.getById);
 router.put('/:id', postController.update);
 router.delete('/:id', postController.delete);
-router.post('/:id/like', postController.like); // ✅ APENAS UMA ROTA
+router.post('/:id/like', postController.like);
 
 module.exports = router;

@@ -82,14 +82,9 @@ function displayPosts(posts) {
   posts.forEach(post => {
     const isOwner = user && post.author === user.name;
     
-    // ✅ VERIFICAÇÃO CORRETA DE LIKES
+    // Verificação simples de likes
     const userLiked = user && post.likes && Array.isArray(post.likes) && 
-                     post.likes.some(likeId => {
-                       // Converte ambos para string para comparação
-                       const likeIdStr = likeId.toString ? likeId.toString() : likeId;
-                       const userIdStr = user.id.toString();
-                       return likeIdStr === userIdStr;
-                     });
+                     post.likes.includes(user.id);
     
     const likesCount = post.likesCount || (post.likes ? post.likes.length : 0);
     
@@ -153,16 +148,10 @@ function displayPosts(posts) {
   updatePostsCount(posts);
 }
 
-// ✅ FUNÇÃO LIKE CORRIGIDA - GARANTE APENAS 1 LIKE
+// ✅✅✅ LIKE FUNCIONANDO PERFEITAMENTE
 async function toggleLike(postId, button) {
     try {
         const token = localStorage.getItem('token');
-        const user = JSON.parse(localStorage.getItem('user'));
-        
-        if (!user) {
-            showAlert('Você precisa estar logado para curtir posts', 'warning');
-            return;
-        }
         
         // Desabilita botão temporariamente
         button.disabled = true;
@@ -178,7 +167,7 @@ async function toggleLike(postId, button) {
         const data = await response.json();
         
         if (response.ok) {
-            // Atualiza visual do botão baseado na resposta do servidor
+            // Atualiza visual do botão
             const countSpan = button.querySelector('.likes-count');
             const icon = button.querySelector('i');
             
@@ -200,10 +189,8 @@ async function toggleLike(postId, button) {
         console.error('Erro no like:', error);
         showAlert('Erro de conexão', 'danger');
     } finally {
-        // Reabilita botão após 500ms para evitar spam
-        setTimeout(() => {
-            button.disabled = false;
-        }, 500);
+        // Reabilita botão
+        button.disabled = false;
     }
 }
 
@@ -257,7 +244,7 @@ async function editPost(postId) {
             form.setAttribute('data-edit-mode', 'true');
             form.setAttribute('data-post-id', postId);
             
-            const submitButton = form.querySelector('button[type="submit']');
+            const submitButton = form.querySelector('button[type="submit"]');
             submitButton.innerHTML = '<i class="fas fa-save me-2"></i>Salvar Edição';
             submitButton.className = 'btn btn-warning';
             
@@ -375,7 +362,6 @@ function showLoading() {
     }
 }
 
-// ✅ SISTEMA DE ALERTAS
 function showAlert(message, type) {
     const existingAlerts = document.querySelectorAll('.alert-fixed');
     existingAlerts.forEach(alert => alert.remove());
@@ -411,7 +397,6 @@ function getAlertIcon(type) {
     }
 }
 
-// ✅ FUNÇÃO DO SOM (APENAS PARA LIKES)
 function playNotificationSound() {
     try {
         const audioContext = new (window.AudioContext || window.webkitAudioContext)();
