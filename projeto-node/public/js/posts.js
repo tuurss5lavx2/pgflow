@@ -153,7 +153,7 @@ function displayPosts(posts) {
   updatePostsCount(posts);
 }
 
-// ✅ FUNÇÃO TOGGLELIKE CORRIGIDA - AGORA COM CLASSE .liked
+// ✅ FUNÇÃO TOGGLELIKE ATUALIZADA
 async function toggleLike(postId, button) {
     try {
         const token = localStorage.getItem('token');
@@ -164,31 +164,13 @@ async function toggleLike(postId, button) {
             return;
         }
         
+        // ✅ DESABILITA O BOTÃO PARA EVITAR CLICKS DUPLOS
+        button.disabled = true;
+        
         const icon = button.querySelector('i');
         const countSpan = button.querySelector('.likes-count');
-        const currentCount = parseInt(countSpan.textContent) || 0;
-        const isCurrentlyLiked = button.classList.contains('liked');
         
-        // ✅ FEEDBACK VISUAL IMEDIATO
-        if (isCurrentlyLiked) {
-            // DEScurtindo visualmente
-            button.classList.remove('liked');
-            icon.classList.remove('text-white');
-            countSpan.textContent = Math.max(0, currentCount - 1);
-        } else {
-            // Curtindo visualmente
-            button.classList.add('liked');
-            icon.classList.add('text-white');
-            countSpan.textContent = currentCount + 1;
-            
-            // ✅ ANIMAÇÃO DO CORAÇÃO
-            icon.style.animation = 'none';
-            setTimeout(() => {
-                icon.style.animation = 'heartBeat 0.6s ease';
-            }, 10);
-        }
-        
-        // ✅ CHAMADA ÚNICA PARA API
+        // ✅ CHAMADA DIRETA PARA API
         const response = await fetch(`/api/posts/${postId}/like`, {
             method: 'POST',
             headers: {
@@ -199,38 +181,32 @@ async function toggleLike(postId, button) {
         
         const data = await response.json();
         
-        if (!response.ok) {
-            // ✅ ROLLBACK VISUAL SE ERRO
-            if (isCurrentlyLiked) {
-                button.classList.add('liked');
-                icon.classList.add('text-white');
-                countSpan.textContent = currentCount;
-            } else {
-                button.classList.remove('liked');
-                icon.classList.remove('text-white');
-                countSpan.textContent = currentCount;
-            }
-            showAlert(data.message || 'Erro ao processar like', 'danger');
-        } else {
-            // ✅ SUCESSO - ATUALIZA COM DADOS REAIS
-            showAlert(data.message, 'success');
-            countSpan.textContent = data.likesCount || data.likes;
+        if (response.ok) {
+            // ✅ USA APENAS OS DADOS DA RESPOSTA DA API
+            countSpan.textContent = data.likesCount || data.likes || 0;
             
-            // ✅ GARANTE ESTADO VISUAL CORRETO
+            // ✅ ATUALIZA ESTADO VISUAL BASEADO NA RESPOSTA
             if (data.liked) {
                 button.classList.add('liked');
                 icon.classList.add('text-white');
+                showAlert('Post curtido!', 'success');
             } else {
                 button.classList.remove('liked');
                 icon.classList.remove('text-white');
+                showAlert('Like removido!', 'info');
             }
             
-            // ✅ TOCA SOM DE NOTIFICAÇÃO
             playNotificationSound();
+            
+        } else {
+            showAlert(data.message || 'Erro ao processar like', 'danger');
         }
     } catch (error) {
         console.error('Erro no toggleLike:', error);
         showAlert('Erro de conexão', 'danger');
+    } finally {
+        // ✅ REABILITA O BOTÃO
+        button.disabled = false;
     }
 }
 

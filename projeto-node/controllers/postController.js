@@ -26,7 +26,7 @@ const postController = {
           title: newPost.title,
           content: newPost.content,
           author: newPost.author.name,
-          authorAvatar: newPost.author.avatar, // ⬅️ ADICIONAR AQUI
+          authorAvatar: newPost.author.avatar,
           likes: newPost.likes || [],
           createdAt: newPost.createdAt,
           updatedAt: newPost.updatedAt
@@ -47,7 +47,7 @@ const postController = {
         title: post.title,
         content: post.content,
         author: post.author.name,
-        authorAvatar: post.author.avatar, // ⬅️ ADICIONAR AQUI
+        authorAvatar: post.author.avatar,
         likes: post.likes || [],
         createdAt: post.createdAt,
         updatedAt: post.updatedAt
@@ -73,7 +73,7 @@ const postController = {
         title: post.title,
         content: post.content,
         author: post.author.name,
-        authorAvatar: post.author.avatar, // ⬅️ ADICIONAR AQUI
+        authorAvatar: post.author.avatar,
         likes: post.likes || [],
         createdAt: post.createdAt,
         updatedAt: post.updatedAt
@@ -119,7 +119,7 @@ const postController = {
           title: updatedPost.title,
           content: updatedPost.content,
           author: updatedPost.author.name,
-          authorAvatar: updatedPost.author.avatar, // ⬅️ ADICIONAR AQUI
+          authorAvatar: updatedPost.author.avatar,
           likes: updatedPost.likes || [],
           createdAt: updatedPost.createdAt,
           updatedAt: updatedPost.updatedAt
@@ -152,7 +152,7 @@ const postController = {
     }
   },
 
-  // ⬇️⬇️⬇️ ATUALIZAR LIKES TAMBÉM ⬇️⬇️⬇️
+  // ✅✅✅ MÉTODO LIKE CORRIGIDO - PROBLEMA RESOLVIDO ✅✅✅
   like: async (req, res) => {
     try {
         const postId = req.params.id;
@@ -163,19 +163,30 @@ const postController = {
             return res.status(404).json({ message: 'Post não encontrado' });
         }
         
-        // Verifica se usuário já curtiu - LÓGICA CORRIGIDA
-        const alreadyLiked = post.likes.includes(userId);
+        // ✅ CORREÇÃO CRÍTICA: Comparação correta de IDs
+        const alreadyLiked = post.likes.some(likeId => 
+            likeId.toString() === userId.toString()
+        );
         
+        console.log('DEBUG like:', { 
+            postId, 
+            userId, 
+            currentLikes: post.likes.map(id => id.toString()),
+            alreadyLiked 
+        });
+
         if (alreadyLiked) {
-            // REMOVE like se já curtiu
-            post.likes = post.likes.filter(likeId => likeId.toString() !== userId);
+            // ✅ REMOVE like - CORREÇÃO: usa userId diretamente
+            post.likes = post.likes.filter(likeId => 
+                likeId.toString() !== userId.toString()
+            );
             await post.save();
             
             const updatedPost = await Post.findById(postId).populate('author', 'name avatar');
             
             return res.json({ 
                 message: 'Like removido com sucesso!',
-                likes: post.likes.length,
+                likesCount: post.likes.length, // ✅ Nome consistente
                 liked: false,
                 post: {
                     _id: updatedPost._id,
@@ -189,7 +200,7 @@ const postController = {
                 }
             });
         } else {
-            // ADICIONA like se não curtiu
+            // ✅ ADICIONA like - CORREÇÃO: usa userId diretamente
             post.likes.push(userId);
             await post.save();
             
@@ -197,7 +208,7 @@ const postController = {
             
             return res.json({ 
                 message: 'Post curtido com sucesso!',
-                likes: post.likes.length,
+                likesCount: post.likes.length, // ✅ Nome consistente
                 liked: true,
                 post: {
                     _id: updatedPost._id,
@@ -215,8 +226,7 @@ const postController = {
         console.error('Erro ao curtir post:', error);
         res.status(500).json({ message: 'Erro interno ao curtir post' });
     }
-},
-  // ⬆️⬆️⬆️ LIKES ATUALIZADOS E CORRETOS ⬆️⬆️⬆️
+  },
   
   getByUser: async (req, res) => {
     try {
@@ -230,7 +240,7 @@ const postController = {
         title: post.title,
         content: post.content,
         author: post.author.name,
-        authorAvatar: post.author.avatar, // ⬅️ ADICIONAR AQUI
+        authorAvatar: post.author.avatar,
         likes: post.likes || [],
         createdAt: post.createdAt,
         updatedAt: post.updatedAt

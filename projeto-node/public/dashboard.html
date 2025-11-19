@@ -50,24 +50,25 @@
             gap: 0.75rem;
         }
 
-        /* ✅ LOGO ICON CORRIGIDO - SEM FUNDO VERDE */
+        /* ✅ LOGO ICON CORRIGIDO - SEM FUNDO VERDE E HOVER MELHOR */
         .logo-icon {
             width: 40px;
             height: 40px;
-            background: transparent !important; /* ✅ FUNDO TRANSPARENTE */
+            background: transparent !important;
             border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
             transition: var(--transition);
-            font-size: 1.8rem; /* ✅ TAMANHO MAIOR DO RAIO */
+            font-size: 1.8rem;
             font-weight: bold;
-            color: var(--primary); /* ✅ COR DO RAIO */
+            color: var(--primary);
         }
 
         .logo-icon:hover {
-            transform: scale(1.1) rotate(10deg);
+            transform: scale(1.1);
             color: var(--primary-dark);
+            text-shadow: 0 0 10px rgba(16, 185, 129, 0.3);
         }
 
         .logo-text {
@@ -89,7 +90,7 @@
             font-weight: 400;
         }
 
-        /* ✅ USER SECTION MELHORADA */
+        /* ✅ USER SECTION - VISUAL ANTERIOR MELHORADO */
         .user-section {
             margin-left: auto;
         }
@@ -99,19 +100,18 @@
             align-items: center;
             gap: 0.75rem;
             padding: 0.5rem 1rem;
-            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            background: #f8fafc;
             border-radius: 50px;
             border: 1px solid #e5e7eb;
             transition: var(--transition);
             position: relative;
             cursor: pointer;
-            box-shadow: var(--shadow);
         }
 
         .user-profile:hover {
-            background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-lg);
+            background: #f1f5f9;
+            transform: translateY(-1px);
+            box-shadow: var(--shadow);
             border-color: var(--primary-light);
         }
 
@@ -120,33 +120,14 @@
             height: 45px;
             border-radius: 50%;
             overflow: hidden;
-            border: 3px solid var(--primary-light);
+            border: 2px solid #e5e7eb;
             box-shadow: var(--shadow);
             transition: var(--transition);
-            position: relative;
-        }
-
-        .avatar-wrapper::before {
-            content: '';
-            position: absolute;
-            top: -3px;
-            left: -3px;
-            right: -3px;
-            bottom: -3px;
-            background: var(--gradient);
-            border-radius: 50%;
-            z-index: -1;
-            opacity: 0;
-            transition: var(--transition);
-        }
-
-        .avatar-wrapper:hover::before {
-            opacity: 1;
         }
 
         .avatar-wrapper:hover {
-            transform: scale(1.1);
             border-color: var(--primary);
+            transform: scale(1.05);
         }
 
         .user-avatar {
@@ -162,13 +143,9 @@
         }
 
         .user-name {
-            font-weight: 700;
+            font-weight: 600;
             color: #1e293b;
             font-size: 0.9rem;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
         }
 
         .user-badge {
@@ -177,18 +154,11 @@
             display: flex;
             align-items: center;
             gap: 0.25rem;
-            font-weight: 500;
         }
 
         .online-dot {
             color: #10b981;
             font-size: 0.5rem;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
         }
 
         .dropdown-btn {
@@ -209,7 +179,6 @@
         .dropdown-btn:hover {
             color: var(--primary);
             background: #f1f5f9;
-            transform: rotate(180deg);
         }
 
         /* Dropdown Menu */
