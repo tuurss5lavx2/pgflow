@@ -166,14 +166,15 @@ function playNotificationSound() {
         oscillator.connect(gainNode);
         gainNode.connect(audioContext.destination);
         
-        // Som mais suave e moderno
+        // Som pop moderno
         oscillator.type = 'sine';
-        oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime); // Nota C5
-        gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
-        gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.15);
+        oscillator.frequency.setValueAtTime(784.00, audioContext.currentTime); // Nota G5
+        oscillator.frequency.exponentialRampToValueAtTime(523.25, audioContext.currentTime + 0.1); // C5
+        gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.2);
         
         oscillator.start(audioContext.currentTime);
-        oscillator.stop(audioContext.currentTime + 0.15);
+        oscillator.stop(audioContext.currentTime + 0.2);
         
     } catch (error) {
         console.log('Som de notificação não suportado');
