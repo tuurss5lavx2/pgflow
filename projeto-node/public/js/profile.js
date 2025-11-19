@@ -223,10 +223,30 @@ function getAlertIcon(type) {
     }
 }
 
-// ✅ SISTEMA DE NOTIFICAÇÕES COM SOM - ADICIONE ESTA FUNÇÃO
+// ✅ SISTEMA DE SOM COM SEU ARQUIVO - ATUALIZADO
 function playNotificationSound() {
     try {
-        // Cria um contexto de áudio
+        const sound = document.getElementById('notificationSound');
+        if (sound) {
+            sound.currentTime = 0; // Reinicia o som
+            sound.play().catch(error => {
+                console.log('Não foi possível tocar o som:', error);
+                // Fallback para som gerado se o arquivo falhar
+                playFallbackSound();
+            });
+        } else {
+            // Fallback se o elemento de áudio não existir
+            playFallbackSound();
+        }
+    } catch (error) {
+        console.log('Erro ao tocar som:', error);
+        playFallbackSound();
+    }
+}
+
+// ✅ SOM DE FALLBACK (caso seu arquivo não carregue)
+function playFallbackSound() {
+    try {
         const audioContext = new (window.AudioContext || window.webkitAudioContext)();
         const oscillator = audioContext.createOscillator();
         const gainNode = audioContext.createGain();
@@ -234,46 +254,14 @@ function playNotificationSound() {
         oscillator.connect(gainNode);
         gainNode.connect(audioContext.destination);
         
-        // Configura o som (beep suave)
         oscillator.type = 'sine';
-        oscillator.frequency.setValueAtTime(800, audioContext.currentTime); // Frequência
-        gainNode.gain.setValueAtTime(0.3, audioContext.currentTime); // Volume
+        oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
+        gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
         gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
         
         oscillator.start(audioContext.currentTime);
         oscillator.stop(audioContext.currentTime + 0.3);
-        
     } catch (error) {
-        console.log('Som de notificação não suportado');
+        console.log('Som de fallback também falhou');
     }
-}
-
-// ✅ SISTEMA DE ALERTAS FIXOS COM SOM - ATUALIZADO
-function showAlert(message, type) {
-    // Remover alertas existentes
-    const existingAlerts = document.querySelectorAll('.alert-fixed');
-    existingAlerts.forEach(alert => alert.remove());
-    
-    const alertDiv = document.createElement('div');
-    alertDiv.className = `alert alert-${type} alert-dismissible fade show alert-fixed`;
-    alertDiv.role = 'alert';
-    alertDiv.innerHTML = `
-        <div class="d-flex align-items-center">
-            <i class="fas ${getAlertIcon(type)} me-2"></i>
-            <div class="flex-grow-1">${message}</div>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    `;
-    
-    document.body.appendChild(alertDiv);
-    
-    // ✅ TOCA SOM PARA TODAS AS NOTIFICAÇÕES
-    playNotificationSound();
-    
-    // Auto-close after 5 seconds
-    setTimeout(() => {
-        if (alertDiv.parentNode) {
-            alertDiv.remove();
-        }
-    }, 5000);
 }
