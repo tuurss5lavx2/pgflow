@@ -155,89 +155,67 @@ const postController = {
   // ⬇️⬇️⬇️ ATUALIZAR LIKES TAMBÉM ⬇️⬇️⬇️
   like: async (req, res) => {
     try {
-      const postId = req.params.id;
-      const userId = req.user.id;
-      
-      const post = await Post.findById(postId);
-      if (!post) {
-        return res.status(404).json({ message: 'Post não encontrado' });
-      }
-      
-      // Verifica se usuário já curtiu
-      const alreadyLiked = post.likes.some(likeId => likeId.toString() === userId);
-      if (alreadyLiked) {
-        return res.status(400).json({ message: 'Você já curtiu este post' });
-      }
-      
-      // Adiciona like
-      post.likes.push(userId);
-      await post.save();
-      
-      // Busca post atualizado
-      const updatedPost = await Post.findById(postId).populate('author', 'name avatar');
-      
-      res.json({ 
-        message: 'Post curtido com sucesso!',
-        likes: post.likes.length,
-        post: {
-          _id: updatedPost._id,
-          title: updatedPost.title,
-          content: updatedPost.content,
-          author: updatedPost.author.name,
-          authorAvatar: updatedPost.author.avatar, // ⬅️ ADICIONAR AQUI
-          likes: updatedPost.likes,
-          createdAt: updatedPost.createdAt,
-          updatedAt: updatedPost.updatedAt
+        const postId = req.params.id;
+        const userId = req.user.id;
+        
+        const post = await Post.findById(postId);
+        if (!post) {
+            return res.status(404).json({ message: 'Post não encontrado' });
         }
-      });
-    } catch (error) {
-      console.error('Erro ao curtir post:', error);
-      res.status(500).json({ message: 'Erro interno ao curtir post' });
-    }
-  },
-
-  unlike: async (req, res) => {
-    try {
-      const postId = req.params.id;
-      const userId = req.user.id;
-      
-      const post = await Post.findById(postId);
-      if (!post) {
-        return res.status(404).json({ message: 'Post não encontrado' });
-      }
-      
-      // Verifica se usuário curtiu
-      const likedIndex = post.likes.findIndex(likeId => likeId.toString() === userId);
-      if (likedIndex === -1) {
-        return res.status(400).json({ message: 'Você não curtiu este post' });
-      }
-      
-      // Remove like
-      post.likes.splice(likedIndex, 1);
-      await post.save();
-      
-      // Busca post atualizado
-      const updatedPost = await Post.findById(postId).populate('author', 'name avatar');
-      
-      res.json({ 
-        message: 'Like removido com sucesso!',
-        likes: post.likes.length,
-        post: {
-          _id: updatedPost._id,
-          title: updatedPost.title,
-          content: updatedPost.content,
-          author: updatedPost.author.name,
-          authorAvatar: updatedPost.author.avatar, // ⬅️ ADICIONAR AQUI
-          likes: updatedPost.likes,
-          createdAt: updatedPost.createdAt,
-          updatedAt: updatedPost.updatedAt
+        
+        // Verifica se usuário já curtiu - LÓGICA CORRIGIDA
+        const alreadyLiked = post.likes.includes(userId);
+        
+        if (alreadyLiked) {
+            // REMOVE like se já curtiu
+            post.likes = post.likes.filter(likeId => likeId.toString() !== userId);
+            await post.save();
+            
+            const updatedPost = await Post.findById(postId).populate('author', 'name avatar');
+            
+            return res.json({ 
+                message: 'Like removido com sucesso!',
+                likes: post.likes.length,
+                liked: false,
+                post: {
+                    _id: updatedPost._id,
+                    title: updatedPost.title,
+                    content: updatedPost.content,
+                    author: updatedPost.author.name,
+                    authorAvatar: updatedPost.author.avatar,
+                    likes: updatedPost.likes,
+                    createdAt: updatedPost.createdAt,
+                    updatedAt: updatedPost.updatedAt
+                }
+            });
+        } else {
+            // ADICIONA like se não curtiu
+            post.likes.push(userId);
+            await post.save();
+            
+            const updatedPost = await Post.findById(postId).populate('author', 'name avatar');
+            
+            return res.json({ 
+                message: 'Post curtido com sucesso!',
+                likes: post.likes.length,
+                liked: true,
+                post: {
+                    _id: updatedPost._id,
+                    title: updatedPost.title,
+                    content: updatedPost.content,
+                    author: updatedPost.author.name,
+                    authorAvatar: updatedPost.author.avatar,
+                    likes: updatedPost.likes,
+                    createdAt: updatedPost.createdAt,
+                    updatedAt: updatedPost.updatedAt
+                }
+            });
         }
-      });
     } catch (error) {
-      console.error('Erro ao remover like:', error);
-      res.status(500).json({ message: 'Erro interno ao remover like' });
+        console.error('Erro ao curtir post:', error);
+        res.status(500).json({ message: 'Erro interno ao curtir post' });
     }
-  },
+},
   // ⬆️⬆️⬆️ LIKES ATUALIZADOS E CORRETOS ⬆️⬆️⬆️
   
   getByUser: async (req, res) => {

@@ -153,83 +153,85 @@ function displayPosts(posts) {
   updatePostsCount(posts);
 }
 
-// Função para alternar like/unlike
+// ✅ FUNÇÃO TOGGLELIKE CORRIGIDA
 async function toggleLike(postId, button) {
-  try {
-    const token = localStorage.getItem('token');
-    const user = JSON.parse(localStorage.getItem('user'));
-    
-    if (!user) {
-      showAlert('Você precisa estar logado para curtir posts', 'warning');
-      return;
+    try {
+        const token = localStorage.getItem('token');
+        const user = JSON.parse(localStorage.getItem('user'));
+        
+        if (!user) {
+            showAlert('Você precisa estar logado para curtir posts', 'warning');
+            return;
+        }
+        
+        const icon = button.querySelector('i');
+        const countSpan = button.querySelector('.likes-count');
+        const currentCount = parseInt(countSpan.textContent) || 0;
+        const isCurrentlyLiked = button.classList.contains('btn-danger');
+        
+        // ✅ FEEDBACK VISUAL IMEDIATO
+        if (isCurrentlyLiked) {
+            // DEScurtindo visualmente
+            button.classList.remove('btn-danger');
+            button.classList.add('btn-outline-danger');
+            icon.classList.remove('text-white');
+            countSpan.textContent = Math.max(0, currentCount - 1);
+        } else {
+            // Curtindo visualmente
+            button.classList.remove('btn-outline-danger');
+            button.classList.add('btn-danger');
+            icon.classList.add('text-white');
+            countSpan.textContent = currentCount + 1;
+        }
+        
+        // ✅ CHAMADA ÚNICA PARA API
+        const response = await fetch(`/api/posts/${postId}/like`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        });
+        
+        const data = await response.json();
+        
+        if (!response.ok) {
+            // ✅ ROLLBACK VISUAL SE ERRO
+            if (isCurrentlyLiked) {
+                button.classList.add('btn-danger');
+                button.classList.remove('btn-outline-danger');
+                icon.classList.add('text-white');
+                countSpan.textContent = currentCount;
+            } else {
+                button.classList.remove('btn-danger');
+                button.classList.add('btn-outline-danger');
+                icon.classList.remove('text-white');
+                countSpan.textContent = currentCount;
+            }
+            showAlert(data.message || 'Erro ao processar like', 'danger');
+        } else {
+            // ✅ SUCESSO - ATUALIZA COM DADOS REAIS
+            showAlert(data.message, 'success');
+            countSpan.textContent = data.likes;
+            
+            // ✅ GARANTE ESTADO VISUAL CORRETO
+            if (data.liked) {
+                button.classList.remove('btn-outline-danger');
+                button.classList.add('btn-danger');
+                icon.classList.add('text-white');
+            } else {
+                button.classList.remove('btn-danger');
+                button.classList.add('btn-outline-danger');
+                icon.classList.remove('text-white');
+            }
+            
+            // ✅ TOCA SOM DE NOTIFICAÇÃO
+            playNotificationSound();
+        }
+    } catch (error) {
+        console.error('Erro no toggleLike:', error);
+        showAlert('Erro de conexão', 'danger');
     }
-    
-    const icon = button.querySelector('i');
-    const countSpan = button.querySelector('.likes-count');
-    const currentCount = parseInt(countSpan.textContent) || 0;
-    const isCurrentlyLiked = button.classList.contains('btn-danger');
-    
-    // ✅ CORREÇÃO: Estado visual IMEDIATO
-    if (isCurrentlyLiked) {
-      // DEScurtindo
-      button.classList.remove('btn-danger');
-      button.classList.add('btn-outline-danger');
-      icon.classList.remove('text-white');
-      countSpan.textContent = Math.max(0, currentCount - 1);
-    } else {
-      // Curtindo
-      button.classList.remove('btn-outline-danger');
-      button.classList.add('btn-danger');
-      icon.classList.add('text-white');
-      countSpan.textContent = currentCount + 1;
-    }
-    
-    // ✅ CORREÇÃO: Chamada API
-    const endpoint = isCurrentlyLiked ? 'unlike' : 'like';
-    const response = await fetch(`/api/posts/${postId}/${endpoint}`, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      }
-    });
-    
-    const data = await response.json();
-    
-    if (!response.ok) {
-      // ✅ CORREÇÃO: Rollback visual se erro
-      if (isCurrentlyLiked) {
-        button.classList.add('btn-danger');
-        button.classList.remove('btn-outline-danger');
-        icon.classList.add('text-white');
-        countSpan.textContent = currentCount;
-      } else {
-        button.classList.remove('btn-danger');
-        button.classList.add('btn-outline-danger');
-        icon.classList.remove('text-white');
-        countSpan.textContent = currentCount;
-      }
-      showAlert(data.message || 'Erro ao processar like', 'danger');
-    } else {
-      // ✅ SUCESSO: Atualiza com dados reais
-      showAlert(data.message, 'success');
-      countSpan.textContent = data.likes;
-      
-      // Garante estado visual correto
-      if (endpoint === 'like') {
-        button.classList.remove('btn-outline-danger');
-        button.classList.add('btn-danger');
-        icon.classList.add('text-white');
-      } else {
-        button.classList.remove('btn-danger');
-        button.classList.add('btn-outline-danger');
-        icon.classList.remove('text-white');
-      }
-    }
-  } catch (error) {
-    console.error('Erro no toggleLike:', error);
-    showAlert('Erro de conexão', 'danger');
-  }
 }
 
 // Event listener para likes
@@ -445,4 +447,59 @@ function getAlertIcon(type) {
         case 'info': return 'fa-info-circle';
         default: return 'fa-bell';
     }
+}
+
+// ✅ SISTEMA DE NOTIFICAÇÕES COM SOM - ADICIONE ESTA FUNÇÃO
+function playNotificationSound() {
+    try {
+        // Cria um contexto de áudio
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+        
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+        
+        // Configura o som (beep suave)
+        oscillator.type = 'sine';
+        oscillator.frequency.setValueAtTime(800, audioContext.currentTime); // Frequência
+        gainNode.gain.setValueAtTime(0.3, audioContext.currentTime); // Volume
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+        
+        oscillator.start(audioContext.currentTime);
+        oscillator.stop(audioContext.currentTime + 0.3);
+        
+    } catch (error) {
+        console.log('Som de notificação não suportado');
+    }
+}
+
+// ✅ SISTEMA DE ALERTAS FIXOS COM SOM - ATUALIZADO
+function showAlert(message, type) {
+    // Remover alertas existentes
+    const existingAlerts = document.querySelectorAll('.alert-fixed');
+    existingAlerts.forEach(alert => alert.remove());
+    
+    const alertDiv = document.createElement('div');
+    alertDiv.className = `alert alert-${type} alert-dismissible fade show alert-fixed`;
+    alertDiv.role = 'alert';
+    alertDiv.innerHTML = `
+        <div class="d-flex align-items-center">
+            <i class="fas ${getAlertIcon(type)} me-2"></i>
+            <div class="flex-grow-1">${message}</div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    `;
+    
+    document.body.appendChild(alertDiv);
+    
+    // ✅ TOCA SOM PARA TODAS AS NOTIFICAÇÕES
+    playNotificationSound();
+    
+    // Auto-close after 5 seconds
+    setTimeout(() => {
+        if (alertDiv.parentNode) {
+            alertDiv.remove();
+        }
+    }, 5000);
 }
