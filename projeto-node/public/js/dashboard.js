@@ -163,12 +163,13 @@ function displayCommunityFeed(posts) {
                     </button>
                     <button class="view-comments-btn" data-id="${post._id}">
                         <i class="fas fa-comment"></i>
-                        <span>Comentar</span>
+                        Comentários
+                        <span class="comments-count-badge" id="comments-badge-${post._id}">0</span>
                     </button>
                 </div>
             </div>
             
-            <!-- Comment Section -->
+            <!-- Comment Section - Mais Discreta -->
             <div class="comment-section" id="comment-section-${post._id}" style="display: none;">
                 <div class="comment-form">
                     <div class="comment-input-group">
@@ -193,6 +194,9 @@ function displayCommunityFeed(posts) {
         `;
         
         feedContainer.appendChild(postElement);
+        
+        // Load comments count for community feed
+        loadCommentsCountForFeed(post._id);
     });
     
     // Add event listeners
@@ -408,6 +412,28 @@ async function loadCommentsCount(postId) {
     }
 }
 
+// Load comments count for community feed
+async function loadCommentsCountForFeed(postId) {
+    try {
+        const token = localStorage.getItem('token');
+        const response = await fetch(`/api/comments/post/${postId}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        
+        if (response.ok) {
+            const comments = await response.json();
+            const badgeElement = document.getElementById(`comments-badge-${postId}`);
+            if (badgeElement) {
+                badgeElement.textContent = comments.length;
+            }
+        }
+    } catch (error) {
+        console.error('Erro ao carregar contagem de comentários:', error);
+    }
+}
+
 // Display comments
 function displayComments(postId, comments) {
     const commentsList = document.getElementById(`comments-list-${postId}`);
@@ -452,12 +478,10 @@ function displayComments(postId, comments) {
             <div class="comment-header">
                 <img src="${authorAvatar}" alt="${comment.author}" class="comment-author-avatar"
                      onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(comment.author)}&background=10b981&color=fff&size=40'">
-                <div class="flex-grow-1">
-                    <div class="comment-author">${comment.author}</div>
-                    <div class="comment-date">
-                        ${new Date(comment.createdAt).toLocaleDateString('pt-BR')} às 
-                        ${new Date(comment.createdAt).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
-                    </div>
+                <div class="comment-author">${comment.author}</div>
+                <div class="comment-date">
+                    ${new Date(comment.createdAt).toLocaleDateString('pt-BR')} às 
+                    ${new Date(comment.createdAt).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
                 </div>
                 ${isOwner ? `
                 <button class="comment-delete-btn" onclick="deleteComment('${comment._id}', '${postId}')">
@@ -509,11 +533,17 @@ async function addComment(postId) {
             playNotificationSound();
             loadComments(postId);
             
-            // Update comments count in my posts tab
+            // Update comments count in both tabs
             const countElement = document.getElementById(`comments-count-${postId}`);
+            const badgeElement = document.getElementById(`comments-badge-${postId}`);
+            
             if (countElement) {
                 const currentCount = parseInt(countElement.textContent) || 0;
                 countElement.textContent = currentCount + 1;
+            }
+            if (badgeElement) {
+                const currentCount = parseInt(badgeElement.textContent) || 0;
+                badgeElement.textContent = currentCount + 1;
             }
         } else {
             const errorData = await response.json();
@@ -544,11 +574,17 @@ async function deleteComment(commentId, postId) {
             showAlert('Comentário excluído com sucesso!', 'success');
             loadComments(postId);
             
-            // Update comments count in my posts tab
+            // Update comments count in both tabs
             const countElement = document.getElementById(`comments-count-${postId}`);
+            const badgeElement = document.getElementById(`comments-badge-${postId}`);
+            
             if (countElement) {
                 const currentCount = parseInt(countElement.textContent) || 0;
                 countElement.textContent = Math.max(0, currentCount - 1);
+            }
+            if (badgeElement) {
+                const currentCount = parseInt(badgeElement.textContent) || 0;
+                badgeElement.textContent = Math.max(0, currentCount - 1);
             }
         } else {
             const errorData = await response.json();
