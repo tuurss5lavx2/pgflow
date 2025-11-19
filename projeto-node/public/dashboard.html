@@ -8,12 +8,9 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="/css/style.css" rel="stylesheet">
-
-    <!-- Favicon PGFlow -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90' fill='%2310b981'>⚡</text></svg>" type="image/svg+xml">
     
     <style>
-        /* Dashboard Styles */
         :root {
             --primary: #10b981;
             --primary-dark: #059669;
@@ -53,24 +50,24 @@
             gap: 0.75rem;
         }
 
+        /* ✅ LOGO ICON CORRIGIDO - SEM FUNDO VERDE */
         .logo-icon {
             width: 40px;
             height: 40px;
-            background: var(--gradient);
+            background: transparent !important; /* ✅ FUNDO TRANSPARENTE */
             border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
             transition: var(--transition);
+            font-size: 1.8rem; /* ✅ TAMANHO MAIOR DO RAIO */
+            font-weight: bold;
+            color: var(--primary); /* ✅ COR DO RAIO */
         }
 
         .logo-icon:hover {
-            transform: scale(1.05);
-        }
-
-        .logo-icon i {
-            font-size: 1.2rem;
-            color: white;
+            transform: scale(1.1) rotate(10deg);
+            color: var(--primary-dark);
         }
 
         .logo-text {
@@ -92,7 +89,7 @@
             font-weight: 400;
         }
 
-        /* User Section */
+        /* ✅ USER SECTION MELHORADA */
         .user-section {
             margin-left: auto;
         }
@@ -102,17 +99,20 @@
             align-items: center;
             gap: 0.75rem;
             padding: 0.5rem 1rem;
-            background: #f8fafc;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
             border-radius: 50px;
             border: 1px solid #e5e7eb;
             transition: var(--transition);
             position: relative;
             cursor: pointer;
+            box-shadow: var(--shadow);
         }
 
         .user-profile:hover {
-            background: #f1f5f9;
-            transform: translateY(-1px);
+            background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary-light);
         }
 
         .avatar-wrapper {
@@ -120,12 +120,32 @@
             height: 45px;
             border-radius: 50%;
             overflow: hidden;
-            border: 2px solid #e5e7eb;
+            border: 3px solid var(--primary-light);
             box-shadow: var(--shadow);
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .avatar-wrapper::before {
+            content: '';
+            position: absolute;
+            top: -3px;
+            left: -3px;
+            right: -3px;
+            bottom: -3px;
+            background: var(--gradient);
+            border-radius: 50%;
+            z-index: -1;
+            opacity: 0;
             transition: var(--transition);
         }
 
+        .avatar-wrapper:hover::before {
+            opacity: 1;
+        }
+
         .avatar-wrapper:hover {
+            transform: scale(1.1);
             border-color: var(--primary);
         }
 
@@ -142,9 +162,13 @@
         }
 
         .user-name {
-            font-weight: 600;
+            font-weight: 700;
             color: #1e293b;
             font-size: 0.9rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .user-badge {
@@ -153,11 +177,18 @@
             display: flex;
             align-items: center;
             gap: 0.25rem;
+            font-weight: 500;
         }
 
         .online-dot {
             color: #10b981;
             font-size: 0.5rem;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
         }
 
         .dropdown-btn {
@@ -178,9 +209,10 @@
         .dropdown-btn:hover {
             color: var(--primary);
             background: #f1f5f9;
+            transform: rotate(180deg);
         }
 
-        /* Dropdown Menu - CORRIGIDO Z-INDEX */
+        /* Dropdown Menu */
         .user-dropdown {
             position: relative;
         }
@@ -197,7 +229,7 @@
             right: 0;
             top: 100%;
             margin-top: 0.5rem;
-            z-index: 9999; /* Z-INDEX ALTO PARA FICAR NA FRENTE */
+            z-index: 9999;
         }
 
         .clean-dropdown .dropdown-item {
@@ -277,7 +309,7 @@
             padding: 1.5rem;
         }
 
-        /* Posts List - COMPATÍVEL COM SEU posts.js */
+        /* Posts List */
         .post-card {
             background: white;
             border-radius: var(--radius-lg);
@@ -362,7 +394,7 @@
             align-items: center;
         }
 
-        /* Like Button - COMPATÍVEL COM SEU posts.js */
+        /* ✅ LIKE BUTTON CORRIGIDO */
         .like-btn {
             transition: all 0.3s ease;
             border-radius: 25px;
@@ -385,33 +417,30 @@
             color: var(--primary);
         }
 
-        .like-btn.btn-danger {
+        .like-btn.liked {
             background: var(--gradient);
             color: white;
             border-color: var(--primary);
         }
 
-        .like-btn.btn-danger:hover {
+        .like-btn.liked:hover {
             background: var(--primary-dark);
-        }
-
-        .like-btn.btn-outline-danger {
-            background: transparent;
-            border-color: #dc3545;
-            color: #dc3545;
-        }
-
-        .like-btn.btn-outline-danger:hover {
-            background: #dc3545;
-            color: white;
         }
 
         .like-btn .fa-heart {
             transition: var(--transition);
         }
 
-        .like-btn.btn-danger .fa-heart {
+        .like-btn.liked .fa-heart {
             color: white;
+            animation: heartBeat 0.6s ease;
+        }
+
+        @keyframes heartBeat {
+            0%, 100% { transform: scale(1); }
+            25% { transform: scale(1.3); }
+            50% { transform: scale(0.9); }
+            75% { transform: scale(1.2); }
         }
 
         .likes-count {
@@ -425,7 +454,7 @@
             padding: 0.375rem 0.75rem;
         }
 
-        /* RESPONSIVIDADE MELHORADA */
+        /* RESPONSIVIDADE */
         @media (max-width: 768px) {
             .user-profile {
                 padding: 0.4rem 0.8rem;
@@ -438,23 +467,7 @@
             }
             
             .user-info {
-                display: none; /* Esconde nome em mobile */
-            }
-            
-            .user-name {
-                font-size: 0.8rem;
-            }
-            
-            .user-badge {
-                font-size: 0.65rem;
-            }
-            
-            .logo-main {
-                font-size: 1.1rem;
-            }
-            
-            .logo-subtitle {
-                font-size: 0.65rem;
+                display: none;
             }
             
             .dropdown-btn {
@@ -463,7 +476,6 @@
                 padding: 0.4rem;
             }
             
-            /* Dropdown em mobile */
             .clean-dropdown {
                 position: fixed;
                 top: 80px !important;
@@ -476,7 +488,6 @@
                 z-index: 9999;
             }
             
-            /* Posts responsivos */
             .post-card {
                 padding: 1.5rem;
                 margin-bottom: 1.5rem;
@@ -510,21 +521,9 @@
                 width: 100%;
                 justify-content: space-between;
             }
-            
-            .card-body {
-                padding: 1.25rem;
-            }
-            
-            .card-header {
-                padding: 1rem 1.25rem;
-            }
         }
 
         @media (max-width: 576px) {
-            .navbar-clean .container {
-                padding: 0 12px;
-            }
-            
             .user-profile {
                 gap: 0.4rem;
                 padding: 0.35rem 0.6rem;
@@ -548,10 +547,7 @@
             .logo-icon {
                 width: 35px;
                 height: 35px;
-            }
-            
-            .logo-icon i {
-                font-size: 1rem;
+                font-size: 1.5rem;
             }
             
             .logo-main {
@@ -560,19 +556,6 @@
             
             .logo-subtitle {
                 font-size: 0.6rem;
-            }
-            
-            .clean-dropdown {
-                min-width: 180px;
-                width: 85%;
-            }
-            
-            .card-body {
-                padding: 1rem;
-            }
-            
-            .card-header {
-                padding: 0.875rem 1rem;
             }
             
             .post-card {
@@ -596,120 +579,42 @@
                 padding: 0.4rem 0.8rem;
                 font-size: 0.85rem;
             }
-            
-            .container.py-5 {
-                padding-top: 2rem !important;
-                padding-bottom: 2rem !important;
+        }
+
+        /* Alert System */
+        .alert-fixed {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            z-index: 9999;
+            min-width: 300px;
+            max-width: 500px;
+            animation: slideInRight 0.3s ease-out;
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
             }
         }
 
-        /* Para telas muito pequenas */
-        @media (max-width: 360px) {
-            .logo-text {
-                display: none; /* Esconde texto do logo em telas muito pequenas */
-            }
-            
-            .user-profile {
-                padding: 0.3rem 0.5rem;
-            }
-            
-            .avatar-wrapper {
-                width: 32px;
-                height: 32px;
-            }
-            
-            .post-card {
-                padding: 1rem;
-            }
-            
-            .post-title {
-                font-size: 1rem;
-            }
-            
-            .post-header {
-                gap: 0.5rem;
-            }
-            
-            .post-avatar {
-                width: 35px;
-                height: 35px;
+        @media (max-width: 768px) {
+            .alert-fixed {
+                top: 80px;
+                right: 10px;
+                left: 10px;
+                min-width: auto;
             }
         }
-
-        /* Ajustes para o dropdown do Bootstrap */
-        .dropdown-menu.show {
-            display: block !important;
-        }
-
-        /* Garantir que o dropdown não quebre e fique na frente */
-        .user-dropdown .dropdown-menu {
-            transform: none !important;
-        }
-
-        @media (min-width: 769px) {
-            .user-dropdown .dropdown-menu {
-                left: auto !important;
-                right: 0 !important;
-                transform: none !important;
-            }
-        }
-
-        /* Alert System Fix - POSIÇÃO FIXA */
-.alert-fixed {
-    position: fixed;
-    top: 100px;
-    right: 20px;
-    z-index: 9999;
-    min-width: 300px;
-    max-width: 500px;
-    animation: slideInRight 0.3s ease-out;
-}
-
-@keyframes slideInRight {
-    from {
-        transform: translateX(100%);
-        opacity: 0;
-    }
-    to {
-        transform: translateX(0);
-        opacity: 1;
-    }
-}
-
-/* Responsive alerts */
-@media (max-width: 768px) {
-    .alert-fixed {
-        top: 80px;
-        right: 10px;
-        left: 10px;
-        min-width: auto;
-    }
-}
-
-        /* Garantir que o dropdown fique acima de tudo */
-        .navbar-clean {
-            z-index: 1030;
-        }
-
-        .clean-dropdown {
-            z-index: 9999 !important;
-        }
-        .logo-icon {
-    width: 40px;
-    height: 40px;
-    background: var(--gradient);
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: var(--transition);
-    font-size: 1.4rem; /* TAMANHO DO RAIO */
-    font-weight: bold;
-}
     </style>
 </head>
 <body>
-    <!-- Navbar Nova e Melhorada -->
+    <!-- Navbar Atualizada -->
     <nav class="navbar navbar-expand-lg navbar-clean">
         <div class="container">
             <!-- Logo -->
@@ -725,7 +630,7 @@
                 </div>
             </a>
 
-            <!-- User Menu -->
+            <!-- User Menu Melhorado -->
             <div class="user-section">
                 <div class="user-dropdown">
                     <div class="user-profile" data-bs-toggle="dropdown" aria-expanded="false">
@@ -806,14 +711,12 @@
         </div>
     </div>
 
-    <!-- NO FINAL DO BODY - ANTES DOS SCRIPTS -->
-<audio id="notificationSound" preload="auto" style="display: none;">
-    <source src="https://assets.mixkit.co/sfx/preview/mixkit-unlock-game-notification-253.mp3" type="audio/mpeg">
-</audio>
+    <audio id="notificationSound" preload="auto" style="display: none;">
+        <source src="https://assets.mixkit.co/sfx/preview/mixkit-unlock-game-notification-253.mp3" type="audio/mpeg">
+    </audio>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Script para garantir que o dropdown funcione corretamente
         document.addEventListener('DOMContentLoaded', function() {
             // Logout button
             const logoutBtn = document.getElementById('logoutBtn');

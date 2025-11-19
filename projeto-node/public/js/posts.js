@@ -137,7 +137,7 @@ function displayPosts(posts) {
       
       <div class="post-footer">
         <div class="post-actions">
-          <button class="like-btn ${userLiked ? 'btn-danger' : 'btn-outline-danger'}" data-id="${post._id}">
+          <button class="like-btn ${userLiked ? 'liked' : ''}" data-id="${post._id}">
             <i class="fas fa-heart ${userLiked ? 'text-white' : ''}"></i> 
             <span class="likes-count">${likesCount}</span>
           </button>
@@ -153,7 +153,7 @@ function displayPosts(posts) {
   updatePostsCount(posts);
 }
 
-// ✅ FUNÇÃO TOGGLELIKE CORRIGIDA
+// ✅ FUNÇÃO TOGGLELIKE CORRIGIDA - AGORA COM CLASSE .liked
 async function toggleLike(postId, button) {
     try {
         const token = localStorage.getItem('token');
@@ -167,21 +167,25 @@ async function toggleLike(postId, button) {
         const icon = button.querySelector('i');
         const countSpan = button.querySelector('.likes-count');
         const currentCount = parseInt(countSpan.textContent) || 0;
-        const isCurrentlyLiked = button.classList.contains('btn-danger');
+        const isCurrentlyLiked = button.classList.contains('liked');
         
         // ✅ FEEDBACK VISUAL IMEDIATO
         if (isCurrentlyLiked) {
             // DEScurtindo visualmente
-            button.classList.remove('btn-danger');
-            button.classList.add('btn-outline-danger');
+            button.classList.remove('liked');
             icon.classList.remove('text-white');
             countSpan.textContent = Math.max(0, currentCount - 1);
         } else {
             // Curtindo visualmente
-            button.classList.remove('btn-outline-danger');
-            button.classList.add('btn-danger');
+            button.classList.add('liked');
             icon.classList.add('text-white');
             countSpan.textContent = currentCount + 1;
+            
+            // ✅ ANIMAÇÃO DO CORAÇÃO
+            icon.style.animation = 'none';
+            setTimeout(() => {
+                icon.style.animation = 'heartBeat 0.6s ease';
+            }, 10);
         }
         
         // ✅ CHAMADA ÚNICA PARA API
@@ -198,13 +202,11 @@ async function toggleLike(postId, button) {
         if (!response.ok) {
             // ✅ ROLLBACK VISUAL SE ERRO
             if (isCurrentlyLiked) {
-                button.classList.add('btn-danger');
-                button.classList.remove('btn-outline-danger');
+                button.classList.add('liked');
                 icon.classList.add('text-white');
                 countSpan.textContent = currentCount;
             } else {
-                button.classList.remove('btn-danger');
-                button.classList.add('btn-outline-danger');
+                button.classList.remove('liked');
                 icon.classList.remove('text-white');
                 countSpan.textContent = currentCount;
             }
@@ -212,16 +214,14 @@ async function toggleLike(postId, button) {
         } else {
             // ✅ SUCESSO - ATUALIZA COM DADOS REAIS
             showAlert(data.message, 'success');
-            countSpan.textContent = data.likes;
+            countSpan.textContent = data.likesCount || data.likes;
             
             // ✅ GARANTE ESTADO VISUAL CORRETO
             if (data.liked) {
-                button.classList.remove('btn-outline-danger');
-                button.classList.add('btn-danger');
+                button.classList.add('liked');
                 icon.classList.add('text-white');
             } else {
-                button.classList.remove('btn-danger');
-                button.classList.add('btn-outline-danger');
+                button.classList.remove('liked');
                 icon.classList.remove('text-white');
             }
             
