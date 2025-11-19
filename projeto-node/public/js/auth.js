@@ -45,9 +45,9 @@ async function handleLogin(e) {
             localStorage.setItem('user', JSON.stringify(data.user));
             showAlert('Login realizado com sucesso!', 'success');
             
-            setTimeout(() => {
-                window.location.href = '/dashboard';
-            }, 1500);
+            
+showAlert('Login realizado com sucesso!', 'success');
+window.location.href = '/dashboard'; 
         } else {
             showAlert(data.message, 'danger');
             submitButton.innerHTML = originalText;
