@@ -25,6 +25,7 @@ app.use(cors({
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use('/sounds', express.static(path.join(__dirname, 'public', 'sounds'))); // ⬅️ ADICIONE ESTA LINHA
 app.use(express.static(path.join(__dirname, 'public')));
 
 // ✅ ROTAS DA API (com logs apenas em desenvolvimento)
