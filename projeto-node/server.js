@@ -47,39 +47,31 @@ if (process.env.NODE_ENV !== 'production') {
 app.use('/api/posts', postRoutes);
 
 // ✅ ROTAS DO FRONTEND
+// ✅ ROTAS DO FRONTEND (ATUALIZADAS)
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'views', 'index.html'));
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 app.get('/login', (req, res) => {
-  res.sendFile(path.join(__dirname, 'views', 'login.html'));
+  res.sendFile(path.join(__dirname, 'public', 'login.html'));
 });
 
 app.get('/register', (req, res) => {
-  res.sendFile(path.join(__dirname, 'views', 'register.html'));
+  res.sendFile(path.join(__dirname, 'public', 'register.html'));
 });
 
 app.get('/dashboard', (req, res) => {
-  res.sendFile(path.join(__dirname, 'views', 'dashboard.html'));
+  res.sendFile(path.join(__dirname, 'public', 'dashboard.html'));
 });
 
 app.get('/profile', (req, res) => {
-  res.sendFile(path.join(__dirname, 'views', 'profile.html'));
+  res.sendFile(path.join(__dirname, 'public', 'profile.html'));
 });
 
-// ✅ HEALTH CHECK (importante para Render)
-app.get('/health', (req, res) => {
-  res.status(200).json({ 
-    status: 'OK', 
-    message: 'Server is running',
-    timestamp: new Date().toISOString()
-  });
-});
-
-// ✅ ROTA DE FALLBACK
+// ✅ ROTA DE FALLBACK (ATUALIZADA)
 app.use('*', (req, res) => {
   if (req.accepts('html')) {
-    res.sendFile(path.join(__dirname, 'views', 'index.html'));
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
   } else {
     res.status(404).json({ message: 'Rota não encontrada' });
   }
