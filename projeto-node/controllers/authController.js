@@ -69,6 +69,8 @@ const authController = {
 
   uploadAvatar: async (req, res) => {
     try {
+      console.log('Upload avatar iniciado...');
+      
       if (!req.file) {
         return res.status(400).json({ message: 'Nenhuma imagem enviada' });
       }
@@ -83,23 +85,29 @@ const authController = {
       // Se já tem avatar no Cloudinary, deleta o antigo
       if (user.avatar && user.avatar.includes('res.cloudinary.com')) {
         try {
+          console.log('Deletando avatar antigo...');
           const urlParts = user.avatar.split('/');
           const publicIdWithExtension = urlParts[urlParts.length - 1];
           const publicId = publicIdWithExtension.split('.')[0];
           const fullPublicId = `pgflow-avatars/${publicId}`;
           
           await cloudinary.uploader.destroy(fullPublicId);
+          console.log('Avatar antigo deletado');
         } catch (error) {
-          console.log('Erro ao deletar avatar antigo:', error);
+          console.log('Erro ao deletar avatar antigo (pode ignorar):', error.message);
         }
       }
 
-      // Faz upload para o Cloudinary usando a função do middleware
+      // Faz upload para o Cloudinary
+      console.log('Fazendo upload para Cloudinary...');
       const result = await upload.uploadToCloudinary(req.file.buffer, userId);
+      console.log('✅ Upload Cloudinary bem-sucedido!');
+      console.log('URL:', result.secure_url);
       
-      // Atualiza avatar no usuário com URL do Cloudinary
+      // Atualiza avatar no usuário
       user.avatar = result.secure_url;
       await user.save();
+      console.log('Avatar salvo no usuário');
 
       res.json({
         message: 'Avatar atualizado com sucesso!',
@@ -113,8 +121,10 @@ const authController = {
       });
 
     } catch (error) {
-      console.error('Erro ao fazer upload do avatar:', error);
-      res.status(500).json({ message: 'Erro interno ao fazer upload' });
+      console.error('❌ ERRO NO UPLOAD DO AVATAR:', error);
+      res.status(500).json({ 
+        message: 'Erro interno ao fazer upload'
+      });
     }
   },
 
