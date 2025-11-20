@@ -235,12 +235,8 @@ Este projeto está sob a licença MIT. Veja o arquivo LICENSE para detalhes.
 Pablo Gomes
 
 - GitHub: https://github.com/PabloG-7
-- (Adicione aqui links de LinkedIn / Instagram se desejar)
-
-Badges sociais:
-- https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white
-- https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white
-- https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white
+- LinkedIn: https://www.linkedin.com/in/pablogomess/
+- Instagram: https://www.instagram.com/pablog.dev/
 
 ---
 
