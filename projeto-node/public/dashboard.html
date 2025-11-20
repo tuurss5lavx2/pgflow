@@ -6,7 +6,7 @@
     <title>Dashboard - PGFlow</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="/css/style.css" rel="stylesheet">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90' fill='%2310b981'>⚡</text></svg>" type="image/svg+xml">
     
@@ -14,311 +14,160 @@
         :root {
             --primary: #10b981;
             --primary-dark: #059669;
-            --primary-light: #34d399;
-            --accent: #22c55e;
-            --gradient: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            --gradient-accent: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
-            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-            --radius: 8px;
-            --radius-lg: 12px;
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --gray-50: #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e1;
+            --gray-400: #94a3b8;
+            --gray-500: #64748b;
+            --gray-600: #475569;
+            --gray-700: #334155;
+            --gray-800: #1e293b;
+            --gray-900: #0f172a;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --radius: 6px;
+            --radius-lg: 8px;
         }
 
         body {
-            background: #f8fafc;
-            font-family: 'Poppins', sans-serif;
-            padding-top: 0;
+            background: #ffffff;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--gray-800);
+            line-height: 1.5;
         }
 
-        /* NAVBAR ÚNICA E MODERNA */
-        .navbar-premium {
-            background: rgba(255, 255, 255, 0.95) !important;
-            backdrop-filter: blur(20px);
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        /* NAVBAR CLEAN */
+        .navbar-clean {
+            background: #ffffff;
+            border-bottom: 1px solid var(--gray-200);
             padding: 0.75rem 0;
-            border-bottom: 1px solid rgba(241, 245, 249, 0.8);
             position: sticky;
             top: 0;
-            z-index: 1030;
-            transition: var(--transition);
+            z-index: 100;
+            backdrop-filter: blur(8px);
         }
 
-        .navbar-premium.scrolled {
-            background: rgba(255, 255, 255, 0.98) !important;
-            box-shadow: var(--shadow-lg);
-        }
-
-        .logo-premium {
+        .logo-clean {
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: var(--gray-900);
             text-decoration: none;
             display: flex;
             align-items: center;
-            gap: 0.75rem;
-            padding: 0.5rem 0;
+            gap: 0.5rem;
         }
 
-        .logo-badge {
-            width: 45px;
-            height: 45px;
-            background: var(--gradient-accent);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
-            box-shadow: var(--shadow);
-            transition: var(--transition);
+        .logo-clean:hover {
+            color: var(--gray-900);
         }
 
-        .logo-badge::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
-            transform: rotate(45deg);
-            transition: var(--transition);
+        .logo-icon {
+            color: var(--primary);
         }
 
-        .logo-badge:hover {
-            transform: scale(1.05) rotate(2deg);
-            box-shadow: var(--shadow-lg);
-        }
-
-        .logo-badge:hover::before {
-            transform: rotate(45deg) translate(10%, 10%);
-        }
-
-        .logo-badge i {
-            font-size: 1.4rem;
-            color: white;
-            z-index: 2;
-        }
-
-        .logo-text-premium {
-            display: flex;
-            flex-direction: column;
-            line-height: 1.2;
-        }
-
-        .logo-main-premium {
-            font-weight: 700;
-            font-size: 1.4rem;
-            background: var(--gradient-accent);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            letter-spacing: -0.5px;
-        }
-
-        .logo-subtitle-premium {
-            font-size: 0.7rem;
-            color: #64748b;
-            font-weight: 500;
-            letter-spacing: 0.5px;
-        }
-
-        /* USER MENU PREMIUM */
-        .user-menu-premium {
+        /* USER MENU CLEAN */
+        .user-menu {
             margin-left: auto;
         }
 
-        .user-profile-premium {
+        .user-trigger {
             display: flex;
             align-items: center;
             gap: 0.75rem;
-            padding: 0.5rem 1rem;
-            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-            border-radius: 15px;
-            border: 1px solid rgba(226, 232, 240, 0.8);
-            transition: var(--transition);
-            position: relative;
-            cursor: pointer;
-            backdrop-filter: blur(10px);
+            padding: 0.5rem;
+            border-radius: var(--radius);
+            transition: all 0.15s ease;
+            border: 1px solid transparent;
         }
 
-        .user-profile-premium:hover {
-            background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-lg);
-            border-color: var(--primary-light);
+        .user-trigger:hover {
+            background: var(--gray-50);
+            border-color: var(--gray-200);
         }
 
-        .avatar-premium {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: var(--radius);
             object-fit: cover;
-            border: 3px solid white;
-            box-shadow: var(--shadow);
-            transition: var(--transition);
-            position: relative;
-            overflow: hidden;
+            border: 1px solid var(--gray-200);
         }
 
-        .avatar-premium::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            border-radius: 50%;
-            background: var(--gradient);
-            opacity: 0;
-            transition: var(--transition);
-        }
-
-        .user-profile-premium:hover .avatar-premium {
-            transform: scale(1.1);
-            border-color: var(--primary-light);
-        }
-
-        .user-profile-premium:hover .avatar-premium::after {
-            opacity: 0.1;
-        }
-
-        .user-info-premium {
+        .user-info {
             display: flex;
             flex-direction: column;
-            line-height: 1.2;
+            align-items: flex-start;
         }
 
-        .user-name-premium {
-            font-weight: 600;
-            color: #1e293b;
-            font-size: 0.95rem;
+        .user-name {
+            font-weight: 500;
+            font-size: 0.875rem;
+            color: var(--gray-800);
         }
 
-        .user-status-premium {
+        .user-handle {
             font-size: 0.75rem;
-            color: var(--primary);
-            display: flex;
-            align-items: center;
-            gap: 0.25rem;
-            font-weight: 500;
+            color: var(--gray-500);
         }
 
-        .status-dot {
-            width: 8px;
-            height: 8px;
-            background: var(--accent);
-            border-radius: 50%;
-            animation: pulse 2s infinite;
+        .dropdown-chevron {
+            color: var(--gray-400);
+            font-size: 0.75rem;
+            transition: transform 0.15s ease;
         }
 
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
+        .user-trigger[aria-expanded="true"] .dropdown-chevron {
+            transform: rotate(180deg);
         }
 
-        .dropdown-arrow {
-            color: #64748b;
-            transition: var(--transition);
-            font-size: 0.9rem;
-        }
-
-        .user-profile-premium:hover .dropdown-arrow {
-            color: var(--primary);
-            transform: translateY(1px);
-        }
-
-        /* DROPDOWN PREMIUM */
-        .dropdown-premium {
-            border: none;
+        /* DROPDOWN CLEAN */
+        .dropdown-menu-clean {
+            border: 1px solid var(--gray-200);
             border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-xl);
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            padding: 0.75rem;
-            border: 1px solid rgba(241, 245, 249, 0.8);
-            min-width: 220px;
-            margin-top: 0.75rem !important;
-            animation: dropdownSlide 0.3s ease-out;
+            box-shadow: var(--shadow-md);
+            padding: 0.5rem;
+            min-width: 200px;
+            margin-top: 0.5rem;
         }
 
-        @keyframes dropdownSlide {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .dropdown-item-premium {
-            border-radius: var(--radius);
-            padding: 0.875rem 1rem;
-            font-weight: 500;
-            color: #1e293b;
-            transition: var(--transition);
+        .dropdown-item-clean {
             display: flex;
             align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            border-radius: var(--radius);
+            color: var(--gray-700);
             text-decoration: none;
-            border: none;
-            background: none;
-            width: 100%;
-            text-align: left;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
+            transition: all 0.15s ease;
+            font-weight: 400;
         }
 
-        .dropdown-item-premium::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: var(--gradient);
-            transition: var(--transition);
-            z-index: -1;
+        .dropdown-item-clean:hover {
+            background: var(--gray-50);
+            color: var(--gray-900);
         }
 
-        .dropdown-item-premium:hover {
-            color: white;
-            transform: translateX(8px);
+        .dropdown-item-clean i {
+            width: 16px;
+            color: var(--gray-500);
         }
 
-        .dropdown-item-premium:hover::before {
-            left: 0;
+        .dropdown-item-clean:hover i {
+            color: var(--gray-700);
         }
 
-        .dropdown-item-premium i {
-            width: 18px;
-            margin-right: 0.75rem;
-            transition: var(--transition);
+        .dropdown-divider-clean {
+            margin: 0.5rem 0;
+            border-color: var(--gray-200);
         }
 
-        .dropdown-item-premium:hover i {
-            transform: scale(1.1);
-        }
-
-        .logout-item-premium {
-            color: #ef4444 !important;
-        }
-
-        .logout-item-premium:hover {
-            background: #ef4444 !important;
-            color: white !important;
-        }
-
-        .dropdown-divider-premium {
-            margin: 0.75rem 0;
-            border-color: rgba(241, 245, 249, 0.8);
-        }
-
-        /* Container Principal */
+        /* MAIN CONTAINER */
         .dashboard-container {
+            max-width: 800px;
+            margin: 0 auto;
             padding: 2rem 1rem;
-            min-height: calc(100vh - 80px);
         }
 
         @media (max-width: 768px) {
@@ -327,715 +176,498 @@
             }
         }
 
-        @media (max-width: 576px) {
-            .dashboard-container {
-                padding: 1rem 0.5rem;
-            }
-        }
-
-        /* Dashboard Tabs */
-        .dashboard-tabs {
-            background: white;
-            border-radius: var(--radius-lg);
-            box-shadow: var(--shadow);
+        /* TABS CLEAN */
+        .tabs-clean {
+            display: flex;
+            gap: 0.5rem;
             margin-bottom: 2rem;
-            overflow: hidden;
+            border-bottom: 1px solid var(--gray-200);
+            padding-bottom: 1px;
         }
 
-        .nav-tabs-custom {
-            border: none;
-            background: #f8fafc;
-            padding: 0.5rem;
-            display: flex;
-            flex-wrap: nowrap;
-            overflow-x: auto;
-        }
-
-        .nav-tabs-custom .nav-link {
-            border: none;
-            border-radius: var(--radius);
+        .tab-clean {
             padding: 0.75rem 1.5rem;
-            font-weight: 600;
-            color: #64748b;
-            transition: var(--transition);
-            margin: 0 0.25rem;
-            white-space: nowrap;
-            flex-shrink: 0;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .nav-tabs-custom .nav-link::before {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            width: 0;
-            height: 3px;
-            background: var(--gradient);
-            transition: var(--transition);
-            transform: translateX(-50%);
-        }
-
-        .nav-tabs-custom .nav-link:hover {
-            color: var(--primary);
-            background: rgba(16, 185, 129, 0.1);
-        }
-
-        .nav-tabs-custom .nav-link.active {
-            background: var(--gradient);
-            color: white;
-            box-shadow: var(--shadow);
-        }
-
-        .nav-tabs-custom .nav-link.active::before {
-            width: 100%;
-        }
-
-        .tab-badge {
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            border-radius: 20px;
-            padding: 0.2rem 0.6rem;
-            font-size: 0.75rem;
-            margin-left: 0.5rem;
-        }
-
-        /* Cards */
-        .card {
+            background: none;
             border: none;
-            border-radius: var(--radius-lg);
-            box-shadow: var(--shadow);
-            transition: var(--transition);
-            margin-bottom: 1.5rem;
-            overflow: hidden;
-            background: white;
-        }
-
-        .card:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-lg);
-        }
-
-        .card-header {
-            background: var(--gradient);
-            color: white;
-            border-radius: var(--radius-lg) var(--radius-lg) 0 0 !important;
-            border: none;
-            padding: 1.25rem 1.5rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .card-header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: rgba(255, 255, 255, 0.3);
-        }
-
-        .card-header h4 {
-            margin: 0;
-            font-weight: 600;
-            font-size: clamp(1.1rem, 2vw, 1.3rem);
-        }
-
-        .card-body {
-            padding: 1.5rem;
-        }
-
-        /* Posts List */
-        .post-card {
-            background: white;
-            border-radius: var(--radius-lg);
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-            box-shadow: var(--shadow);
-            transition: var(--transition);
-            border-left: 4px solid var(--primary);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .post-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 4px;
-            height: 100%;
-            background: var(--gradient);
-            transform: scaleY(0);
-            transition: var(--transition);
-            transform-origin: top;
-        }
-
-        .post-card:hover {
-            transform: translateY(-3px);
-            box-shadow: var(--shadow-xl);
-        }
-
-        .post-card:hover::before {
-            transform: scaleY(1);
-        }
-
-        .post-header {
-            display: flex;
-            align-items: flex-start;
-            gap: 1rem;
-            margin-bottom: 1rem;
-        }
-
-        .post-avatar {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid #f1f5f9;
-            box-shadow: var(--shadow);
-            transition: var(--transition);
-            flex-shrink: 0;
-        }
-
-        .post-avatar:hover {
-            transform: scale(1.05);
-            border-color: var(--primary-light);
-        }
-
-        .post-author-info {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .post-author {
-            color: var(--primary);
-            font-weight: 600;
-            font-size: 1rem;
-            margin-bottom: 0.25rem;
-            word-wrap: break-word;
-        }
-
-        .post-date {
-            color: #94a3b8;
-            font-size: 0.85rem;
-        }
-
-        .post-title {
-            color: #1e293b;
-            font-weight: 700;
-            font-size: clamp(1.2rem, 3vw, 1.4rem);
-            margin-bottom: 1rem;
-            line-height: 1.3;
-            word-wrap: break-word;
-        }
-
-        .post-content {
-            color: #64748b;
-            line-height: 1.7;
-            margin-bottom: 1.5rem;
-            font-size: 1rem;
-            word-wrap: break-word;
-        }
-
-        .post-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-top: 1.5rem;
-            border-top: 1px solid #f1f5f9;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-
-        .post-actions {
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-
-        /* Like Button */
-        .like-btn {
-            transition: all 0.3s ease;
-            border-radius: 25px;
-            padding: 0.5rem 1rem;
-            border: 2px solid #e5e7eb;
-            background: white;
-            color: #64748b;
+            color: var(--gray-500);
             font-weight: 500;
+            font-size: 0.875rem;
+            border-radius: var(--radius) var(--radius) 0 0;
+            transition: all 0.15s ease;
+            position: relative;
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            cursor: pointer;
-            text-decoration: none;
-            flex-shrink: 0;
-            position: relative;
-            overflow: hidden;
         }
 
-        .like-btn::before {
+        .tab-clean:hover {
+            color: var(--gray-700);
+            background: var(--gray-50);
+        }
+
+        .tab-clean.active {
+            color: var(--primary);
+            background: #ffffff;
+        }
+
+        .tab-clean.active::after {
             content: '';
             position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: var(--gradient);
-            transition: var(--transition);
-            z-index: -1;
+            bottom: -1px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--primary);
         }
 
-        .like-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow);
-            border-color: var(--primary);
-            color: var(--primary);
+        .tab-badge-clean {
+            background: var(--gray-200);
+            color: var(--gray-600);
+            padding: 0.125rem 0.5rem;
+            border-radius: 10px;
+            font-size: 0.75rem;
+            font-weight: 500;
         }
 
-        .like-btn.liked {
-            background: var(--gradient);
+        .tab-clean.active .tab-badge-clean {
+            background: var(--primary);
             color: white;
-            border-color: var(--primary);
         }
 
-        .like-btn.liked:hover {
-            background: var(--primary-dark);
-        }
-
-        .like-btn .fa-heart {
-            transition: var(--transition);
-        }
-
-        .like-btn.liked .fa-heart {
-            color: white;
-            animation: heartBeat 0.6s ease;
-        }
-
-        @keyframes heartBeat {
-            0%, 100% { transform: scale(1); }
-            25% { transform: scale(1.3); }
-            50% { transform: scale(0.9); }
-            75% { transform: scale(1.2); }
-        }
-
-        .likes-count {
-            font-weight: 600;
-            min-width: 20px;
-            text-align: center;
-        }
-
-        /* Comment System - ATUALIZADO COM EDIÇÃO */
-        .comment-section {
-            margin-top: 1.5rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid #f1f5f9;
-        }
-
-        .comment-form {
+        /* CARD CLEAN */
+        .card-clean {
+            background: #ffffff;
+            border: 1px solid var(--gray-200);
+            border-radius: var(--radius-lg);
             margin-bottom: 1.5rem;
         }
 
-        .comment-input-group {
-            display: flex;
-            gap: 0.75rem;
-            align-items: flex-start;
+        .card-header-clean {
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid var(--gray-200);
+            background: var(--gray-50);
         }
 
-        .comment-avatar {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid #e2e8f0;
-            flex-shrink: 0;
+        .card-header-clean h3 {
+            margin: 0;
+            font-weight: 600;
+            font-size: 1.125rem;
+            color: var(--gray-800);
         }
 
-        .comment-input-wrapper {
-            flex: 1;
-            min-width: 0;
+        .card-body-clean {
+            padding: 1.5rem;
         }
 
-        .comment-input {
-            border-radius: 20px;
-            border: 1.5px solid #e2e8f0;
-            padding: 0.6rem 1rem;
-            resize: none;
-            transition: var(--transition);
-            font-size: 0.9rem;
-            background: #f8fafc;
-            width: 100%;
-            min-height: 60px;
+        /* FORM ELEMENTS */
+        .form-label-clean {
+            font-weight: 500;
+            color: var(--gray-700);
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
         }
 
-        .comment-input:focus {
+        .form-control-clean {
+            border: 1px solid var(--gray-300);
+            border-radius: var(--radius);
+            padding: 0.75rem;
+            font-size: 0.875rem;
+            transition: all 0.15s ease;
+        }
+
+        .form-control-clean:focus {
             border-color: var(--primary);
-            background: white;
             box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
             outline: none;
         }
 
-        .comment-btn {
-            border-radius: 20px;
-            padding: 0.6rem 1.2rem;
-            background: var(--gradient);
+        .btn-clean {
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius);
+            font-weight: 500;
+            font-size: 0.875rem;
+            transition: all 0.15s ease;
+            border: 1px solid transparent;
+        }
+
+        .btn-primary-clean {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .btn-primary-clean:hover {
+            background: var(--primary-dark);
+            border-color: var(--primary-dark);
+            transform: translateY(-1px);
+        }
+
+        /* POST CARD */
+        .post-card-clean {
+            background: #ffffff;
+            border: 1px solid var(--gray-200);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            transition: all 0.15s ease;
+        }
+
+        .post-card-clean:hover {
+            border-color: var(--gray-300);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .post-header-clean {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .post-avatar-clean {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius);
+            object-fit: cover;
+            border: 1px solid var(--gray-200);
+        }
+
+        .post-meta-clean {
+            flex: 1;
+        }
+
+        .post-author-clean {
+            font-weight: 500;
+            color: var(--gray-800);
+            margin-bottom: 0.25rem;
+        }
+
+        .post-date-clean {
+            font-size: 0.75rem;
+            color: var(--gray-500);
+        }
+
+        .post-actions-clean {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .post-action-btn {
+            background: none;
+            border: 1px solid var(--gray-300);
+            border-radius: var(--radius);
+            padding: 0.375rem 0.75rem;
+            font-size: 0.75rem;
+            color: var(--gray-600);
+            transition: all 0.15s ease;
+        }
+
+        .post-action-btn:hover {
+            background: var(--gray-50);
+            border-color: var(--gray-400);
+        }
+
+        .post-title-clean {
+            font-weight: 600;
+            font-size: 1.125rem;
+            color: var(--gray-900);
+            margin-bottom: 0.75rem;
+            line-height: 1.4;
+        }
+
+        .post-content-clean {
+            color: var(--gray-700);
+            line-height: 1.6;
+            margin-bottom: 1.25rem;
+        }
+
+        .post-footer-clean {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--gray-200);
+        }
+
+        /* LIKE BUTTON CLEAN */
+        .like-btn-clean {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            background: none;
+            border: 1px solid var(--gray-300);
+            border-radius: var(--radius);
+            color: var(--gray-600);
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.15s ease;
+        }
+
+        .like-btn-clean:hover {
+            background: var(--gray-50);
+            border-color: var(--gray-400);
+        }
+
+        .like-btn-clean.liked {
+            background: #fef2f2;
+            border-color: #fecaca;
+            color: #dc2626;
+        }
+
+        .like-btn-clean.liked:hover {
+            background: #fecaca;
+        }
+
+        /* COMMENT SYSTEM */
+        .comment-section-clean {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--gray-200);
+        }
+
+        .comment-form-clean {
+            margin-bottom: 1.5rem;
+        }
+
+        .comment-input-group-clean {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .comment-avatar-clean {
+            width: 32px;
+            height: 32px;
+            border-radius: var(--radius);
+            object-fit: cover;
+            border: 1px solid var(--gray-200);
+        }
+
+        .comment-input-wrapper-clean {
+            flex: 1;
+        }
+
+        .comment-input-clean {
+            border: 1px solid var(--gray-300);
+            border-radius: var(--radius);
+            padding: 0.75rem;
+            font-size: 0.875rem;
+            resize: none;
+            min-height: 80px;
+            transition: all 0.15s ease;
+        }
+
+        .comment-input-clean:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+            outline: none;
+        }
+
+        .comment-btn-clean {
+            align-self: flex-end;
+            padding: 0.75rem 1.25rem;
+            background: var(--primary);
             color: white;
             border: none;
-            font-weight: 600;
-            font-size: 0.85rem;
-            transition: var(--transition);
-            white-space: nowrap;
-            flex-shrink: 0;
+            border-radius: var(--radius);
+            font-weight: 500;
+            font-size: 0.875rem;
+            transition: all 0.15s ease;
         }
 
-        .comment-btn:hover {
-            transform: translateY(-1px);
-            box-shadow: var(--shadow);
+        .comment-btn-clean:hover {
+            background: var(--primary-dark);
         }
 
-        .comment-btn:disabled {
-            background: #94a3b8;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .comments-list {
+        .comments-list-clean {
             space-y: 1rem;
         }
 
-        .comment-card {
-            background: #f8fafc;
-            border-radius: 12px;
+        .comment-card-clean {
+            background: var(--gray-50);
+            border: 1px solid var(--gray-200);
+            border-radius: var(--radius);
             padding: 1rem;
-            margin-bottom: 0.75rem;
-            border: 1px solid #f1f5f9;
-            transition: var(--transition);
-            position: relative;
         }
 
-        .comment-card:hover {
-            background: #f1f5f9;
-            border-color: #e2e8f0;
-            transform: translateX(5px);
-        }
-
-        .comment-header {
+        .comment-header-clean {
             display: flex;
             align-items: center;
             gap: 0.5rem;
             margin-bottom: 0.5rem;
-            flex-wrap: wrap;
         }
 
-        .comment-author-avatar {
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
+        .comment-author-avatar-clean {
+            width: 24px;
+            height: 24px;
+            border-radius: 4px;
             object-fit: cover;
-            border: 2px solid white;
-            flex-shrink: 0;
+            border: 1px solid var(--gray-300);
         }
 
-        .comment-author {
-            font-weight: 600;
-            color: #1e293b;
-            font-size: 0.85rem;
+        .comment-author-clean {
+            font-weight: 500;
+            font-size: 0.875rem;
+            color: var(--gray-800);
         }
 
-        .comment-date {
-            color: #94a3b8;
+        .comment-date-clean {
             font-size: 0.75rem;
+            color: var(--gray-500);
             margin-left: auto;
         }
 
-        .comment-content {
-            color: #475569;
+        .comment-content-clean {
+            color: var(--gray-700);
+            font-size: 0.875rem;
             line-height: 1.5;
-            font-size: 0.9rem;
-            margin-bottom: 0.5rem;
-            word-wrap: break-word;
-            padding-right: 2rem;
+            margin-bottom: 0.75rem;
         }
 
-        .comment-actions {
+        .comment-actions-clean {
             display: flex;
             gap: 0.75rem;
             align-items: center;
-            flex-wrap: wrap;
         }
 
-        .comment-like-btn {
+        .comment-action-btn {
             background: none;
             border: none;
-            color: #64748b;
-            font-size: 0.8rem;
+            color: var(--gray-500);
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            transition: all 0.15s ease;
             display: flex;
             align-items: center;
             gap: 0.25rem;
-            cursor: pointer;
-            transition: var(--transition);
-            padding: 0.2rem 0.5rem;
-            border-radius: 12px;
-            flex-shrink: 0;
         }
 
-        .comment-like-btn:hover {
-            color: var(--primary);
-            background: rgba(16, 185, 129, 0.1);
+        .comment-action-btn:hover {
+            background: var(--gray-200);
+            color: var(--gray-700);
         }
 
-        .comment-like-btn.liked {
-            color: var(--primary);
-            font-weight: 600;
-        }
-
-        /* NOVO: Botão de Editar Comentário */
         .comment-edit-btn {
-            background: none;
-            border: none;
-            color: #3b82f6;
-            font-size: 0.8rem;
-            cursor: pointer;
-            transition: var(--transition);
-            padding: 0.2rem 0.5rem;
-            border-radius: 12px;
-            opacity: 0.7;
-            flex-shrink: 0;
+            color: #2563eb;
         }
 
         .comment-edit-btn:hover {
-            background: rgba(59, 130, 246, 0.1);
-            opacity: 1;
-            transform: scale(1.05);
+            background: #dbeafe;
+            color: #1d4ed8;
         }
 
         .comment-delete-btn {
-            background: none;
-            border: none;
-            color: #dc3545;
-            font-size: 0.8rem;
-            cursor: pointer;
-            transition: var(--transition);
-            padding: 0.2rem 0.5rem;
-            border-radius: 12px;
-            opacity: 0.7;
-            flex-shrink: 0;
+            color: #dc2626;
         }
 
         .comment-delete-btn:hover {
-            background: rgba(220, 53, 69, 0.1);
-            opacity: 1;
-            transform: scale(1.05);
+            background: #fecaca;
+            color: #b91c1c;
         }
 
-        /* Formulário de Edição de Comentário */
-        .comment-edit-form {
-            background: white;
-            border: 2px solid var(--primary);
-            border-radius: 12px;
-            padding: 1rem;
-            margin-top: 0.5rem;
-            box-shadow: var(--shadow);
+        /* EDIT FORM */
+        .comment-edit-form-clean {
+            margin-top: 0.75rem;
         }
 
-        .comment-edit-actions {
+        .comment-edit-actions-clean {
             display: flex;
             gap: 0.5rem;
             justify-content: flex-end;
             margin-top: 0.75rem;
         }
 
-        .btn-save-edit {
+        .btn-save-edit-clean {
             background: var(--primary);
             color: white;
             border: none;
-            padding: 0.4rem 1rem;
-            border-radius: 8px;
-            font-size: 0.8rem;
-            transition: var(--transition);
-        }
-
-        .btn-save-edit:hover {
-            background: var(--primary-dark);
-            transform: translateY(-1px);
-        }
-
-        .btn-cancel-edit {
-            background: #94a3b8;
-            color: white;
-            border: none;
-            padding: 0.4rem 1rem;
-            border-radius: 8px;
-            font-size: 0.8rem;
-            transition: var(--transition);
-        }
-
-        .btn-cancel-edit:hover {
-            background: #64748b;
-            transform: translateY(-1px);
-        }
-
-        .no-comments {
-            text-align: center;
-            color: #94a3b8;
-            padding: 1.5rem;
-            font-size: 0.9rem;
-        }
-
-        .view-comments-btn {
-            background: none;
-            border: 1.5px solid #e2e8f0;
-            color: #64748b;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius);
+            font-size: 0.75rem;
             font-weight: 500;
-            font-size: 0.85rem;
-            cursor: pointer;
-            transition: var(--transition);
-            padding: 0.4rem 0.8rem;
-            border-radius: 15px;
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-            flex-shrink: 0;
         }
 
-        .view-comments-btn:hover {
-            background: #f8fafc;
-            border-color: var(--primary);
-            color: var(--primary);
-        }
-
-        .comments-count-badge {
-            background: var(--primary);
+        .btn-cancel-edit-clean {
+            background: var(--gray-500);
             color: white;
-            border-radius: 10px;
-            padding: 0.1rem 0.4rem;
-            font-size: 0.7rem;
-            font-weight: 600;
-            margin-left: 0.25rem;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius);
+            font-size: 0.75rem;
+            font-weight: 500;
         }
 
-        /* Botões de editar/excluir posts */
-        .btn-group .btn {
-            padding: 0.375rem 0.75rem;
-            flex-shrink: 0;
-            transition: var(--transition);
-        }
-
-        .btn-group .btn:hover {
-            transform: translateY(-1px);
-        }
-
-        /* RESPONSIVIDADE */
+        /* RESPONSIVE */
         @media (max-width: 768px) {
-            .user-profile-premium {
-                padding: 0.4rem 0.8rem;
-            }
-            
-            .avatar-premium {
-                width: 40px;
-                height: 40px;
-            }
-            
-            .user-info-premium {
+            .user-info {
                 display: none;
             }
             
-            .dropdown-premium {
-                position: fixed;
-                top: 70px !important;
-                left: 50% !important;
-                transform: translateX(-50%) !important;
-                width: 90%;
-                max-width: 280px;
+            .tabs-clean {
+                overflow-x: auto;
+                padding-bottom: 0;
             }
-
-            /* Resto do CSS responsivo mantido igual... */
-        }
-
-        /* Alert System */
-        .alert-fixed {
-            position: fixed;
-            top: 100px;
-            right: 20px;
-            z-index: 9999;
-            min-width: 300px;
-            max-width: 500px;
-            animation: slideInRight 0.3s ease-out;
-            border-radius: var(--radius-lg);
-            border: none;
-            box-shadow: var(--shadow-lg);
-        }
-
-        @keyframes slideInRight {
-            from {
-                transform: translateX(100%);
-                opacity: 0;
+            
+            .tab-clean {
+                white-space: nowrap;
+                padding: 0.75rem 1rem;
             }
-            to {
-                transform: translateX(0);
-                opacity: 1;
+            
+            .comment-input-group-clean {
+                flex-direction: column;
+            }
+            
+            .comment-btn-clean {
+                align-self: stretch;
             }
         }
 
-        @media (max-width: 768px) {
-            .alert-fixed {
-                top: 80px;
-                right: 10px;
-                left: 10px;
-                min-width: auto;
-                max-width: none;
-            }
-        }
+        /* UTILITIES */
+        .text-sm { font-size: 0.875rem; }
+        .text-xs { font-size: 0.75rem; }
+        .font-medium { font-weight: 500; }
+        .font-semibold { font-weight: 600; }
     </style>
 </head>
 <body>
-    <!-- Navbar Premium -->
-    <nav class="navbar-premium navbar-expand-lg">
+    <!-- Navbar Clean -->
+    <nav class="navbar navbar-expand-lg navbar-clean">
         <div class="container">
-            <!-- Logo Premium -->
-            <a class="navbar-brand logo-premium" href="/">
-                <div class="logo-badge">
-                    <i class="fas fa-bolt"></i>
-                </div>
-                <div class="logo-text-premium">
-                    <span class="logo-main-premium">PGFlow</span>
-                    <span class="logo-subtitle-premium">DASHBOARD</span>
-                </div>
+            <a class="logo-clean" href="/">
+                <i class="fas fa-bolt logo-icon"></i>
+                PGFlow
             </a>
 
-            <!-- User Menu Premium -->
-            <div class="user-menu-premium">
+            <div class="user-menu">
                 <div class="dropdown">
-                    <div class="user-profile-premium" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img id="userAvatar" src="" alt="Avatar" 
-                             class="avatar-premium"
+                    <button class="user-trigger dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img id="userAvatar" src="" alt="Avatar" class="user-avatar"
                              onerror="this.src='https://ui-avatars.com/api/?name=User&background=10b981&color=fff&size=150'">
-                        <div class="user-info-premium">
-                            <span class="user-name-premium" id="userName">Carregando...</span>
-                            <span class="user-status-premium">
-                                <span class="status-dot"></span>
-                                Online
-                            </span>
+                        <div class="user-info d-none d-md-flex">
+                            <span class="user-name" id="userName">Carregando...</span>
+                            <span class="user-handle">@usuario</span>
                         </div>
-                        <i class="fas fa-chevron-down dropdown-arrow"></i>
-                    </div>
-                    <ul class="dropdown-menu dropdown-premium">
+                        <i class="fas fa-chevron-down dropdown-chevron"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-clean">
                         <li>
-                            <a class="dropdown-item-premium" href="/profile">
-                                <i class="fas fa-user-edit"></i>Meu Perfil
+                            <a class="dropdown-item-clean" href="/profile">
+                                <i class="fas fa-user"></i>
+                                Meu Perfil
                             </a>
                         </li>
                         <li>
-                            <a class="dropdown-item-premium" href="/">
-                                <i class="fas fa-home"></i>Página Inicial
+                            <a class="dropdown-item-clean" href="/">
+                                <i class="fas fa-home"></i>
+                                Página Inicial
                             </a>
                         </li>
-                        <li><hr class="dropdown-divider-premium"></li>
+                        <li><hr class="dropdown-divider-clean"></li>
                         <li>
-                            <button class="dropdown-item-premium logout-item-premium" id="logoutBtn">
-                                <i class="fas fa-sign-out-alt"></i>Sair da Conta
+                            <button class="dropdown-item-clean text-danger" id="logoutBtn">
+                                <i class="fas fa-sign-out-alt"></i>
+                                Sair
                             </button>
                         </li>
                     </ul>
@@ -1044,79 +676,67 @@
         </div>
     </nav>
 
-    <!-- Container Principal -->
+    <!-- Main Content -->
     <div class="dashboard-container">
-        <div class="container-fluid">
-            <div class="row justify-content-center">
-                <div class="col-12 col-lg-10 col-xl-8">
-                    <!-- Dashboard Tabs -->
-                    <div class="dashboard-tabs">
-                        <ul class="nav nav-tabs nav-tabs-custom nav-justified" id="dashboardTabs" role="tablist">
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link active" id="feed-tab" data-bs-toggle="tab" data-bs-target="#feed" type="button" role="tab">
-                                    <i class="fas fa-newspaper me-2"></i>Feed
-                                    <span class="tab-badge" id="feedCount">0</span>
-                                </button>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="my-posts-tab" data-bs-toggle="tab" data-bs-target="#my-posts" type="button" role="tab">
-                                    <i class="fas fa-user me-2"></i>Meus Posts
-                                    <span class="tab-badge" id="myPostsCount">0</span>
-                                </button>
-                            </li>
-                        </ul>
-                    </div>
+        <!-- Tabs -->
+        <div class="tabs-clean">
+            <button class="tab-clean active" data-tab="feed">
+                <i class="fas fa-newspaper"></i>
+                Feed
+                <span class="tab-badge-clean" id="feedCount">0</span>
+            </button>
+            <button class="tab-clean" data-tab="my-posts">
+                <i class="fas fa-user"></i>
+                Meus Posts
+                <span class="tab-badge-clean" id="myPostsCount">0</span>
+            </button>
+        </div>
 
-                    <!-- Tab Content -->
-                    <div class="tab-content" id="dashboardTabsContent">
-                        <!-- Feed da Comunidade -->
-                        <div class="tab-pane fade show active" id="feed" role="tabpanel">
-                            <!-- Criar Post -->
-                            <div class="card mb-4 fade-in">
-                                <div class="card-header">
-                                    <h4 class="mb-0"><i class="fas fa-plus-circle me-2"></i>Criar Novo Post</h4>
-                                </div>
-                                <div class="card-body">
-                                    <form id="postForm">
-                                        <div class="mb-3">
-                                            <label for="title" class="form-label">Título do Post</label>
-                                            <input type="text" class="form-control" id="title" placeholder="Digite um título criativo..." required>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="content" class="form-label">Conteúdo</label>
-                                            <textarea class="form-control" id="content" rows="4" placeholder="Compartilhe suas ideias..." required></textarea>
-                                        </div>
-                                        <button type="submit" class="btn btn-primary w-100 w-md-auto">
-                                            <i class="fas fa-paper-plane me-2"></i>Publicar Post
-                                        </button>
-                                    </form>
-                                </div>
-                            </div>
-
-                            <!-- Feed de Posts -->
-                            <h4 class="mb-4"><i class="fas fa-users me-2"></i>Posts da Comunidade</h4>
-                            <div id="communityFeed" class="fade-in">
-                                <div class="text-center py-5">
-                                    <i class="fas fa-spinner fa-spin fa-2x text-primary mb-3"></i>
-                                    <p>Carregando feed da comunidade...</p>
-                                </div>
-                            </div>
+        <!-- Feed Tab -->
+        <div class="tab-content" id="feed">
+            <!-- Create Post Card -->
+            <div class="card-clean">
+                <div class="card-header-clean">
+                    <h3>Criar Novo Post</h3>
+                </div>
+                <div class="card-body-clean">
+                    <form id="postForm">
+                        <div class="mb-3">
+                            <label class="form-label-clean">Título</label>
+                            <input type="text" class="form-control form-control-clean" id="title" placeholder="Qual é o assunto?" required>
                         </div>
-
-                        <!-- Meus Posts -->
-                        <div class="tab-pane fade" id="my-posts" role="tabpanel">
-                            <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
-                                <h4 class="mb-0"><i class="fas fa-history me-2"></i>Meus Posts</h4>
-                                <span class="badge bg-primary rounded-pill p-2" id="myPostsBadge">0 posts</span>
-                            </div>
-                            <div id="myPostsList" class="fade-in">
-                                <div class="text-center py-5">
-                                    <i class="fas fa-spinner fa-spin fa-2x text-primary mb-3"></i>
-                                    <p>Carregando seus posts...</p>
-                                </div>
-                            </div>
+                        <div class="mb-3">
+                            <label class="form-label-clean">Conteúdo</label>
+                            <textarea class="form-control form-control-clean" id="content" rows="4" placeholder="Compartilhe suas ideias..." required></textarea>
                         </div>
-                    </div>
+                        <button type="submit" class="btn-clean btn-primary-clean">
+                            <i class="fas fa-paper-plane me-2"></i>
+                            Publicar
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Feed Posts -->
+            <h4 class="mb-3 font-semibold">Posts da Comunidade</h4>
+            <div id="communityFeed">
+                <div class="text-center py-5">
+                    <i class="fas fa-spinner fa-spin text-muted mb-3"></i>
+                    <p class="text-sm text-muted">Carregando feed...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- My Posts Tab -->
+        <div class="tab-content d-none" id="my-posts">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h4 class="font-semibold mb-0">Meus Posts</h4>
+                <span class="badge bg-primary rounded-pill" id="myPostsBadge">0 posts</span>
+            </div>
+            <div id="myPostsList">
+                <div class="text-center py-5">
+                    <i class="fas fa-spinner fa-spin text-muted mb-3"></i>
+                    <p class="text-sm text-muted">Carregando seus posts...</p>
                 </div>
             </div>
         </div>
@@ -1129,97 +749,80 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Logout button
-            const logoutBtn = document.getElementById('logoutBtn');
-            if (logoutBtn) {
-                logoutBtn.addEventListener('click', function() {
-                    localStorage.removeItem('token');
-                    localStorage.removeItem('user');
-                    window.location.href = '/';
-                });
-            }
+            // Tab switching
+            document.querySelectorAll('.tab-clean').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // Update active tab
+                    document.querySelectorAll('.tab-clean').forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Show/hide content
+                    const tabId = this.getAttribute('data-tab');
+                    document.querySelectorAll('.tab-content').forEach(content => {
+                        content.classList.add('d-none');
+                    });
+                    document.getElementById(tabId).classList.remove('d-none');
 
-            // Navbar scroll effect
-            const navbar = document.querySelector('.navbar-premium');
-            function handleNavbarScroll() {
-                if (window.scrollY > 50) {
-                    navbar.classList.add('scrolled');
-                } else {
-                    navbar.classList.remove('scrolled');
-                }
-            }
-            window.addEventListener('scroll', handleNavbarScroll);
-
-            // Prevenir que o dropdown feche quando clicar dentro dele
-            document.querySelectorAll('.dropdown-premium').forEach(function(dropdown) {
-                dropdown.addEventListener('click', function(e) {
-                    e.stopPropagation();
+                    // Load data
+                    if (tabId === 'feed') {
+                        loadCommunityFeed();
+                    } else if (tabId === 'my-posts') {
+                        loadMyPosts();
+                    }
                 });
             });
 
-            // Tab switching logic
-            const feedTab = document.getElementById('feed-tab');
-            const myPostsTab = document.getElementById('my-posts-tab');
-
-            if (feedTab) {
-                feedTab.addEventListener('click', function() {
-                    loadCommunityFeed();
-                });
-            }
-
-            if (myPostsTab) {
-                myPostsTab.addEventListener('click', function() {
-                    loadMyPosts();
-                });
-            }
+            // Logout
+            document.getElementById('logoutBtn').addEventListener('click', function() {
+                localStorage.removeItem('token');
+                localStorage.removeItem('user');
+                window.location.href = '/';
+            });
 
             // Load initial data
             loadCommunityFeed();
         });
 
-        // NOVA FUNÇÃO: Editar comentário
+        // Comment editing functions
         function editComment(commentId, currentContent) {
             const commentElement = document.querySelector(`[data-comment-id="${commentId}"]`);
-            if (!commentElement) return;
-
-            // Cria formulário de edição
+            const contentElement = commentElement.querySelector('.comment-content-clean');
+            const actionsElement = commentElement.querySelector('.comment-actions-clean');
+            
+            // Create edit form
             const editForm = document.createElement('div');
-            editForm.className = 'comment-edit-form';
+            editForm.className = 'comment-edit-form-clean';
             editForm.innerHTML = `
-                <textarea class="form-control comment-edit-input" rows="3" style="resize: none;">${currentContent}</textarea>
-                <div class="comment-edit-actions">
-                    <button type="button" class="btn-cancel-edit" onclick="cancelEditComment('${commentId}')">
-                        <i class="fas fa-times me-1"></i>Cancelar
+                <textarea class="form-control form-control-clean comment-edit-input" rows="3">${currentContent}</textarea>
+                <div class="comment-edit-actions-clean">
+                    <button type="button" class="btn-cancel-edit-clean" onclick="cancelEditComment('${commentId}')">
+                        Cancelar
                     </button>
-                    <button type="button" class="btn-save-edit" onclick="saveCommentEdit('${commentId}')">
-                        <i class="fas fa-save me-1"></i>Salvar
+                    <button type="button" class="btn-save-edit-clean" onclick="saveCommentEdit('${commentId}')">
+                        Salvar
                     </button>
                 </div>
             `;
-
-            // Esconde o conteúdo original e mostra o formulário
-            const originalContent = commentElement.querySelector('.comment-content');
-            originalContent.style.display = 'none';
+            
+            // Hide original content and show form
+            contentElement.style.display = 'none';
+            actionsElement.style.display = 'none';
             commentElement.appendChild(editForm);
         }
 
-        // NOVA FUNÇÃO: Cancelar edição
         function cancelEditComment(commentId) {
             const commentElement = document.querySelector(`[data-comment-id="${commentId}"]`);
-            if (!commentElement) return;
-
-            const editForm = commentElement.querySelector('.comment-edit-form');
-            const originalContent = commentElement.querySelector('.comment-content');
+            const editForm = commentElement.querySelector('.comment-edit-form-clean');
+            const contentElement = commentElement.querySelector('.comment-content-clean');
+            const actionsElement = commentElement.querySelector('.comment-actions-clean');
             
-            if (editForm) editForm.remove();
-            if (originalContent) originalContent.style.display = 'block';
+            editForm.remove();
+            contentElement.style.display = 'block';
+            actionsElement.style.display = 'flex';
         }
 
-        // NOVA FUNÇÃO: Salvar edição do comentário
         async function saveCommentEdit(commentId) {
             const commentElement = document.querySelector(`[data-comment-id="${commentId}"]`);
-            if (!commentElement) return;
-
             const editInput = commentElement.querySelector('.comment-edit-input');
             const newContent = editInput.value.trim();
 
@@ -1240,26 +843,25 @@
                 });
 
                 if (response.ok) {
-                    const data = await response.json();
-                    showAlert('Comentário atualizado com sucesso!', 'success');
+                    showAlert('Comentário atualizado!', 'success');
                     
-                    // Atualiza o conteúdo do comentário
-                    const originalContent = commentElement.querySelector('.comment-content');
-                    originalContent.textContent = newContent;
-                    originalContent.style.display = 'block';
+                    // Update content
+                    const contentElement = commentElement.querySelector('.comment-content-clean');
+                    const actionsElement = commentElement.querySelector('.comment-actions-clean');
+                    const editForm = commentElement.querySelector('.comment-edit-form-clean');
                     
-                    // Remove o formulário de edição
-                    const editForm = commentElement.querySelector('.comment-edit-form');
-                    if (editForm) editForm.remove();
+                    contentElement.textContent = newContent;
+                    contentElement.style.display = 'block';
+                    actionsElement.style.display = 'flex';
+                    editForm.remove();
 
                     playNotificationSound();
                 } else {
-                    const errorData = await response.json();
-                    showAlert(errorData.message || 'Erro ao atualizar comentário', 'danger');
+                    const error = await response.json();
+                    showAlert(error.message || 'Erro ao atualizar', 'danger');
                 }
             } catch (error) {
-                console.error('Erro ao editar comentário:', error);
-                showAlert('Erro ao editar comentário', 'danger');
+                showAlert('Erro de conexão', 'danger');
             }
         }
     </script>
