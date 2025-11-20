@@ -80,6 +80,8 @@
             border-radius: var(--radius);
             transition: all 0.15s ease;
             border: 1px solid transparent;
+            background: none;
+            cursor: pointer;
         }
 
         .user-trigger:hover {
@@ -142,6 +144,11 @@
             text-decoration: none;
             transition: all 0.15s ease;
             font-weight: 400;
+            border: none;
+            background: none;
+            width: 100%;
+            text-align: left;
+            cursor: pointer;
         }
 
         .dropdown-item-clean:hover {
@@ -198,6 +205,7 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            cursor: pointer;
         }
 
         .tab-clean:hover {
@@ -288,6 +296,7 @@
             font-size: 0.875rem;
             transition: all 0.15s ease;
             border: 1px solid transparent;
+            cursor: pointer;
         }
 
         .btn-primary-clean {
@@ -360,6 +369,7 @@
             font-size: 0.75rem;
             color: var(--gray-600);
             transition: all 0.15s ease;
+            cursor: pointer;
         }
 
         .post-action-btn:hover {
@@ -402,6 +412,7 @@
             font-size: 0.875rem;
             font-weight: 500;
             transition: all 0.15s ease;
+            cursor: pointer;
         }
 
         .like-btn-clean:hover {
@@ -455,6 +466,7 @@
             resize: none;
             min-height: 80px;
             transition: all 0.15s ease;
+            width: 100%;
         }
 
         .comment-input-clean:focus {
@@ -473,6 +485,7 @@
             font-weight: 500;
             font-size: 0.875rem;
             transition: all 0.15s ease;
+            cursor: pointer;
         }
 
         .comment-btn-clean:hover {
@@ -541,6 +554,7 @@
             display: flex;
             align-items: center;
             gap: 0.25rem;
+            cursor: pointer;
         }
 
         .comment-action-btn:hover {
@@ -566,6 +580,23 @@
             color: #b91c1c;
         }
 
+        .comment-like-btn {
+            color: var(--gray-500);
+        }
+
+        .comment-like-btn:hover {
+            background: var(--gray-200);
+            color: var(--gray-700);
+        }
+
+        .comment-like-btn.liked {
+            color: #dc2626;
+        }
+
+        .comment-like-btn.liked:hover {
+            background: #fecaca;
+        }
+
         /* EDIT FORM */
         .comment-edit-form-clean {
             margin-top: 0.75rem;
@@ -586,6 +617,11 @@
             border-radius: var(--radius);
             font-size: 0.75rem;
             font-weight: 500;
+            cursor: pointer;
+        }
+
+        .btn-save-edit-clean:hover {
+            background: var(--primary-dark);
         }
 
         .btn-cancel-edit-clean {
@@ -594,6 +630,41 @@
             border: none;
             padding: 0.5rem 1rem;
             border-radius: var(--radius);
+            font-size: 0.75rem;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .btn-cancel-edit-clean:hover {
+            background: var(--gray-600);
+        }
+
+        /* VIEW COMMENTS BUTTON */
+        .view-comments-btn-clean {
+            background: none;
+            border: 1px solid var(--gray-300);
+            border-radius: var(--radius);
+            padding: 0.5rem 0.75rem;
+            color: var(--gray-600);
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.15s ease;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .view-comments-btn-clean:hover {
+            background: var(--gray-50);
+            border-color: var(--gray-400);
+        }
+
+        .comments-count-badge-clean {
+            background: var(--primary);
+            color: white;
+            border-radius: 10px;
+            padding: 0.125rem 0.5rem;
             font-size: 0.75rem;
             font-weight: 500;
         }
@@ -621,6 +692,16 @@
             .comment-btn-clean {
                 align-self: stretch;
             }
+
+            .post-header-clean {
+                flex-wrap: wrap;
+            }
+
+            .post-actions-clean {
+                width: 100%;
+                justify-content: flex-end;
+                margin-top: 0.5rem;
+            }
         }
 
         /* UTILITIES */
@@ -628,6 +709,42 @@
         .text-xs { font-size: 0.75rem; }
         .font-medium { font-weight: 500; }
         .font-semibold { font-weight: 600; }
+        .d-none { display: none; }
+
+        /* ALERT SYSTEM */
+        .alert-fixed {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            z-index: 9999;
+            min-width: 300px;
+            max-width: 500px;
+            animation: slideInRight 0.3s ease-out;
+            border-radius: var(--radius);
+            border: none;
+            box-shadow: var(--shadow-md);
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .alert-fixed {
+                top: 80px;
+                right: 10px;
+                left: 10px;
+                min-width: auto;
+                max-width: none;
+            }
+        }
     </style>
 </head>
 <body>
@@ -748,7 +865,25 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+        // ========== USER DATA ==========
+        function loadUserData() {
+            const user = JSON.parse(localStorage.getItem('user') || '{}');
+            const userName = document.getElementById('userName');
+            const userAvatar = document.getElementById('userAvatar');
+            
+            if (userName && user.name) {
+                userName.textContent = user.name;
+            }
+            if (userAvatar && user.avatar) {
+                userAvatar.src = user.avatar.startsWith('/uploads/') ? 
+                    window.location.origin + user.avatar : user.avatar;
+            }
+        }
+
+        // ========== TAB SYSTEM ==========
         document.addEventListener('DOMContentLoaded', function() {
+            loadUserData();
+
             // Tab switching
             document.querySelectorAll('.tab-clean').forEach(tab => {
                 tab.addEventListener('click', function() {
@@ -779,11 +914,260 @@
                 window.location.href = '/';
             });
 
+            // Post form
+            const postForm = document.getElementById('postForm');
+            if (postForm) {
+                postForm.addEventListener('submit', handleCreatePost);
+            }
+
             // Load initial data
             loadCommunityFeed();
         });
 
-        // Comment editing functions
+        // ========== POST FUNCTIONS ==========
+        async function handleCreatePost(e) {
+            e.preventDefault();
+            
+            const title = document.getElementById('title').value;
+            const content = document.getElementById('content').value;
+            const token = localStorage.getItem('token');
+            
+            const isEditMode = e.target.getAttribute('data-edit-mode') === 'true';
+            const postId = e.target.getAttribute('data-post-id');
+            
+            try {
+                let response;
+                
+                if (isEditMode) {
+                    response = await fetch(`/api/posts/${postId}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        },
+                        body: JSON.stringify({ title, content })
+                    });
+                } else {
+                    response = await fetch('/api/posts', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        },
+                        body: JSON.stringify({ title, content })
+                    });
+                }
+                
+                if (response.ok) {
+                    const message = isEditMode ? 'Post atualizado com sucesso!' : 'Post criado com sucesso!';
+                    showAlert(message, 'success');
+                    
+                    resetForm();
+                    loadCommunityFeed();
+                    loadMyPosts();
+                } else {
+                    const data = await response.json();
+                    showAlert(data.message || 'Erro ao processar post', 'danger');
+                }
+            } catch (error) {
+                showAlert('Erro ao processar post', 'danger');
+            }
+        }
+
+        function resetForm() {
+            document.getElementById('postForm').reset();
+            document.getElementById('postForm').removeAttribute('data-edit-mode');
+            document.getElementById('postForm').removeAttribute('data-post-id');
+            
+            const submitButton = document.querySelector('#postForm button[type="submit"]');
+            submitButton.innerHTML = '<i class="fas fa-paper-plane me-2"></i>Publicar';
+            submitButton.className = 'btn-clean btn-primary-clean';
+        }
+
+        async function editPost(postId) {
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch(`/api/posts/${postId}`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                if (response.ok) {
+                    const post = await response.json();
+                    
+                    document.getElementById('title').value = post.title;
+                    document.getElementById('content').value = post.content;
+                    
+                    const form = document.getElementById('postForm');
+                    form.setAttribute('data-edit-mode', 'true');
+                    form.setAttribute('data-post-id', postId);
+                    
+                    const submitButton = form.querySelector('button[type="submit"]');
+                    submitButton.innerHTML = '<i class="fas fa-save me-2"></i>Salvar Edição';
+                    
+                    form.scrollIntoView({ behavior: 'smooth' });
+                    
+                    showAlert('Preencha os campos e clique em "Salvar Edição" para atualizar o post', 'info');
+                } else {
+                    showAlert('Erro ao carregar post para edição', 'danger');
+                }
+            } catch (error) {
+                showAlert('Erro ao carregar post para edição', 'danger');
+            }
+        }
+
+        async function deletePost(postId) {
+            if (!confirm('Tem certeza que deseja excluir este post? Esta ação não pode ser desfeita.')) {
+                return;
+            }
+            
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch(`/api/posts/${postId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                if (response.ok) {
+                    showAlert('Post excluído com sucesso!', 'success');
+                    loadCommunityFeed();
+                    loadMyPosts();
+                } else {
+                    const data = await response.json();
+                    showAlert(data.message || 'Erro ao excluir post', 'danger');
+                }
+            } catch (error) {
+                showAlert('Erro ao excluir post', 'danger');
+            }
+        }
+
+        // ========== LIKE SYSTEM ==========
+        async function toggleLike(postId, button) {
+            try {
+                const token = localStorage.getItem('token');
+                
+                button.disabled = true;
+                
+                const response = await fetch(`/api/posts/${postId}/like`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    const countSpan = button.querySelector('.likes-count');
+                    const icon = button.querySelector('i');
+                    
+                    countSpan.textContent = data.likesCount;
+                    
+                    if (data.liked) {
+                        button.classList.add('liked');
+                        playNotificationSound();
+                    } else {
+                        button.classList.remove('liked');
+                    }
+                } else {
+                    showAlert(data.message || 'Erro ao curtir', 'danger');
+                }
+            } catch (error) {
+                console.error('Erro no like:', error);
+                showAlert('Erro de conexão', 'danger');
+            } finally {
+                button.disabled = false;
+            }
+        }
+
+        async function toggleCommentLike(commentId, button) {
+            try {
+                const token = localStorage.getItem('token');
+                
+                button.disabled = true;
+                
+                const response = await fetch(`/api/comments/${commentId}/like`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    const countSpan = button.querySelector('.likes-count');
+                    countSpan.textContent = data.likesCount;
+                    
+                    if (data.liked) {
+                        button.classList.add('liked');
+                        playNotificationSound();
+                    } else {
+                        button.classList.remove('liked');
+                    }
+                } else {
+                    showAlert(data.message || 'Erro ao curtir comentário', 'danger');
+                }
+            } catch (error) {
+                console.error('Erro no like do comentário:', error);
+                showAlert('Erro de conexão', 'danger');
+            } finally {
+                button.disabled = false;
+            }
+        }
+
+        // ========== COMMENT SYSTEM ==========
+        async function addComment(postId) {
+            try {
+                const token = localStorage.getItem('token');
+                const commentInput = document.getElementById(`comment-input-${postId}`);
+                const content = commentInput.value.trim();
+                
+                if (!content) {
+                    showAlert('Por favor, escreva um comentário', 'warning');
+                    return;
+                }
+                
+                const response = await fetch('/api/comments', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        content: content,
+                        postId: postId
+                    })
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    commentInput.value = '';
+                    showAlert('Comentário adicionado com sucesso!', 'success');
+                    playNotificationSound();
+                    loadComments(postId);
+                    
+                    // Update comments count
+                    const badgeElement = document.getElementById(`comments-badge-${postId}`);
+                    if (badgeElement) {
+                        const currentCount = parseInt(badgeElement.textContent) || 0;
+                        badgeElement.textContent = currentCount + 1;
+                    }
+                } else {
+                    const errorData = await response.json();
+                    showAlert(errorData.message || 'Erro ao adicionar comentário', 'danger');
+                }
+            } catch (error) {
+                console.error('Erro ao adicionar comentário:', error);
+                showAlert('Erro ao adicionar comentário', 'danger');
+            }
+        }
+
         function editComment(commentId, currentContent) {
             const commentElement = document.querySelector(`[data-comment-id="${commentId}"]`);
             const contentElement = commentElement.querySelector('.comment-content-clean');
@@ -864,7 +1248,537 @@
                 showAlert('Erro de conexão', 'danger');
             }
         }
+
+        async function deleteComment(commentId, postId) {
+            if (!confirm('Tem certeza que deseja excluir este comentário?')) {
+                return;
+            }
+            
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch(`/api/comments/${commentId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                if (response.ok) {
+                    showAlert('Comentário excluído com sucesso!', 'success');
+                    loadComments(postId);
+                    
+                    // Update comments count
+                    const badgeElement = document.getElementById(`comments-badge-${postId}`);
+                    if (badgeElement) {
+                        const currentCount = parseInt(badgeElement.textContent) || 0;
+                        badgeElement.textContent = Math.max(0, currentCount - 1);
+                    }
+                } else {
+                    const errorData = await response.json();
+                    showAlert(errorData.message || 'Erro ao excluir comentário', 'danger');
+                }
+            } catch (error) {
+                console.error('Erro ao excluir comentário:', error);
+                showAlert('Erro ao excluir comentário', 'danger');
+            }
+        }
+
+        // ========== LOADING FUNCTIONS ==========
+        async function loadCommunityFeed() {
+            try {
+                showCommunityLoading();
+                const token = localStorage.getItem('token');
+                const response = await fetch('/api/posts', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                if (response.ok) {
+                    const posts = await response.json();
+                    displayCommunityFeed(posts);
+                    updateFeedCount(posts.length);
+                } else if (response.status === 401) {
+                    handleUnauthorized();
+                } else {
+                    showAlert('Erro ao carregar feed da comunidade', 'danger');
+                }
+            } catch (error) {
+                console.error('Erro ao carregar feed:', error);
+                showAlert('Erro ao carregar feed da comunidade', 'danger');
+            }
+        }
+
+        async function loadMyPosts() {
+            try {
+                showMyPostsLoading();
+                const token = localStorage.getItem('token');
+                const response = await fetch('/api/posts/user', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                if (response.ok) {
+                    const posts = await response.json();
+                    displayMyPosts(posts);
+                    updateMyPostsCount(posts.length);
+                } else if (response.status === 401) {
+                    handleUnauthorized();
+                } else {
+                    showAlert('Erro ao carregar seus posts', 'danger');
+                }
+            } catch (error) {
+                console.error('Erro ao carregar posts:', error);
+                showAlert('Erro ao carregar seus posts', 'danger');
+            }
+        }
+
+        async function loadComments(postId) {
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch(`/api/comments/post/${postId}`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                if (response.ok) {
+                    const comments = await response.json();
+                    displayComments(postId, comments);
+                } else {
+                    console.error('Erro ao carregar comentários');
+                }
+            } catch (error) {
+                console.error('Erro ao carregar comentários:', error);
+            }
+        }
+
+        // ========== DISPLAY FUNCTIONS ==========
+        function displayCommunityFeed(posts) {
+            const feedContainer = document.getElementById('communityFeed');
+            if (!feedContainer) return;
+            
+            if (posts.length === 0) {
+                feedContainer.innerHTML = `
+                    <div class="text-center py-5">
+                        <i class="fas fa-inbox fa-2x text-muted mb-3"></i>
+                        <p class="text-muted">Nenhum post na comunidade ainda.</p>
+                        <p class="text-sm text-muted">Seja o primeiro a postar!</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            feedContainer.innerHTML = '';
+            
+            const user = JSON.parse(localStorage.getItem('user'));
+            
+            posts.forEach(post => {
+                const isOwner = user && post.author === user.name;
+                const userLiked = user && post.likes && Array.isArray(post.likes) && 
+                                 post.likes.includes(user.id);
+                const likesCount = post.likesCount || (post.likes ? post.likes.length : 0);
+                
+                let authorAvatar;
+                if (post.authorAvatar) {
+                    authorAvatar = post.authorAvatar.startsWith('/uploads/') ? 
+                        window.location.origin + post.authorAvatar : post.authorAvatar;
+                } else {
+                    authorAvatar = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(post.author) + '&background=10b981&color=fff&size=150';
+                }
+                
+                const postElement = document.createElement('div');
+                postElement.className = 'post-card-clean';
+                postElement.innerHTML = `
+                    <div class="post-header-clean">
+                        <img src="${authorAvatar}" alt="${post.author}" class="post-avatar-clean"
+                             onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(post.author)}&background=10b981&color=fff&size=150'">
+                        <div class="post-meta-clean">
+                            <div class="post-author-clean">${post.author}</div>
+                            <div class="post-date-clean">
+                                ${new Date(post.createdAt).toLocaleDateString('pt-BR')}
+                                ${post.createdAt !== post.updatedAt ? 
+                                ` • Editado em ${new Date(post.updatedAt).toLocaleDateString('pt-BR')}` : ''}
+                            </div>
+                        </div>
+                        ${isOwner ? `
+                        <div class="post-actions-clean">
+                            <button class="post-action-btn" onclick="editPost('${post._id}')">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="post-action-btn" onclick="deletePost('${post._id}')">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                        ` : ''}
+                    </div>
+                    
+                    <div class="post-title-clean">${post.title}</div>
+                    <div class="post-content-clean">${post.content}</div>
+                    
+                    <div class="post-footer-clean">
+                        <div class="post-actions">
+                            <button class="like-btn-clean ${userLiked ? 'liked' : ''}" onclick="toggleLike('${post._id}', this)">
+                                <i class="fas fa-heart"></i>
+                                <span class="likes-count">${likesCount}</span>
+                            </button>
+                            <button class="view-comments-btn-clean" onclick="toggleComments('${post._id}')">
+                                <i class="fas fa-comment"></i>
+                                Comentários
+                                <span class="comments-count-badge-clean" id="comments-badge-${post._id}">0</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="comment-section-clean" id="comment-section-${post._id}" style="display: none;">
+                        <div class="comment-form-clean">
+                            <div class="comment-input-group-clean">
+                                <img src="${user.avatar ? (user.avatar.startsWith('/uploads/') ? window.location.origin + user.avatar : user.avatar) : 'https://ui-avatars.com/api/?name=' + encodeURIComponent(user.name) + '&background=10b981&color=fff&size=40'}" 
+                                     alt="Seu avatar" class="comment-avatar-clean"
+                                     onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=10b981&color=fff&size=40'">
+                                <div class="comment-input-wrapper-clean">
+                                    <textarea class="comment-input-clean" placeholder="Escreva um comentário..." rows="2" id="comment-input-${post._id}"></textarea>
+                                </div>
+                                <button class="comment-btn-clean" onclick="addComment('${post._id}')">
+                                    <i class="fas fa-paper-plane"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="comments-list-clean" id="comments-list-${post._id}">
+                            <div class="text-center py-3">
+                                <i class="fas fa-spinner fa-spin text-primary"></i>
+                                <p class="text-sm text-muted mt-2">Carregando comentários...</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                feedContainer.appendChild(postElement);
+                loadCommentsCountForFeed(post._id);
+            });
+        }
+
+        function displayMyPosts(posts) {
+            const myPostsList = document.getElementById('myPostsList');
+            if (!myPostsList) return;
+            
+            if (posts.length === 0) {
+                myPostsList.innerHTML = `
+                    <div class="text-center py-5">
+                        <i class="fas fa-inbox fa-2x text-muted mb-3"></i>
+                        <p class="text-muted">Você ainda não criou nenhum post.</p>
+                        <p class="text-sm text-muted">Vá para o Feed da Comunidade e crie seu primeiro post!</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            myPostsList.innerHTML = '';
+            
+            const user = JSON.parse(localStorage.getItem('user'));
+            
+            posts.forEach(post => {
+                const userLiked = user && post.likes && Array.isArray(post.likes) && 
+                                 post.likes.includes(user.id);
+                const likesCount = post.likesCount || (post.likes ? post.likes.length : 0);
+                
+                let authorAvatar;
+                if (post.authorAvatar) {
+                    authorAvatar = post.authorAvatar.startsWith('/uploads/') ? 
+                        window.location.origin + post.authorAvatar : post.authorAvatar;
+                } else {
+                    authorAvatar = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(post.author) + '&background=10b981&color=fff&size=150';
+                }
+                
+                const postElement = document.createElement('div');
+                postElement.className = 'post-card-clean';
+                postElement.innerHTML = `
+                    <div class="post-header-clean">
+                        <img src="${authorAvatar}" alt="${post.author}" class="post-avatar-clean"
+                             onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(post.author)}&background=10b981&color=fff&size=150'">
+                        <div class="post-meta-clean">
+                            <div class="post-author-clean">${post.author}</div>
+                            <div class="post-date-clean">
+                                ${new Date(post.createdAt).toLocaleDateString('pt-BR')}
+                                ${post.createdAt !== post.updatedAt ? 
+                                ` • Editado em ${new Date(post.updatedAt).toLocaleDateString('pt-BR')}` : ''}
+                            </div>
+                        </div>
+                        <div class="post-actions-clean">
+                            <button class="post-action-btn" onclick="editPost('${post._id}')">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="post-action-btn" onclick="deletePost('${post._id}')">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="post-title-clean">${post.title}</div>
+                    <div class="post-content-clean">${post.content}</div>
+                    
+                    <div class="post-footer-clean">
+                        <div class="post-actions">
+                            <button class="like-btn-clean ${userLiked ? 'liked' : ''}" onclick="toggleLike('${post._id}', this)">
+                                <i class="fas fa-heart"></i>
+                                <span class="likes-count">${likesCount}</span>
+                            </button>
+                            <span class="text-sm text-muted">
+                                <i class="fas fa-comment me-1"></i>
+                                <span id="comments-count-${post._id}">0</span> comentários
+                            </span>
+                        </div>
+                    </div>
+                `;
+                
+                myPostsList.appendChild(postElement);
+                loadCommentsCount(post._id);
+            });
+        }
+
+        function displayComments(postId, comments) {
+            const commentsList = document.getElementById(`comments-list-${postId}`);
+            if (!commentsList) return;
+            
+            if (comments.length === 0) {
+                commentsList.innerHTML = `
+                    <div class="no-comments text-center py-3">
+                        <i class="fas fa-comment-slash fa-lg text-muted mb-2"></i>
+                        <p class="text-sm text-muted">Nenhum comentário ainda.</p>
+                        <p class="text-xs text-muted">Seja o primeiro a comentar!</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            const user = JSON.parse(localStorage.getItem('user'));
+            
+            commentsList.innerHTML = '';
+            
+            comments.forEach(comment => {
+                const isOwner = user && comment.author === user.name;
+                const userLiked = user && comment.likes && Array.isArray(comment.likes) && 
+                                 comment.likes.includes(user.id);
+                const likesCount = comment.likesCount || (comment.likes ? comment.likes.length : 0);
+                
+                let authorAvatar;
+                if (comment.authorAvatar) {
+                    authorAvatar = comment.authorAvatar.startsWith('/uploads/') ? 
+                        window.location.origin + comment.authorAvatar : comment.authorAvatar;
+                } else {
+                    authorAvatar = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(comment.author) + '&background=10b981&color=fff&size=40';
+                }
+                
+                const commentElement = document.createElement('div');
+                commentElement.className = 'comment-card-clean';
+                commentElement.setAttribute('data-comment-id', comment._id);
+                commentElement.innerHTML = `
+                    <div class="comment-header-clean">
+                        <img src="${authorAvatar}" alt="${comment.author}" class="comment-author-avatar-clean"
+                             onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(comment.author)}&background=10b981&color=fff&size=40'">
+                        <div class="comment-author-clean">${comment.author}</div>
+                        <div class="comment-date-clean">
+                            ${new Date(comment.createdAt).toLocaleDateString('pt-BR')} às 
+                            ${new Date(comment.createdAt).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
+                        </div>
+                    </div>
+                    <div class="comment-content-clean">${comment.content}</div>
+                    <div class="comment-actions-clean">
+                        <button class="comment-action-btn comment-like-btn ${userLiked ? 'liked' : ''}" onclick="toggleCommentLike('${comment._id}', this)">
+                            <i class="fas fa-heart"></i>
+                            <span class="likes-count">${likesCount}</span>
+                        </button>
+                        ${isOwner ? `
+                        <button class="comment-action-btn comment-edit-btn" onclick="editComment('${comment._id}', \`${comment.content.replace(/`/g, '\\`')}\`)">
+                            <i class="fas fa-edit"></i>
+                            Editar
+                        </button>
+                        <button class="comment-action-btn comment-delete-btn" onclick="deleteComment('${comment._id}', '${postId}')">
+                            <i class="fas fa-trash"></i>
+                            Excluir
+                        </button>
+                        ` : ''}
+                    </div>
+                `;
+                
+                commentsList.appendChild(commentElement);
+            });
+        }
+
+        // ========== UTILITY FUNCTIONS ==========
+        function toggleComments(postId) {
+            const commentSection = document.getElementById(`comment-section-${postId}`);
+            const commentsList = document.getElementById(`comments-list-${postId}`);
+            
+            if (commentSection.style.display === 'none') {
+                commentSection.style.display = 'block';
+                loadComments(postId);
+            } else {
+                commentSection.style.display = 'none';
+            }
+        }
+
+        async function loadCommentsCount(postId) {
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch(`/api/comments/post/${postId}`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                if (response.ok) {
+                    const comments = await response.json();
+                    const countElement = document.getElementById(`comments-count-${postId}`);
+                    if (countElement) {
+                        countElement.textContent = comments.length;
+                    }
+                }
+            } catch (error) {
+                console.error('Erro ao carregar contagem de comentários:', error);
+            }
+        }
+
+        async function loadCommentsCountForFeed(postId) {
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch(`/api/comments/post/${postId}`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                if (response.ok) {
+                    const comments = await response.json();
+                    const badgeElement = document.getElementById(`comments-badge-${postId}`);
+                    if (badgeElement) {
+                        badgeElement.textContent = comments.length;
+                    }
+                }
+            } catch (error) {
+                console.error('Erro ao carregar contagem de comentários:', error);
+            }
+        }
+
+        function showCommunityLoading() {
+            const feedContainer = document.getElementById('communityFeed');
+            if (feedContainer) {
+                feedContainer.innerHTML = `
+                    <div class="text-center py-5">
+                        <i class="fas fa-spinner fa-spin text-primary mb-3"></i>
+                        <p class="text-sm text-muted">Carregando feed da comunidade...</p>
+                    </div>
+                `;
+            }
+        }
+
+        function showMyPostsLoading() {
+            const myPostsList = document.getElementById('myPostsList');
+            if (myPostsList) {
+                myPostsList.innerHTML = `
+                    <div class="text-center py-5">
+                        <i class="fas fa-spinner fa-spin text-primary mb-3"></i>
+                        <p class="text-sm text-muted">Carregando seus posts...</p>
+                    </div>
+                `;
+            }
+        }
+
+        function updateFeedCount(count) {
+            const feedCount = document.getElementById('feedCount');
+            if (feedCount) {
+                feedCount.textContent = count;
+            }
+        }
+
+        function updateMyPostsCount(count) {
+            const myPostsCount = document.getElementById('myPostsCount');
+            const myPostsBadge = document.getElementById('myPostsBadge');
+            
+            if (myPostsCount) {
+                myPostsCount.textContent = count;
+            }
+            if (myPostsBadge) {
+                myPostsBadge.textContent = `${count} ${count === 1 ? 'post' : 'posts'}`;
+            }
+        }
+
+        function handleUnauthorized() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            window.location.href = '/login';
+        }
+
+        // ========== NOTIFICATION SYSTEM ==========
+        function showAlert(message, type) {
+            const existingAlerts = document.querySelectorAll('.alert-fixed');
+            existingAlerts.forEach(alert => alert.remove());
+            
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type} alert-dismissible fade show alert-fixed`;
+            alertDiv.role = 'alert';
+            alertDiv.innerHTML = `
+                <div class="d-flex align-items-center">
+                    <i class="fas ${getAlertIcon(type)} me-2"></i>
+                    <div class="flex-grow-1">${message}</div>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            `;
+            
+            document.body.appendChild(alertDiv);
+            
+            if (type === 'success') {
+                playNotificationSound();
+            }
+            
+            setTimeout(() => {
+                if (alertDiv.parentNode) {
+                    alertDiv.remove();
+                }
+            }, 5000);
+        }
+
+        function getAlertIcon(type) {
+            switch(type) {
+                case 'success': return 'fa-check-circle';
+                case 'danger': return 'fa-exclamation-circle';
+                case 'warning': return 'fa-exclamation-triangle';
+                case 'info': return 'fa-info-circle';
+                default: return 'fa-bell';
+            }
+        }
+
+        function playNotificationSound() {
+            try {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                
+                const osc1 = audioContext.createOscillator();
+                const osc2 = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                osc1.connect(gainNode);
+                osc2.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                osc1.type = 'sine';
+                osc1.frequency.setValueAtTime(1046.50, audioContext.currentTime);
+                
+                osc2.type = 'sine';
+                osc2.frequency.setValueAtTime(1567.98, audioContext.currentTime);
+                
+                gainNode.gain.setValueAtTime(0.07, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.4);
+                
+                osc1.start(audioContext.currentTime);
+                osc2.start(audioContext.currentTime);
+                osc1.stop(audioContext.currentTime + 0.4);
+                osc2.stop(audioContext.currentTime + 0.4);
+                
+            } catch (error) {
+                console.log('Som de notificação não suportado');
+            }
+        }
     </script>
-    <script src="/js/dashboard.js"></script>
 </body>
 </html>
