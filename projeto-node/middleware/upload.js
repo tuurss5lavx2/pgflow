@@ -1,7 +1,7 @@
 const multer = require('multer');
 const cloudinary = require('cloudinary').v2;
 
-// Configuração temporária - storage em memória
+// Configuração - storage em memória
 const storage = multer.memoryStorage();
 
 const fileFilter = (req, file, cb) => {
@@ -12,6 +12,7 @@ const fileFilter = (req, file, cb) => {
   }
 };
 
+// Cria a instância do multer
 const upload = multer({
   storage: storage,
   fileFilter: fileFilter,
@@ -42,6 +43,7 @@ const uploadToCloudinary = (buffer, userId) => {
   });
 };
 
-// Exporta o upload como default e uploadToCloudinary como named export
+// Exporta a instância do multer como default
 module.exports = upload;
+// Exporta a função auxiliar como propriedade
 module.exports.uploadToCloudinary = uploadToCloudinary;
