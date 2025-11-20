@@ -1,9 +1,7 @@
 const User = require('../models/user');
 const jwt = require('jsonwebtoken');
 const cloudinary = require('../config/cloudinary');
-const { uploadToCloudinary } = require('../middleware/upload');
 const upload = require('../middleware/upload');
-const uploadToCloudinary = upload.uploadToCloudinary;
 
 const authController = {
   register: async (req, res) => {
@@ -96,8 +94,8 @@ const authController = {
         }
       }
 
-      // Faz upload para o Cloudinary
-      const result = await uploadToCloudinary(req.file.buffer, userId);
+      // Faz upload para o Cloudinary usando a função do middleware
+      const result = await upload.uploadToCloudinary(req.file.buffer, userId);
       
       // Atualiza avatar no usuário com URL do Cloudinary
       user.avatar = result.secure_url;
