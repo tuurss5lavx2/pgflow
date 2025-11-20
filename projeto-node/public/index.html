@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PGFlow - Sistema de Autenticação e Posts</title>
+    <title>PGFlow - Rede Social Completa com CRUD Avançado</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -31,7 +31,10 @@
                         <a class="nav-link" href="#features">Recursos</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#about">Tecnologias</a>
+                        <a class="nav-link" href="#tech">Tecnologias</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#demo">Demonstração</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/login">Login</a>
@@ -55,10 +58,10 @@
                     <i class="fas fa-user-shield"></i>
                 </div>
                 <div class="card-float card-2">
-                    <i class="fas fa-edit"></i>
+                    <i class="fas fa-heart"></i>
                 </div>
                 <div class="card-float card-3">
-                    <i class="fas fa-database"></i>
+                    <i class="fas fa-comments"></i>
                 </div>
             </div>
         </div>
@@ -69,25 +72,26 @@
                     <div class="hero-content">
                         <!-- Main Title -->
                         <h1 class="hero-title">
-                            Sistema de 
-                            <span class="title-accent">Autenticação e Posts</span>
+                            PGFlow - 
+                            <span class="title-accent">Rede Social Completa</span>
                         </h1>
                         
                         <!-- Subtitle -->
                         <p class="hero-subtitle">
-                            Plataforma completa com Node.js e MongoDB para registro, login 
-                            e gestão de posts. Crie sua conta e comece a publicar.
+                            Plataforma full-stack com sistema de autenticação, feed interativo, 
+                            posts, comentários, likes com som e muito mais. Tecnologias modernas 
+                            para uma experiência incrível.
                         </p>
                         
                         <!-- CTA Buttons -->
                         <div class="hero-actions">
                             <a href="/register" class="btn btn-primary btn-lg">
                                 <i class="fas fa-user-plus me-2"></i>
-                                Criar Minha Conta
+                                Experimentar Agora
                             </a>
                             <a href="#features" class="btn btn-outline-secondary btn-lg">
-                                <i class="fas fa-code me-2"></i>
-                                Ver Tecnologias
+                                <i class="fas fa-rocket me-2"></i>
+                                Ver Recursos
                             </a>
                         </div>
                         
@@ -105,21 +109,21 @@
                                     <i class="fas fa-database"></i>
                                 </div>
                                 <div class="stat-number">MongoDB</div>
-                                <div class="stat-label">Database</div>
+                                <div class="stat-label">NoSQL</div>
                             </div>
                             <div class="stat">
                                 <div class="stat-icon">
-                                    <i class="fas fa-key"></i>
+                                    <i class="fas fa-bolt"></i>
                                 </div>
                                 <div class="stat-number">JWT</div>
                                 <div class="stat-label">Auth</div>
                             </div>
                             <div class="stat">
                                 <div class="stat-icon">
-                                    <i class="fas fa-shield-alt"></i>
+                                    <i class="fas fa-cloud"></i>
                                 </div>
-                                <div class="stat-number">Bcrypt</div>
-                                <div class="stat-label">Security</div>
+                                <div class="stat-number">Cloudinary</div>
+                                <div class="stat-label">Upload</div>
                             </div>
                         </div>
                     </div>
@@ -128,61 +132,136 @@
         </div>
     </section>
 
-    <!-- Features Grid -->
+    <!-- Features Grid - ATUALIZADA -->
     <section id="features" class="features-grid">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-10">
                     <div class="section-header text-center">
-                        <h2 class="section-title">Recursos da Plataforma</h2>
-                        <p class="section-subtitle">Tudo que você precisa para gerenciar usuários e conteúdos</p>
+                        <h2 class="section-title">Recursos Avançados</h2>
+                        <p class="section-subtitle">Uma plataforma completa com tudo que você precisa para uma rede social moderna</p>
                     </div>
                     
                     <div class="features-container">
+                        <!-- Primeira Linha -->
                         <div class="feature-row">
                             <div class="feature-card">
                                 <div class="feature-icon">
-                                    <i class="fas fa-user-plus"></i>
+                                    <i class="fas fa-user-shield"></i>
                                 </div>
                                 <div class="feature-content">
-                                    <h4>Registro e Login</h4>
-                                    <p>Sistema completo de autenticação com JWT e senhas criptografadas com bcrypt</p>
+                                    <h4>Sistema de Autenticação</h4>
+                                    <p>Segurança robusta com JWT, bcrypt e proteção completa de rotas</p>
                                     <ul class="feature-list">
-                                        <li>Registro de usuários</li>
-                                        <li>Login com JWT</li>
-                                        <li>Senhas seguras</li>
+                                        <li>Registro e login seguros</li>
+                                        <li>Tokens JWT com expiration</li>
+                                        <li>Senhas criptografadas</li>
+                                        <li>Proteção de rotas privadas</li>
                                     </ul>
                                 </div>
                             </div>
                             
                             <div class="feature-card">
                                 <div class="feature-icon">
-                                    <i class="fas fa-edit"></i>
+                                    <i class="fas fa-newspaper"></i>
                                 </div>
                                 <div class="feature-content">
-                                    <h4>Gestão de Posts</h4>
-                                    <p>CRUD completo de posts com interface intuitiva e proteção por autenticação</p>
+                                    <h4>Feed Interativo</h4>
+                                    <p>Experiência de usuário imersiva com feed em tempo real e interações</p>
                                     <ul class="feature-list">
-                                        <li>Criar novos posts</li>
-                                        <li>Editar posts existentes</li>
-                                        <li>Excluir posts</li>
+                                        <li>Posts em tempo real</li>
+                                        <li>Scroll infinito</li>
+                                        <li>Design responsivo</li>
+                                        <li>Carregamento otimizado</li>
                                     </ul>
                                 </div>
                             </div>
                         </div>
                         
+                        <!-- Segunda Linha -->
                         <div class="feature-row">
                             <div class="feature-card">
                                 <div class="feature-icon">
-                                    <i class="fas fa-database"></i>
+                                    <i class="fas fa-heart"></i>
                                 </div>
                                 <div class="feature-content">
-                                    <h4>MongoDB Atlas</h4>
-                                    <p>Banco de dados NoSQL em nuvem com alta disponibilidade e performance otimizada</p>
+                                    <h4>Sistema de Likes</h4>
+                                    <p>Interações engajadoras com feedback visual e sonoro imediato</p>
                                     <ul class="feature-list">
-                                        <li>Cloud MongoDB</li>
-                                        <li>Escalabilidade automática</li>
-                                        <li>Backup automático</li>
+                                        <li>Likes em posts e comentários</li>
+                                        <li>Som característico ao curtir</li>
+                                        <li>Contadores em tempo real</li>
+                                        <li>Animações suaves</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            
+                            <div class="feature-card">
+                                <div class="feature-icon">
+                                    <i class="fas fa-comments"></i>
+                                </div>
+                                <div class="feature-content">
+                                    <h4>Comentários Hierárquicos</h4>
+                                    <p>Sistema completo de comentários com moderação e interações</p>
+                                    <ul class="feature-list">
+                                        <li>Comentários em tempo real</li>
+                                        <li>Likes em comentários</li>
+                                        <li>Exclusão por autores</li>
+                                        <li>Interface otimizada</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Terceira Linha -->
+                        <div class="feature-row">
+                            <div class="feature-card">
+                                <div class="feature-icon">
+                                    <i class="fas fa-edit"></i>
+                                </div>
+                                <div class="feature-content">
+                                    <h4>CRUD Completo</h4>
+                                    <p>Gestão completa de conteúdo com operações Create, Read, Update e Delete</p>
+                                    <ul class="feature-list">
+                                        <li>Criação de posts</li>
+                                        <li>Edição em tempo real</li>
+                                        <li>Exclusão segura</li>
+                                        <li>Validações robustas</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            
+                            <div class="feature-card">
+                                <div class="feature-icon">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                </div>
+                                <div class="feature-content">
+                                    <h4>Upload de Imagens</h4>
+                                    <p>Integração com Cloudinary para upload e gestão de mídia</p>
+                                    <ul class="feature-list">
+                                        <li>Upload para Cloudinary</li>
+                                        <li>Otimização automática</li>
+                                        <li>Exclusão de arquivos antigos</li>
+                                        <li>Suporte a múltiplos formatos</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Quarta Linha -->
+                        <div class="feature-row">
+                            <div class="feature-card">
+                                <div class="feature-icon">
+                                    <i class="fas fa-tachometer-alt"></i>
+                                </div>
+                                <div class="feature-content">
+                                    <h4>Dashboard Avançado</h4>
+                                    <p>Interface administrativa completa com métricas e controles</p>
+                                    <ul class="feature-list">
+                                        <li>Visão geral da comunidade</li>
+                                        <li>Gestão de posts pessoais</li>
+                                        <li>Estatísticas em tempo real</li>
+                                        <li>Navegação por abas</li>
                                     </ul>
                                 </div>
                             </div>
@@ -192,12 +271,13 @@
                                     <i class="fas fa-mobile-alt"></i>
                                 </div>
                                 <div class="feature-content">
-                                    <h4>Interface Responsiva</h4>
-                                    <p>Design moderno com Bootstrap 5 que funciona perfeitamente em todos os dispositivos</p>
+                                    <h4>Design Responsivo</h4>
+                                    <p>Experiência perfeita em todos os dispositivos e tamanhos de tela</p>
                                     <ul class="feature-list">
-                                        <li>Design mobile-first</li>
-                                        <li>Bootstrap 5</li>
-                                        <li>Experiência otimizada</li>
+                                        <li>Mobile-first design</li>
+                                        <li>Bootstrap 5 customizado</li>
+                                        <li>Performance otimizada</li>
+                                        <li>Acessibilidade</li>
                                     </ul>
                                 </div>
                             </div>
@@ -208,105 +288,205 @@
         </div>
     </section>
 
-    <!-- About Section -->
-    <section id="about" class="about-section">
+    <!-- Tech Stack Section -->
+    <section id="tech" class="tech-section">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <div class="section-header text-center">
+                        <h2 class="section-title">Stack Tecnológica</h2>
+                        <p class="section-subtitle">Tecnologias modernas e melhores práticas de desenvolvimento</p>
+                    </div>
+
+                    <div class="tech-stack-grid">
+                        <div class="tech-category">
+                            <h4 class="tech-category-title">
+                                <i class="fas fa-server me-2"></i>Backend
+                            </h4>
+                            <div class="tech-items">
+                                <div class="tech-item">
+                                    <div class="tech-icon backend">
+                                        <i class="fab fa-node-js"></i>
+                                    </div>
+                                    <span class="tech-name">Node.js</span>
+                                    <span class="tech-desc">Runtime JavaScript</span>
+                                </div>
+                                <div class="tech-item">
+                                    <div class="tech-icon backend">
+                                        <i class="fas fa-code"></i>
+                                    </div>
+                                    <span class="tech-name">Express.js</span>
+                                    <span class="tech-desc">Framework Web</span>
+                                </div>
+                                <div class="tech-item">
+                                    <div class="tech-icon backend">
+                                        <i class="fas fa-database"></i>
+                                    </div>
+                                    <span class="tech-name">MongoDB</span>
+                                    <span class="tech-desc">Banco NoSQL</span>
+                                </div>
+                                <div class="tech-item">
+                                    <div class="tech-icon backend">
+                                        <i class="fas fa-key"></i>
+                                    </div>
+                                    <span class="tech-name">JWT</span>
+                                    <span class="tech-desc">Autenticação</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tech-category">
+                            <h4 class="tech-category-title">
+                                <i class="fas fa-desktop me-2"></i>Frontend
+                            </h4>
+                            <div class="tech-items">
+                                <div class="tech-item">
+                                    <div class="tech-icon frontend">
+                                        <i class="fab fa-js-square"></i>
+                                    </div>
+                                    <span class="tech-name">JavaScript</span>
+                                    <span class="tech-desc">Vanilla ES6+</span>
+                                </div>
+                                <div class="tech-item">
+                                    <div class="tech-icon frontend">
+                                        <i class="fab fa-bootstrap"></i>
+                                    </div>
+                                    <span class="tech-name">Bootstrap 5</span>
+                                    <span class="tech-desc">Framework CSS</span>
+                                </div>
+                                <div class="tech-item">
+                                    <div class="tech-icon frontend">
+                                        <i class="fas fa-paint-brush"></i>
+                                    </div>
+                                    <span class="tech-name">CSS3</span>
+                                    <span class="tech-desc">Design Custom</span>
+                                </div>
+                                <div class="tech-item">
+                                    <div class="tech-icon frontend">
+                                        <i class="fas fa-mobile-alt"></i>
+                                    </div>
+                                    <span class="tech-name">Responsive</span>
+                                    <span class="tech-desc">Mobile First</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tech-category">
+                            <h4 class="tech-category-title">
+                                <i class="fas fa-shield-alt me-2"></i>Segurança & APIs
+                            </h4>
+                            <div class="tech-items">
+                                <div class="tech-item">
+                                    <div class="tech-icon security">
+                                        <i class="fas fa-lock"></i>
+                                    </div>
+                                    <span class="tech-name">Bcrypt</span>
+                                    <span class="tech-desc">Hash de Senhas</span>
+                                </div>
+                                <div class="tech-item">
+                                    <div class="tech-icon security">
+                                        <i class="fas fa-cloud"></i>
+                                    </div>
+                                    <span class="tech-name">Cloudinary</span>
+                                    <span class="tech-desc">CDN & Upload</span>
+                                </div>
+                                <div class="tech-item">
+                                    <div class="tech-icon security">
+                                        <i class="fas fa-code-branch"></i>
+                                    </div>
+                                    <span class="tech-name">REST API</span>
+                                    <span class="tech-desc">Arquitetura</span>
+                                </div>
+                                <div class="tech-item">
+                                    <div class="tech-icon security">
+                                        <i class="fas fa-rocket"></i>
+                                    </div>
+                                    <span class="tech-name">Render</span>
+                                    <span class="tech-desc">Deploy</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Demo Section -->
+    <section id="demo" class="demo-section">
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-6">
-                    <div class="about-content">
-                        <h2 class="about-title">Stack Tecnológica</h2>
-                        <p class="about-description">
-                            Desenvolvido com as tecnologias mais modernas do ecossistema JavaScript, 
-                            garantindo performance, segurança e escalabilidade para sua aplicação.
+                    <div class="demo-content">
+                        <h2 class="demo-title">Experiência do Usuário</h2>
+                        <p class="demo-description">
+                            Interface moderna e intuitiva que proporciona uma experiência fluida 
+                            e engajadora para todos os usuários.
                         </p>
                         
-                        <div class="tech-stack">
-                            <div class="tech-item">
-                                <div class="tech-icon">
-                                    <i class="fab fa-node-js"></i>
+                        <div class="demo-features">
+                            <div class="demo-feature">
+                                <div class="demo-feature-icon">
+                                    <i class="fas fa-bolt"></i>
                                 </div>
-                                <span>Node.js</span>
-                            </div>
-                            <div class="tech-item">
-                                <div class="tech-icon">
-                                    <i class="fas fa-database"></i>
+                                <div class="demo-feature-content">
+                                    <h5>Performance Otimizada</h5>
+                                    <p>Carregamento rápido e animações suaves</p>
                                 </div>
-                                <span>MongoDB</span>
                             </div>
-                            <div class="tech-item">
-                                <div class="tech-icon">
-                                    <i class="fas fa-key"></i>
+                            
+                            <div class="demo-feature">
+                                <div class="demo-feature-icon">
+                                    <i class="fas fa-heart"></i>
                                 </div>
-                                <span>JWT</span>
-                            </div>
-                            <div class="tech-item">
-                                <div class="tech-icon">
-                                    <i class="fas fa-shield-alt"></i>
+                                <div class="demo-feature-content">
+                                    <h5>Interações Ricas</h5>
+                                    <p>Likes com feedback sonoro e visual</p>
                                 </div>
-                                <span>Bcrypt</span>
                             </div>
-                        </div>
-                        
-                        <div class="about-features">
-                            <div class="feature">
-                                <i class="fas fa-check"></i>
-                                <span>API RESTful completa</span>
-                            </div>
-                            <div class="feature">
-                                <i class="fas fa-check"></i>
-                                <span>Autenticação JWT</span>
-                            </div>
-                            <div class="feature">
-                                <i class="fas fa-check"></i>
-                                <span>Deploy no Render</span>
+                            
+                            <div class="demo-feature">
+                                <div class="demo-feature-icon">
+                                    <i class="fas fa-comment"></i>
+                                </div>
+                                <div class="demo-feature-content">
+                                    <h5>Comunicação em Tempo Real</h5>
+                                    <p>Sistema de comentários instantâneo</p>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 
                 <div class="col-lg-6">
-                    <div class="about-visual">
-                        <div class="code-window">
-                            <div class="window-header">
-                                <div class="window-dots">
-                                    <span></span>
-                                    <span></span>
-                                    <span></span>
+                    <div class="demo-visual">
+                        <div class="demo-card">
+                            <div class="demo-card-header">
+                                <div class="demo-user">
+                                    <div class="demo-avatar"></div>
+                                    <div class="demo-user-info">
+                                        <div class="demo-username">@usuário</div>
+                                        <div class="demo-time">Agora mesmo</div>
+                                    </div>
                                 </div>
-                                <div class="window-title">pgflow-api.js</div>
+                                <div class="demo-actions">
+                                    <button class="demo-like active">
+                                        <i class="fas fa-heart"></i>
+                                        <span>12</span>
+                                    </button>
+                                </div>
                             </div>
-                            <div class="code-content">
-                                <div class="code-line">
-                                    <span class="code-comment">// Autenticação JWT</span>
-                                </div>
-                                <div class="code-line">
-                                    <span class="code-keyword">const</span> 
-                                    <span class="code-variable">token</span> = 
-                                    <span class="code-function">jwt</span>.
-                                    <span class="code-function">sign</span>(
-                                </div>
-                                <div class="code-line indent">
-                                    { <span class="code-property">userId</span>: 
-                                    <span class="code-variable">user</span>.<span class="code-property">_id</span> },
-                                </div>
-                                <div class="code-line indent">
-                                    <span class="code-variable">process</span>.<span class="code-property">env</span>.<span class="code-property">JWT_SECRET</span>,
-                                </div>
-                                <div class="code-line indent">
-                                    { <span class="code-property">expiresIn</span>: 
-                                    <span class="code-string">'24h'</span> }
-                                </div>
-                                <div class="code-line">);</div>
-                                <div class="code-line empty"></div>
-                                <div class="code-line">
-                                    <span class="code-comment">// Criar post protegido</span>
-                                </div>
-                                <div class="code-line">
-                                    <span class="code-variable">router</span>.
-                                    <span class="code-function">post</span>(
-                                    <span class="code-string">'/posts'</span>, 
-                                    <span class="code-variable">auth</span>, 
-                                    <span class="code-variable">createPost</span>);
+                            <div class="demo-card-content">
+                                <h4>Experimente o PGFlow!</h4>
+                                <p>Plataforma completa com autenticação, posts, comentários e sistema de likes com feedback sonoro.</p>
+                            </div>
+                            <div class="demo-card-footer">
+                                <div class="demo-comment">
+                                    <div class="demo-comment-avatar"></div>
+                                    <div class="demo-comment-content">
+                                        <div class="demo-comment-user">@amigo</div>
+                                        <div class="demo-comment-text">Adorei o sistema de sons! 👏</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -322,30 +502,30 @@
             <div class="row justify-content-center">
                 <div class="col-lg-8 text-center">
                     <div class="cta-content">
-                        <h2 class="cta-title">Pronto para Começar?</h2>
+                        <h2 class="cta-title">Pronto para Experimentar?</h2>
                         <p class="cta-subtitle">
-                            Crie sua conta gratuitamente e comece a gerenciar seus posts hoje mesmo
+                            Junte-se à comunidade e descubra todas as funcionalidades incríveis do PGFlow
                         </p>
                         
                         <div class="cta-actions">
                             <a href="/register" class="btn btn-primary btn-lg">
-                                <i class="fas fa-user-plus me-2"></i>
-                                Criar Conta Gratuita
+                                <i class="fas fa-rocket me-2"></i>
+                                Começar Agora
                             </a>
                         </div>
                         
                         <div class="cta-features">
                             <div class="feature">
                                 <i class="fas fa-check"></i>
-                                <span>Registro gratuito</span>
+                                <span>Conta gratuita</span>
                             </div>
                             <div class="feature">
                                 <i class="fas fa-check"></i>
-                                <span>Dashboard completo</span>
+                                <span>Todos os recursos</span>
                             </div>
                             <div class="feature">
                                 <i class="fas fa-check"></i>
-                                <span>Suporte 24/7</span>
+                                <span>Suporte da comunidade</span>
                             </div>
                         </div>
                     </div>
@@ -381,21 +561,21 @@
                                 <i class="fas fa-bolt me-2"></i>PGFlow
                             </div>
                             <p class="footer-description">
-                                Plataforma moderna de autenticação e gestão de posts. 
-                                Desenvolvida com as melhores práticas e tecnologias atuais.
+                                Plataforma moderna de rede social com autenticação, posts, 
+                                comentários e sistema de interações completo.
                             </p>
                             <div class="tech-badges">
-                                <span class="tech-badge">Node.js</span>
-                                <span class="tech-badge">MongoDB</span>
-                                <span class="tech-badge">JWT</span>
-                                <span class="tech-badge">Bcrypt</span>
+                                <span class="tech-badge">Full-Stack</span>
+                                <span class="tech-badge">Real-Time</span>
+                                <span class="tech-badge">Secure</span>
+                                <span class="tech-badge">Responsive</span>
                             </div>
                         </div>
                     </div>
                     <div class="col-lg-6">
                         <div class="footer-newsletter">
-                            <h5>Fique por dentro</h5>
-                            <p>Receba atualizações sobre novos recursos e melhorias</p>
+                            <h5>Novidades em Breve</h5>
+                            <p>Novos recursos e melhorias estão a caminho!</p>
                             <div class="newsletter-form">
                                 <input type="email" placeholder="seu@email.com" class="newsletter-input">
                                 <button class="newsletter-btn">
@@ -415,9 +595,9 @@
                             <h6>Plataforma</h6>
                             <div class="footer-links">
                                 <a href="#features"><i class="fas fa-arrow-right me-2"></i>Recursos</a>
-                                <a href="#about"><i class="fas fa-arrow-right me-2"></i>Tecnologias</a>
+                                <a href="#tech"><i class="fas fa-arrow-right me-2"></i>Tecnologias</a>
+                                <a href="#demo"><i class="fas fa-arrow-right me-2"></i>Demo</a>
                                 <a href="/login"><i class="fas fa-arrow-right me-2"></i>Login</a>
-                                <a href="/register"><i class="fas fa-arrow-right me-2"></i>Registrar</a>
                             </div>
                         </div>
                     </div>
@@ -434,12 +614,12 @@
                     </div>
                     <div class="col-lg-3 col-md-6 mb-4">
                         <div class="footer-column">
-                            <h6>Suporte</h6>
+                            <h6>Recursos</h6>
                             <div class="footer-links">
-                                <a href="#"><i class="fas fa-arrow-right me-2"></i>Central de Ajuda</a>
-                                <a href="#"><i class="fas fa-arrow-right me-2"></i>Tutoriais</a>
-                                <a href="#"><i class="fas fa-arrow-right me-2"></i>Comunidade</a>
-                                <a href="#"><i class="fas fa-arrow-right me-2"></i>Status</a>
+                                <a href="#"><i class="fas fa-arrow-right me-2"></i>Autenticação</a>
+                                <a href="#"><i class="fas fa-arrow-right me-2"></i>Feed Interativo</a>
+                                <a href="#"><i class="fas fa-arrow-right me-2"></i>Sistema de Likes</a>
+                                <a href="#"><i class="fas fa-arrow-right me-2"></i>Comentários</a>
                             </div>
                         </div>
                     </div>
@@ -470,7 +650,7 @@
                 <div class="row align-items-center">
                     <div class="col-md-6">
                         <div class="footer-copyright">
-                            <p>&copy; 2025 <strong>PGFlow</strong>. Desenvolvido pelo <strong>Pablo Gomes</strong></p>
+                            <p>&copy; 2025 <strong>PGFlow</strong>. Desenvolvido por <strong>Pablo Gomes</strong></p>
                         </div>
                     </div>
                     <div class="col-md-6">
