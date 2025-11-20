@@ -1,23 +1,8 @@
 const multer = require('multer');
 const cloudinary = require('cloudinary').v2;
-const { CloudinaryStorage } = require('multer-storage-cloudinary');
 
-// Configuração do Cloudinary Storage
-const storage = new CloudinaryStorage({
-  cloudinary: cloudinary,
-  params: {
-    folder: 'pgflow-avatars',
-    format: async (req, file) => 'png',
-    public_id: (req, file) => {
-      const timestamp = Date.now();
-      const userId = req.user.id;
-      return `avatar-${userId}-${timestamp}`;
-    },
-    transformation: [
-      { width: 300, height: 300, crop: 'limit', quality: 'auto' }
-    ]
-  },
-});
+// Configuração temporária - storage em memória
+const storage = multer.memoryStorage();
 
 const fileFilter = (req, file, cb) => {
   if (file.mimetype.startsWith('image/')) {
@@ -35,4 +20,26 @@ const upload = multer({
   }
 });
 
-module.exports = upload;
+// Função para upload manual para o Cloudinary
+const uploadToCloudinary = (buffer, userId) => {
+  return new Promise((resolve, reject) => {
+    const timestamp = Date.now();
+    const publicId = `avatar-${userId}-${timestamp}`;
+    
+    cloudinary.uploader.upload_stream(
+      {
+        folder: 'pgflow-avatars',
+        public_id: publicId,
+        transformation: [
+          { width: 300, height: 300, crop: 'limit', quality: 'auto' }
+        ]
+      },
+      (error, result) => {
+        if (error) reject(error);
+        else resolve(result);
+      }
+    ).end(buffer);
+  });
+};
+
+module.exports = { upload, uploadToCloudinary };

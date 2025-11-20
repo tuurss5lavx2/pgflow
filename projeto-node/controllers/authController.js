@@ -1,7 +1,7 @@
-// controllers/authController.js
 const User = require('../models/user');
 const jwt = require('jsonwebtoken');
 const cloudinary = require('../config/cloudinary');
+const { uploadToCloudinary } = require('../middleware/upload');
 
 const authController = {
   register: async (req, res) => {
@@ -12,13 +12,11 @@ const authController = {
         return res.status(400).json({ message: 'Todos os campos são obrigatórios' });
       }
       
-      // Verifica se usuário já existe
       const existingUser = await User.findOne({ email });
       if (existingUser) {
         return res.status(409).json({ message: 'Email já cadastrado' });
       }
       
-      // Cria usuário (a senha é hasheada automaticamente)
       const user = await User.create({ name, email, password });
       
       res.status(201).json({ 
@@ -38,19 +36,16 @@ const authController = {
         return res.status(400).json({ message: 'Email e senha são obrigatórios' });
       }
       
-      // Busca usuário
       const user = await User.findOne({ email });
       if (!user) {
         return res.status(401).json({ message: 'Credenciais inválidas' });
       }
       
-      // Compara senha
       const isMatch = await user.comparePassword(password);
       if (!isMatch) {
         return res.status(401).json({ message: 'Credenciais inválidas' });
       }
       
-      // Gera token
       const token = jwt.sign(
         { id: user._id, email: user.email },
         process.env.JWT_SECRET,
@@ -72,7 +67,6 @@ const authController = {
     }
   },
 
-  // ⬇️⬇️⬇️ MÉTODOS DE AVATAR E PERFIL ⬇️⬇️⬇️
   uploadAvatar: async (req, res) => {
     try {
       if (!req.file) {
@@ -89,7 +83,6 @@ const authController = {
       // Se já tem avatar no Cloudinary, deleta o antigo
       if (user.avatar && user.avatar.includes('res.cloudinary.com')) {
         try {
-          // Extrai o public_id do URL
           const urlParts = user.avatar.split('/');
           const publicIdWithExtension = urlParts[urlParts.length - 1];
           const publicId = publicIdWithExtension.split('.')[0];
@@ -101,8 +94,11 @@ const authController = {
         }
       }
 
+      // Faz upload para o Cloudinary
+      const result = await uploadToCloudinary(req.file.buffer, userId);
+      
       // Atualiza avatar no usuário com URL do Cloudinary
-      user.avatar = req.file.path;
+      user.avatar = result.secure_url;
       await user.save();
 
       res.json({
@@ -156,7 +152,6 @@ const authController = {
         return res.status(404).json({ message: 'Usuário não encontrado' });
       }
 
-      // Verifica se email já existe (exceto pro próprio usuário)
       if (email && email !== user.email) {
         const existingUser = await User.findOne({ email });
         if (existingUser) {
@@ -183,7 +178,6 @@ const authController = {
       res.status(500).json({ message: 'Erro interno ao atualizar perfil' });
     }
   }
-  // ⬆️⬆️⬆️ MÉTODOS DE AVATAR E PERFIL ⬆️⬆️⬆️
 };
 
 module.exports = authController;
