@@ -1413,17 +1413,14 @@ body {
     .tech-category {
         padding: 2rem;
     }
-      .hero-minimal {
-        padding: 140px 0 60px !important; /* Aumentei o padding-top */
-    }
-    
-    .navbar {
-        padding: 0.8rem 0;
+       .hero-minimal {
+        padding: 100px 0 40px !important; /* Reduzi bastante */
     }
     
     .hero-content {
-        margin-top: 1rem; /* Espaço extra no conteúdo */
+        margin-top: 0.5rem; /* Espaço bem menor */
     }
+}
     
     .tech-items {
         grid-template-columns: 1fr;
@@ -1442,7 +1439,7 @@ body {
     .demo-card {
         max-width: 100%;
     }
-}
+
 
 @media (max-width: 576px) {
     .tech-section {
@@ -1453,11 +1450,8 @@ body {
     padding-top: 80px;
 }
 
-.navbar {
-    height: 80px;
-}
-    .hero-minimal {
-        padding: 120px 0 40px !important;
+ .hero-minimal {
+        padding: 90px 0 30px !important;
     }
     
     .hero-title {
