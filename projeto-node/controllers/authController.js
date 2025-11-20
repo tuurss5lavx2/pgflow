@@ -1,10 +1,7 @@
 // controllers/authController.js
 const User = require('../models/user');
 const jwt = require('jsonwebtoken');
-const fs = require('fs');
-const path = require('path');
 const cloudinary = require('../config/cloudinary');
-const User = require('../models/user');
 
 const authController = {
   register: async (req, res) => {
@@ -75,7 +72,7 @@ const authController = {
     }
   },
 
-  // ⬇️⬇️⬇️ NOVOS MÉTODOS DE AVATAR E PERFIL ⬇️⬇️⬇️
+  // ⬇️⬇️⬇️ MÉTODOS DE AVATAR E PERFIL ⬇️⬇️⬇️
   uploadAvatar: async (req, res) => {
     try {
       if (!req.file) {
@@ -124,7 +121,6 @@ const authController = {
       res.status(500).json({ message: 'Erro interno ao fazer upload' });
     }
   },
-
 
   getProfile: async (req, res) => {
     try {
@@ -187,7 +183,7 @@ const authController = {
       res.status(500).json({ message: 'Erro interno ao atualizar perfil' });
     }
   }
-  // ⬆️⬆️⬆️ NOVOS MÉTODOS DE AVATAR E PERFIL ⬆️⬆️⬆️
+  // ⬆️⬆️⬆️ MÉTODOS DE AVATAR E PERFIL ⬆️⬆️⬆️
 };
 
 module.exports = authController;

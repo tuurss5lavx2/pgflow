@@ -1,4 +1,3 @@
-// models/user.js
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 
@@ -19,12 +18,14 @@ const userSchema = new mongoose.Schema({
     required: true,
     minlength: 6
   },
-    avatar: {
+  avatar: {
     type: String,
-    default: null
+    default: function() {
+      return `https://ui-avatars.com/api/?name=${encodeURIComponent(this.name)}&background=10b981&color=fff&size=150`;
+    }
   }
 }, {
-  timestamps: true // Cria created_at e updated_at automaticamente
+  timestamps: true
 });
 
 // Hash da senha antes de salvar
