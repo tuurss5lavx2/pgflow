@@ -3,6 +3,8 @@ const User = require('../models/user');
 const jwt = require('jsonwebtoken');
 const fs = require('fs');
 const path = require('path');
+const cloudinary = require('../config/cloudinary');
+const User = require('../models/user');
 
 const authController = {
   register: async (req, res) => {
@@ -84,21 +86,26 @@ const authController = {
       const user = await User.findById(userId);
 
       if (!user) {
-        // Deleta a imagem se usuário não existe
-        fs.unlinkSync(req.file.path);
         return res.status(404).json({ message: 'Usuário não encontrado' });
       }
 
-      // Deleta avatar antigo se existir
-      if (user.avatar && user.avatar.startsWith('/uploads/')) {
-        const oldAvatarPath = path.join(__dirname, '../public', user.avatar);
-        if (fs.existsSync(oldAvatarPath)) {
-          fs.unlinkSync(oldAvatarPath);
+      // Se já tem avatar no Cloudinary, deleta o antigo
+      if (user.avatar && user.avatar.includes('res.cloudinary.com')) {
+        try {
+          // Extrai o public_id do URL
+          const urlParts = user.avatar.split('/');
+          const publicIdWithExtension = urlParts[urlParts.length - 1];
+          const publicId = publicIdWithExtension.split('.')[0];
+          const fullPublicId = `pgflow-avatars/${publicId}`;
+          
+          await cloudinary.uploader.destroy(fullPublicId);
+        } catch (error) {
+          console.log('Erro ao deletar avatar antigo:', error);
         }
       }
 
-      // Atualiza avatar no usuário
-      user.avatar = '/uploads/' + req.file.filename;
+      // Atualiza avatar no usuário com URL do Cloudinary
+      user.avatar = req.file.path;
       await user.save();
 
       res.json({
@@ -113,14 +120,11 @@ const authController = {
       });
 
     } catch (error) {
-      // Deleta a imagem em caso de erro
-      if (req.file) {
-        fs.unlinkSync(req.file.path);
-      }
       console.error('Erro ao fazer upload do avatar:', error);
       res.status(500).json({ message: 'Erro interno ao fazer upload' });
     }
   },
+
 
   getProfile: async (req, res) => {
     try {
