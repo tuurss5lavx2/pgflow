@@ -2,6 +2,8 @@ const User = require('../models/user');
 const jwt = require('jsonwebtoken');
 const cloudinary = require('../config/cloudinary');
 const { uploadToCloudinary } = require('../middleware/upload');
+const upload = require('../middleware/upload');
+const uploadToCloudinary = upload.uploadToCloudinary;
 
 const authController = {
   register: async (req, res) => {

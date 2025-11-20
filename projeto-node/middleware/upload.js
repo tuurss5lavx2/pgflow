@@ -42,4 +42,6 @@ const uploadToCloudinary = (buffer, userId) => {
   });
 };
 
-module.exports = { upload, uploadToCloudinary };
+// Exporta o upload como default e uploadToCloudinary como named export
+module.exports = upload;
+module.exports.uploadToCloudinary = uploadToCloudinary;
