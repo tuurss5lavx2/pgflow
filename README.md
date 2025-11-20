@@ -6,24 +6,6 @@
 
 ---
 
-## 📋 Sumário
-- [O que é](#-o-que-é)
-- [Funcionalidades](#-funcionalidades)
-- [Stack](#-stack)
-- [Objetivo do projeto](#-objetivo-do-projeto)
-- [Diferenciais](#-diferenciais)
-- [Como Executar](#-como-executar)
-- [Variáveis de Ambiente](#-variáveis-de-ambiente)
-- [Estrutura do Projeto](#-estrutura-do-projeto)
-- [API Endpoints](#-api-endpoints)
-- [Próximos Passos Possíveis](#-próximos-passos-possíveis)
-- [Contribuindo](#-contribuindo)
-- [Licença](#-licença)
-- [Autor](#-autor)
-- [Agradecimentos](#-agradecimentos)
-
----
-
 ## 🎯 O que é
 
 Uma aplicação que demonstra:
@@ -141,19 +123,6 @@ cp .env.example .env
 
 # Execute em desenvolvimento
 npm run dev
-```
-
----
-
-## 🔐 Variáveis de Ambiente (exemplo)
-
-```env
-MONGODB_URI=mongodb+srv://user:pass@cluster.mongodb.net/pgflow
-JWT_SECRET=seu_jwt_super_seguro
-CLOUDINARY_CLOUD_NAME=seu_cloud_name
-CLOUDINARY_API_KEY=sua_api_key
-CLOUDINARY_API_SECRET=sua_api_secret
-PORT=3000
 ```
 
 ---
