@@ -1,128 +1,287 @@
-# 🔐 Sistema de Autenticação e CRUD de Posts - UserFlow
+# 🚀 PGFlow - CRUD Social com Autenticação
 
-Projeto **Node.js + Express + MySQL** com **autenticação JWT** e **CRUD de posts**, incluindo frontend simples em **Bootstrap**.
+**PGFlow** é uma aplicação full-stack que demonstra um **sistema básico de rede social** com autenticação JWT, CRUD de posts, comentários e sistema de interações.
+
+![PGFlow Demo](https://via.placeholder.com/1200x400/10b981/ffffff?text=PGFlow+-+CRUD+Social+Moderno)
 
 ---
 
-## 📌 Badges
+## 📋 Sumário
+- [O que é](#-o-que-é)
+- [Funcionalidades](#-funcionalidades)
+- [Stack](#-stack)
+- [Objetivo do projeto](#-objetivo-do-projeto)
+- [Diferenciais](#-diferenciais)
+- [Como Executar](#-como-executar)
+- [Variáveis de Ambiente](#-variáveis-de-ambiente)
+- [Estrutura do Projeto](#-estrutura-do-projeto)
+- [API Endpoints](#-api-endpoints)
+- [Próximos Passos Possíveis](#-próximos-passos-possíveis)
+- [Contribuindo](#-contribuindo)
+- [Licença](#-licença)
+- [Autor](#-autor)
+- [Agradecimentos](#-agradecimentos)
 
+---
+
+## 🎯 O que é
+
+Uma aplicação que demonstra:
+- Autenticação JWT com proteção de rotas.
+- CRUD completo para posts e comentários.
+- Sistema de likes em posts e comentários (com feedback sonoro).
+- Upload de avatar via Cloudinary.
+- Frontend responsivo com Bootstrap 5.
+
+---
+
+## 🔐 Funcionalidades principais
+
+### Sistema de Autenticação
+- Registro e login com JWT
+- Senhas criptografadas com bcrypt
+- Proteção de rotas privadas
+- Tokens com expiração automática
+
+### CRUD de Posts
+- Criar, ler, editar e excluir posts
+- Dashboard pessoal
+- Feed público da comunidade
+- Validações de autorização
+
+### Interações
+- Likes em posts e comentários
+- Feedback sonoro ao curtir
+- Comentários simples
+- Contadores em tempo real (frontend)
+
+### Extras
+- Upload de avatar com Cloudinary
+- Design responsivo com Bootstrap 5
+- API RESTful organizada
+- Deploy em produção (p.ex. Render)
+
+---
+
+## 🛠️ Stack real
+
+### Backend
 ![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=node.js&logoColor=white)
-![Express](https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white)
-![MySQL](https://img.shields.io/badge/MySQL-005C84?style=for-the-badge&logo=mysql&logoColor=white)
+![Express.js](https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white)
+![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white)
 ![JWT](https://img.shields.io/badge/JWT-black?style=for-the-badge&logo=jsonwebtokens)
-![bcrypt](https://img.shields.io/badge/bcrypt-005C84?style=for-the-badge)
+
+### Frontend
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Bootstrap](https://img.shields.io/badge/Bootstrap-7952B3?style=for-the-badge&logo=bootstrap&logoColor=white)
-![FontAwesome](https://img.shields.io/badge/Font_Awesome-339AF0?style=for-the-badge&logo=fontawesome&logoColor=white)
+![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
+
+### Serviços
+![Cloudinary](https://img.shields.io/badge/Cloudinary-3448C5?style=for-the-badge&logo=cloudinary&logoColor=white)
+![Render](https://img.shields.io/badge/Render-46E3B7?style=for-the-badge&logo=render&logoColor=white)
 
 ---
 
-## 🚀 Funcionalidades
+## 🎓 Objetivo do projeto
 
-- Login, registro e logout de usuários  
-- Senhas criptografadas com **bcrypt**  
-- Rotas privadas protegidas com **JWT**  
-- CRUD completo de posts (somente usuários autenticados)  
-- Frontend responsivo com **Bootstrap 5**  
-- Design moderno com **glassmorphism**  
-
----
-
-## 🛠️ Tecnologias
-
-- **Backend:** Node.js, Express  
-- **Banco de Dados:** MySQL  
-- **Autenticação:** JWT  
-- **Criptografia:** bcryptjs  
-- **Frontend:** HTML5, Bootstrap 5, Font Awesome  
+Demonstrar habilidades em:
+- Desenvolvimento Full-Stack com arquitetura organizada (MVC).
+- Autenticação e autorização com JWT.
+- CRUD completo com validações no frontend e backend.
+- Integração com serviços externos (Cloudinary).
+- Preparação para deploy em produção (MongoDB Atlas, Render).
 
 ---
 
-## ⚡ Como Rodar Localmente
+## 💡 Diferenciais
 
-1. **Clone o repositório**
-    ```bash
-    git clone https://github.com/PabloG-7/userflow-backend.git
-    cd userflow-backend
-    ```
+### 🔊 Sistema de Som Interativo
+Feedback sonoro ao curtir para melhorar a experiência do usuário.
 
-2. **Instale as dependências**
-    ```bash
-    npm install
-    ```
-
-3. **Configure o banco de dados**
-    - Crie um banco de dados no MySQL (ex: `blog_db`).
-    - Execute o script `init-db.sql` que está na raiz do projeto para criar as tabelas.
-
-4. **Configure o .env**
-    ```bash
-    cp .env.example .env
-    ```
-    - Edite o arquivo `.env` com suas credenciais do MySQL:
-
-    ```env
-    DB_HOST=localhost
-    DB_USER=seu_usuario
-    DB_PASSWORD=sua_senha
-    DB_NAME=blog_db
-    DB_PORT=3306
-    JWT_SECRET=seu_jwt_secret_super_seguro_aqui
-    PORT=3000
-    ```
-
-5. **Execute a aplicação**
-    ```bash
-    # Modo desenvolvimento
-    npm run dev
-
-    # Modo produção
-    npm start
-    ```
-
-A aplicação ficará disponível em:  
-👉 http://localhost:3000
-
----
-
-## 📖 Endpoints Principais
-
-### 🔑 Autenticação
-
-#### Registrar usuário
-`POST /api/auth/register`
-
-```json
-{
-  "name": "João Silva",
-  "email": "joao@email.com",
-  "password": "123456"
+```javascript
+// Feedback sonoro único ao curtir (exemplo)
+function playNotificationSound() {
+  const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+  const oscillator = audioContext.createOscillator();
+  const gain = audioContext.createGain();
+  oscillator.type = 'sine';
+  oscillator.frequency.setValueAtTime(880, audioContext.currentTime); // frequência em Hz
+  gain.gain.setValueAtTime(0.05, audioContext.currentTime); // volume
+  oscillator.connect(gain);
+  gain.connect(audioContext.destination);
+  oscillator.start();
+  oscillator.stop(audioContext.currentTime + 0.06); // duração curta
 }
 ```
 
-#### Fazer login
-`POST /api/auth/login`
+Design moderno, animações suaves, totalmente responsivo e foco em performance (queries MongoDB eficientes, lazy loading de assets).
 
-```json
-{
-  "email": "joao@email.com",
-  "password": "123456"
-}
+---
+
+## 🚀 Como Executar
+
+Pré-requisitos:
+- Node.js 16+
+- MongoDB (Atlas ou local)
+- Conta no Cloudinary (opcional para upload de avatars)
+
+Passos:
+
+```bash
+# Clone o repositório
+git clone https://github.com/PabloG-7/pgflow.git
+cd pgflow
+
+# Instale as dependências
+npm install
+
+# Copie o .env de exemplo e edite
+cp .env.example .env
+# Edite o .env com suas configurações
+
+# Execute em desenvolvimento
+npm run dev
 ```
 
 ---
 
-### 📝 Posts (requer autenticação)
+## 🔐 Variáveis de Ambiente (exemplo)
 
-- `GET /api/posts` → Listar todos os posts
-- `POST /api/posts` → Criar post
-
-```json
-{
-  "title": "Meu Post",
-  "content": "Conteúdo do post"
-}
+```env
+MONGODB_URI=mongodb+srv://user:pass@cluster.mongodb.net/pgflow
+JWT_SECRET=seu_jwt_super_seguro
+CLOUDINARY_CLOUD_NAME=seu_cloud_name
+CLOUDINARY_API_KEY=sua_api_key
+CLOUDINARY_API_SECRET=sua_api_secret
+PORT=3000
 ```
 
-- `GET /api/posts/:id` → Buscar post por ID
-- `PUT /api/posts/:id` → Atualizar post
-- `DELETE /api/posts/:id` → Excluir post
+---
+
+## 📁 Estrutura do Projeto
+
+```
+projeto-node/
+├── config/
+│   ├── database.js          # Conexão MongoDB
+│   └── cloudinary.js        # Config Cloudinary
+├── controllers/
+│   ├── authController.js    # Lógica de autenticação
+│   ├── postController.js    # CRUD de posts
+│   └── commentController.js # Gestão de comentários
+├── models/
+│   ├── User.js              # Schema de usuário
+│   ├── Post.js              # Schema de post
+│   └── Comment.js           # Schema de comentário
+├── middleware/
+│   ├── auth.js              # Middleware de autenticação
+│   └── upload.js            # Upload de arquivos
+├── routes/
+│   ├── auth.js              # Rotas de autenticação
+│   ├── posts.js             # Rotas de posts
+│   └── comments.js          # Rotas de comentários
+├── public/
+│   ├── *.html               # Páginas frontend
+│   ├── css/
+│   │   └── style.css        # Estilos customizados
+│   └── js/
+│       ├── auth.js          # Autenticação frontend
+│       ├── dashboard.js     # Lógica do dashboard
+│       ├── posts.js         # Gestão de posts
+│       └── profile.js       # Perfil do usuário
+└── server.js                # Entry point da aplicação
+```
+
+---
+
+## 🔌 API Endpoints
+
+Autenticação
+```
+POST   /api/auth/register        # Registrar usuário
+POST   /api/auth/login           # Fazer login
+GET    /api/auth/profile         # Buscar perfil (privado)
+PUT    /api/auth/profile         # Atualizar perfil (privado)
+POST   /api/auth/avatar          # Upload de avatar (privado)
+```
+
+Posts
+```
+GET    /api/posts                # Listar todos os posts
+POST   /api/posts                # Criar novo post (privado)
+GET    /api/posts/:id            # Buscar post específico
+PUT    /api/posts/:id            # Atualizar post (privado/autorizado)
+DELETE /api/posts/:id            # Excluir post (privado/autorizado)
+POST   /api/posts/:id/like       # Curtir/descurtir post (privado)
+GET    /api/posts/user           # Posts do usuário logado (privado)
+```
+
+Comentários
+```
+POST   /api/comments                     # Adicionar comentário (privado)
+GET    /api/comments/post/:postId        # Comentários de um post
+DELETE /api/comments/:id                 # Excluir comentário (privado/autorizado)
+POST   /api/comments/:id/like            # Curtir comentário (privado)
+```
+
+---
+
+## 🎯 Próximos Passos Possíveis
+
+Melhorias técnicas:
+- Paginação e infinite scroll
+- Cache com Redis
+- Testes unitários e e2e
+- Rate limiting e proteção adicional
+- Documentação Swagger/OpenAPI
+
+Features adicionais:
+- Sistema de seguidores
+- Notificações em tempo real (WebSocket)
+- Mensagens privadas
+- Upload de múltiplas imagens
+- Busca por posts/usuários
+
+---
+
+## 🤝 Contribuindo
+
+Contribuições são bem-vindas! Fluxo sugerido:
+1. Fork o projeto
+2. Crie uma branch: git checkout -b feature/nova-feature
+3. Commit: git commit -m "Add nova feature"
+4. Push: git push origin feature/nova-feature
+5. Abra um Pull Request
+
+---
+
+## 📄 Licença
+
+Este projeto está sob a licença MIT. Veja o arquivo LICENSE para detalhes.
+
+---
+
+## 👨‍💻 Autor
+
+Pablo Gomes
+
+- GitHub: https://github.com/PabloG-7
+- (Adicione aqui links de LinkedIn / Instagram se desejar)
+
+Badges sociais:
+- https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white
+- https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white
+- https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white
+
+---
+
+## 🎉 Agradecimentos
+
+- MongoDB - Banco de dados NoSQL
+- Cloudinary - Gestão de mídia
+- Render - Plataforma de deploy
+- Bootstrap - Framework CSS
+
+<div align="center">
+  <strong>PGFlow</strong> — Um projeto full-stack para demonstrar habilidades em desenvolvimento web moderno! 🚀
+</div>
