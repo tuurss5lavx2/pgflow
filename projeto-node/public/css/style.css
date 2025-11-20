@@ -1414,11 +1414,7 @@ body {
         padding: 2rem;
     }
        .hero-minimal {
-        padding: 100px 0 40px !important; /* Reduzi bastante */
-    }
-    
-    .hero-content {
-        margin-top: 0.5rem; /* Espaço bem menor */
+        padding: 90px 0 40px !important; /* Bem mais conservador */
     }
 }
     
@@ -1451,7 +1447,7 @@ body {
 }
 
  .hero-minimal {
-        padding: 90px 0 30px !important;
+        padding: 80px 0 30px !important;
     }
     
     .hero-title {
