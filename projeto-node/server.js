@@ -18,7 +18,7 @@ const app = express();
 app.use(cors({
   origin: [
     'http://localhost:3000',
-    'https://userflow-backend-0004.onrender.com',
+    'https://pgflow.onrender.com',
     'https://userflow-frontend.onrender.com'
   ],
   credentials: true
