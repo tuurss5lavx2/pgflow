@@ -222,6 +222,53 @@
                 left: 10px;
                 min-width: auto;
             }
+            /* Scrollbar Customizada - Só aparece quando necessário */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    border-radius: 4px;
+    border: 2px solid #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, var(--primary-dark), #047857);
+}
+
+/* Para Firefox */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary) #f1f5f9;
+}
+
+/* Garantir que o body tenha scroll quando necessário */
+body {
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+/* Ajuste para mobile - scrollbar mais fina */
+@media (max-width: 768px) {
+    ::-webkit-scrollbar {
+        width: 6px;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+        border: 1px solid #f1f5f9;
+    }
+}
+
+/* Animação suave para o scroll */
+html {
+    scroll-behavior: smooth;
+}
         }
     </style>
 </head>
