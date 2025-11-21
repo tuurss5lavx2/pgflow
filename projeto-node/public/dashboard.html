@@ -27,7 +27,7 @@
         body {
             background: #f8fafc;
             font-family: 'Poppins', sans-serif;
-            padding-top: 0;
+            padding-top: 0; /* Remove padding do body */
         }
 
         /* Navbar Dashboard */
@@ -91,9 +91,7 @@
             font-weight: 400;
         }
 
-        /* =========================== */
-        /* USER MENU - VERSÃO PREMIUM */
-        /* =========================== */
+        /* User Section - APENAS ESSA PARTE FOI ALTERADA */
         .user-section {
             margin-left: auto;
         }
@@ -104,105 +102,82 @@
             gap: 0.75rem;
             padding: 0.5rem 1rem;
             background: #ffffff;
-            border-radius: 20px;
-            border: 1.5px solid transparent;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 50px;
+            border: 1.5px solid #e5e7eb;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             cursor: pointer;
-            box-shadow: 0 2px 12px rgba(16, 185, 129, 0.1);
-        }
-
-        .user-profile::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            border-radius: 20px;
-            padding: 1.5px;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 50%, var(--primary-dark) 100%);
-            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            mask-composite: exclude;
-            opacity: 0;
-            transition: opacity 0.4s ease;
-        }
-
-        .user-profile:hover::before {
-            opacity: 1;
+            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.08);
         }
 
         .user-profile:hover {
+            background: #f8fafc;
             transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(16, 185, 129, 0.2);
+            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.12);
+            border-color: var(--primary-light);
         }
 
         .avatar-wrapper {
-            width: 46px;
-            height: 46px;
+            width: 44px;
+            height: 44px;
             border-radius: 50%;
             overflow: hidden;
             border: 2.5px solid #ffffff;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
-            z-index: 2;
         }
 
-        .avatar-wrapper::after {
+        .avatar-wrapper::before {
             content: '';
             position: absolute;
-            inset: -2px;
-            border-radius: 50%;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
             background: var(--gradient);
-            opacity: 0;
-            transition: opacity 0.4s ease;
+            border-radius: 50%;
             z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
 
-        .user-profile:hover .avatar-wrapper::after {
+        .user-profile:hover .avatar-wrapper::before {
             opacity: 1;
         }
 
         .user-profile:hover .avatar-wrapper {
-            transform: scale(1.1);
-            box-shadow: 0 6px 25px rgba(16, 185, 129, 0.3);
+            transform: scale(1.08);
+            border-color: var(--primary);
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.2);
         }
 
         .user-avatar {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: all 0.4s ease;
-            filter: grayscale(0.1);
+            transition: transform 0.3s ease;
         }
 
         .user-profile:hover .user-avatar {
             transform: scale(1.05);
-            filter: grayscale(0);
         }
 
         .user-info {
             display: flex;
             flex-direction: column;
             line-height: 1.2;
-            position: relative;
-            z-index: 2;
         }
 
         .user-name {
-            font-weight: 700;
+            font-weight: 600;
             color: #1e293b;
             font-size: 0.9rem;
-            transition: all 0.3s ease;
-            background: linear-gradient(135deg, #1e293b 0%, var(--primary-dark) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            transition: color 0.3s ease;
         }
 
         .user-profile:hover .user-name {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            color: var(--primary-dark);
         }
 
         .user-badge {
@@ -211,7 +186,7 @@
             display: flex;
             align-items: center;
             gap: 0.25rem;
-            transition: all 0.3s ease;
+            transition: color 0.3s ease;
         }
 
         .user-profile:hover .user-badge {
@@ -219,23 +194,20 @@
         }
 
         .online-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: #10b981;
-            display: inline-block;
-            animation: pulse-glow 2s infinite;
-            box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
+            color: #10b981;
+            font-size: 0.5rem;
+            animation: pulse 2s infinite;
         }
 
-        @keyframes pulse-glow {
-            0%, 100% { 
-                transform: scale(1);
-                box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
+        @keyframes pulse {
+            0% {
+                opacity: 1;
             }
-            50% { 
-                transform: scale(1.2);
-                box-shadow: 0 0 20px rgba(16, 185, 129, 0.8);
+            50% {
+                opacity: 0.5;
+            }
+            100% {
+                opacity: 1;
             }
         }
 
@@ -244,45 +216,43 @@
             border: none;
             color: #94a3b8;
             padding: 0.5rem;
-            border-radius: 10px;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 6px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 34px;
-            height: 34px;
+            width: 32px;
+            height: 32px;
             cursor: pointer;
-            position: relative;
-            z-index: 2;
         }
 
         .dropdown-btn:hover {
             color: var(--primary);
             background: rgba(16, 185, 129, 0.1);
-            transform: rotate(180deg) scale(1.1);
+            transform: rotate(180deg);
         }
 
         .dropdown-arrow {
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .user-profile.active .dropdown-arrow {
             transform: rotate(180deg);
         }
 
-        /* Dropdown Menu - VERSÃO PREMIUM */
+        /* Dropdown Menu - APENAS ESSA PARTE FOI ALTERADA */
         .user-dropdown {
             position: relative;
         }
 
         .clean-dropdown {
             border: none;
-            border-radius: 20px;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
-            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+            border-radius: 16px;
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+            background: #ffffff;
             padding: 0.75rem;
-            border: 1.5px solid #f1f5f9;
-            min-width: 240px;
+            border: 1px solid #f1f5f9;
+            min-width: 200px;
             position: absolute;
             right: 0;
             top: 100%;
@@ -290,14 +260,14 @@
             z-index: 9999;
             opacity: 0;
             visibility: hidden;
-            transform: translateY(-15px) scale(0.95);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateY(-10px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .clean-dropdown.show {
             opacity: 1;
             visibility: visible;
-            transform: translateY(0) scale(1);
+            transform: translateY(0);
         }
 
         .clean-dropdown::before {
@@ -309,38 +279,15 @@
             height: 16px;
             background: #ffffff;
             transform: rotate(45deg);
-            border-top: 1.5px solid #f1f5f9;
-            border-left: 1.5px solid #f1f5f9;
+            border-top: 1px solid #f1f5f9;
+            border-left: 1px solid #f1f5f9;
             z-index: -1;
         }
 
-        .dropdown-header {
-            padding: 1rem;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            border-radius: 16px;
-            margin-bottom: 0.5rem;
-            color: white;
-            text-align: center;
-        }
-
-        .dropdown-header .user-name {
-            font-weight: 700;
-            font-size: 1rem;
-            background: none;
-            -webkit-text-fill-color: white;
-            color: white;
-        }
-
-        .dropdown-header .user-email {
-            font-size: 0.8rem;
-            opacity: 0.9;
-            margin-top: 0.25rem;
-        }
-
         .clean-dropdown .dropdown-item {
-            border-radius: 12px;
-            padding: 0.85rem 1rem;
-            font-weight: 600;
+            border-radius: 10px;
+            padding: 0.75rem 1rem;
+            font-weight: 500;
             color: #475569;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
@@ -353,7 +300,6 @@
             cursor: pointer;
             position: relative;
             overflow: hidden;
-            margin-bottom: 0.25rem;
         }
 
         .clean-dropdown .dropdown-item::before {
@@ -363,10 +309,10 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            transition: left 0.4s ease;
+            background: var(--gradient);
+            transition: left 0.3s ease;
             z-index: -1;
-            border-radius: 12px;
+            border-radius: 10px;
         }
 
         .clean-dropdown .dropdown-item:hover::before {
@@ -375,20 +321,17 @@
 
         .clean-dropdown .dropdown-item:hover {
             color: white;
-            transform: translateX(10px);
-            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+            transform: translateX(8px);
         }
 
         .clean-dropdown .dropdown-item i {
-            width: 18px;
+            width: 16px;
             margin-right: 0.75rem;
-            transition: all 0.3s ease;
-            font-size: 1rem;
+            transition: transform 0.3s ease;
         }
 
         .clean-dropdown .dropdown-item:hover i {
-            transform: scale(1.2) rotate(5deg);
-            color: white;
+            transform: scale(1.1);
         }
 
         .logout-item {
@@ -406,32 +349,9 @@
 
         .dropdown-divider {
             margin: 0.75rem 0;
-            border-color: #e5e7eb;
+            border-color: #f1f5f9;
             border-width: 1px;
-            opacity: 0.6;
         }
-
-        /* Badge de notificações */
-        .notification-badge {
-            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-            color: white;
-            border-radius: 12px;
-            padding: 0.2rem 0.5rem;
-            font-size: 0.7rem;
-            font-weight: 700;
-            margin-left: auto;
-            animation: bounce 2s infinite;
-        }
-
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-            40% { transform: translateY(-3px); }
-            60% { transform: translateY(-2px); }
-        }
-
-        /* =========================== */
-        /* FIM DO USER MENU PREMIUM */
-        /* =========================== */
 
         /* Container Principal - CORRIGIDO */
         .dashboard-container {
@@ -577,7 +497,7 @@
 
         .post-author-info {
             flex: 1;
-            min-width: 0;
+            min-width: 0; /* Important for text truncation */
         }
 
         .post-author {
@@ -926,8 +846,8 @@
             }
             
             .avatar-wrapper {
-                width: 40px;
-                height: 40px;
+                width: 38px;
+                height: 38px;
             }
             
             .user-info {
@@ -935,8 +855,8 @@
             }
             
             .dropdown-btn {
-                width: 30px;
-                height: 30px;
+                width: 28px;
+                height: 28px;
                 padding: 0.4rem;
             }
             
@@ -944,7 +864,7 @@
                 position: fixed;
                 top: 70px !important;
                 left: 50% !important;
-                transform: translateX(-50%) translateY(-15px) scale(0.95) !important;
+                transform: translateX(-50%) translateY(-10px) !important;
                 right: auto !important;
                 width: 90%;
                 max-width: 280px;
@@ -953,16 +873,12 @@
             }
             
             .clean-dropdown.show {
-                transform: translateX(-50%) translateY(0) scale(1) !important;
+                transform: translateX(-50%) translateY(0) !important;
             }
             
             .clean-dropdown::before {
                 right: 50%;
                 transform: translateX(50%) rotate(45deg);
-            }
-            
-            .dropdown-header {
-                padding: 0.75rem;
             }
             
             .post-card {
@@ -1060,13 +976,13 @@
             }
             
             .avatar-wrapper {
-                width: 38px;
-                height: 38px;
+                width: 35px;
+                height: 35px;
             }
             
             .dropdown-btn {
-                width: 28px;
-                height: 28px;
+                width: 26px;
+                height: 26px;
                 padding: 0.3rem;
             }
             
@@ -1255,17 +1171,19 @@
                 </div>
             </a>
 
-            <!-- User Menu VERSÃO PREMIUM -->
+            <!-- User Menu ATUALIZADO -->
             <div class="user-section">
                 <div class="user-dropdown">
                     <div class="user-profile" data-bs-toggle="dropdown" aria-expanded="false">
                         <div class="avatar-wrapper">
-                            <img id="userAvatar" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=46&h=46&fit=crop&crop=face" alt="Avatar" class="user-avatar">
+                            <img id="userAvatar" src="" alt="Avatar" 
+                                 class="user-avatar"
+                                 onerror="this.src='https://ui-avatars.com/api/?name=User&background=10b981&color=fff&size=40'">
                         </div>
                         <div class="user-info">
-                            <span class="user-name" id="userName">João Silva</span>
+                            <span class="user-name" id="userName">Carregando...</span>
                             <span class="user-badge">
-                                <span class="online-dot"></span> Online
+                                <i class="fas fa-circle online-dot"></i> Online
                             </span>
                         </div>
                         <button class="dropdown-btn" type="button">
@@ -1273,24 +1191,9 @@
                         </button>
                     </div>
                     <ul class="dropdown-menu clean-dropdown">
-                        <div class="dropdown-header">
-                            <div class="user-name">João Silva</div>
-                            <div class="user-email">joao.silva@email.com</div>
-                        </div>
                         <li>
                             <a class="dropdown-item" href="/profile">
                                 <i class="fas fa-user-edit"></i>Meu Perfil
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" href="/notifications">
-                                <i class="fas fa-bell"></i>Notificações
-                                <span class="notification-badge">3</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" href="/settings">
-                                <i class="fas fa-cog"></i>Configurações
                             </a>
                         </li>
                         <li>
@@ -1459,79 +1362,7 @@
             // Load initial data
             loadCommunityFeed();
         });
-
-        // Funções de exemplo
-        function loadCommunityFeed() {
-            document.getElementById('communityFeed').innerHTML = `
-                <div class="post-card">
-                    <div class="post-header">
-                        <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?w=50&h=50&fit=crop&crop=face" 
-                             alt="Maria Santos" class="post-avatar">
-                        <div class="post-author-info">
-                            <div class="post-author">Maria Santos</div>
-                            <div class="post-date">Há 2 horas</div>
-                        </div>
-                    </div>
-                    <h3 class="post-title">Dicas para melhorar a produtividade no trabalho remoto</h3>
-                    <div class="post-content">
-                        <p>Compartilhando algumas estratégias que têm me ajudado a manter o foco e a produtividade trabalhando de casa...</p>
-                    </div>
-                    <div class="post-footer">
-                        <div class="post-actions">
-                            <button class="like-btn">
-                                <i class="far fa-heart"></i>
-                                <span class="likes-count">12</span>
-                            </button>
-                            <button class="view-comments-btn">
-                                <i class="far fa-comment"></i>
-                                Comentários
-                                <span class="comments-count-badge">5</span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-
-        function loadMyPosts() {
-            document.getElementById('myPostsList').innerHTML = `
-                <div class="post-card">
-                    <div class="post-header">
-                        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=50&h=50&fit=crop&crop=face" 
-                             alt="João Silva" class="post-avatar">
-                        <div class="post-author-info">
-                            <div class="post-author">Você</div>
-                            <div class="post-date">Há 1 dia</div>
-                        </div>
-                    </div>
-                    <h3 class="post-title">Novo projeto lançado no PGFlow!</h3>
-                    <div class="post-content">
-                        <p>Estou muito feliz em anunciar o lançamento do nosso novo sistema de gerenciamento de projetos. Foi um trabalho intenso mas muito gratificante!</p>
-                    </div>
-                    <div class="post-footer">
-                        <div class="post-actions">
-                            <button class="like-btn liked">
-                                <i class="fas fa-heart"></i>
-                                <span class="likes-count">24</span>
-                            </button>
-                            <button class="view-comments-btn">
-                                <i class="far fa-comment"></i>
-                                Comentários
-                                <span class="comments-count-badge">8</span>
-                            </button>
-                        </div>
-                        <div class="btn-group">
-                            <button class="btn btn-outline-primary btn-sm">
-                                <i class="fas fa-edit"></i> Editar
-                            </button>
-                            <button class="btn btn-outline-danger btn-sm">
-                                <i class="fas fa-trash"></i> Excluir
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
     </script>
+    <script src="/js/dashboard.js"></script>
 </body>
 </html>
