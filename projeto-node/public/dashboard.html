@@ -91,7 +91,7 @@
             font-weight: 400;
         }
 
-        /* User Section */
+        /* User Section - ATUALIZADO */
         .user-section {
             margin-left: auto;
         }
@@ -101,19 +101,26 @@
             align-items: center;
             gap: 0.75rem;
             padding: 0.5rem 1rem;
-            background: #f8fafc;
+            background: #ffffff;
             border-radius: 50px;
-            border: 1px solid #e5e7eb;
-            transition: var(--transition);
+            border: 1.5px solid #f1f5f9;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             cursor: pointer;
+            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.08);
         }
 
         .user-profile:hover {
-            background: #f1f5f9;
-            transform: translateY(-1px);
-            box-shadow: var(--shadow);
+            background: #f8fafc;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.12);
             border-color: var(--primary-light);
+        }
+
+        .user-profile.active {
+            background: #f0fdf9;
+            border-color: var(--primary);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.15);
         }
 
         .avatar-wrapper {
@@ -121,20 +128,45 @@
             height: 45px;
             border-radius: 50%;
             overflow: hidden;
-            border: 2px solid #e5e7eb;
-            box-shadow: var(--shadow);
-            transition: var(--transition);
+            border: 2.5px solid #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
         }
 
-        .avatar-wrapper:hover {
+        .avatar-wrapper::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: var(--gradient);
+            border-radius: 50%;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .user-profile:hover .avatar-wrapper::before {
+            opacity: 1;
+        }
+
+        .user-profile:hover .avatar-wrapper {
+            transform: scale(1.08);
             border-color: var(--primary);
-            transform: scale(1.05);
+            box-shadow: 0 6px 16px rgba(16, 185, 129, 0.2);
         }
 
         .user-avatar {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .user-profile:hover .user-avatar {
+            transform: scale(1.05);
         }
 
         .user-info {
@@ -147,6 +179,11 @@
             font-weight: 600;
             color: #1e293b;
             font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+
+        .user-profile:hover .user-name {
+            color: var(--primary-dark);
         }
 
         .user-badge {
@@ -155,20 +192,38 @@
             display: flex;
             align-items: center;
             gap: 0.25rem;
+            transition: color 0.3s ease;
+        }
+
+        .user-profile:hover .user-badge {
+            color: var(--primary);
         }
 
         .online-dot {
             color: #10b981;
             font-size: 0.5rem;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+            100% {
+                opacity: 1;
+            }
         }
 
         .dropdown-btn {
             background: none;
             border: none;
-            color: #64748b;
+            color: #94a3b8;
             padding: 0.5rem;
             border-radius: 6px;
-            transition: var(--transition);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -179,35 +234,68 @@
 
         .dropdown-btn:hover {
             color: var(--primary);
-            background: #f1f5f9;
+            background: rgba(16, 185, 129, 0.1);
+            transform: rotate(180deg);
         }
 
-        /* Dropdown Menu */
+        .dropdown-arrow {
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .user-profile.active .dropdown-arrow {
+            transform: rotate(180deg);
+        }
+
+        /* Dropdown Menu - ATUALIZADO */
         .user-dropdown {
             position: relative;
         }
 
         .clean-dropdown {
             border: none;
-            border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-xl);
+            border-radius: 16px;
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
             background: #ffffff;
-            padding: 0.5rem;
-            border: 1px solid #e5e7eb;
-            min-width: 200px;
+            padding: 0.75rem;
+            border: 1px solid #f1f5f9;
+            min-width: 220px;
             position: absolute;
             right: 0;
             top: 100%;
-            margin-top: 0.5rem;
+            margin-top: 0.75rem;
             z-index: 9999;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .clean-dropdown.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .clean-dropdown::before {
+            content: '';
+            position: absolute;
+            top: -8px;
+            right: 20px;
+            width: 16px;
+            height: 16px;
+            background: #ffffff;
+            transform: rotate(45deg);
+            border-top: 1px solid #f1f5f9;
+            border-left: 1px solid #f1f5f9;
+            z-index: -1;
         }
 
         .clean-dropdown .dropdown-item {
-            border-radius: var(--radius);
+            border-radius: 10px;
             padding: 0.75rem 1rem;
             font-weight: 500;
-            color: #1e293b;
-            transition: var(--transition);
+            color: #475569;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
             align-items: center;
             text-decoration: none;
@@ -216,31 +304,59 @@
             width: 100%;
             text-align: left;
             cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .clean-dropdown .dropdown-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient);
+            transition: left 0.3s ease;
+            z-index: -1;
+            border-radius: 10px;
+        }
+
+        .clean-dropdown .dropdown-item:hover::before {
+            left: 0;
         }
 
         .clean-dropdown .dropdown-item:hover {
-            background: var(--gradient);
             color: white;
-            transform: translateX(5px);
+            transform: translateX(8px);
         }
 
         .clean-dropdown .dropdown-item i {
-            width: 16px;
+            width: 18px;
             margin-right: 0.75rem;
+            transition: transform 0.3s ease;
+        }
+
+        .clean-dropdown .dropdown-item:hover i {
+            transform: scale(1.1);
         }
 
         .logout-item {
-            color: #dc3545 !important;
+            color: #ef4444 !important;
+            position: relative;
+        }
+
+        .logout-item::before {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
         }
 
         .logout-item:hover {
-            background: #dc3545 !important;
             color: white !important;
         }
 
         .dropdown-divider {
-            margin: 0.5rem 0;
-            border-color: #e5e7eb;
+            margin: 0.75rem 0;
+            border-color: #f1f5f9;
+            border-width: 1px;
         }
 
         /* Container Principal - CORRIGIDO */
@@ -736,8 +852,8 @@
             }
             
             .avatar-wrapper {
-                width: 38px;
-                height: 38px;
+                width: 40px;
+                height: 40px;
             }
             
             .user-info {
@@ -754,12 +870,21 @@
                 position: fixed;
                 top: 70px !important;
                 left: 50% !important;
-                transform: translateX(-50%) !important;
+                transform: translateX(-50%) translateY(-10px) !important;
                 right: auto !important;
                 width: 90%;
                 max-width: 280px;
                 margin-top: 0.5rem;
                 z-index: 9999;
+            }
+            
+            .clean-dropdown.show {
+                transform: translateX(-50%) translateY(0) !important;
+            }
+            
+            .clean-dropdown::before {
+                right: 50%;
+                transform: translateX(50%) rotate(45deg);
             }
             
             .post-card {
@@ -857,8 +982,8 @@
             }
             
             .avatar-wrapper {
-                width: 35px;
-                height: 35px;
+                width: 36px;
+                height: 36px;
             }
             
             .dropdown-btn {
@@ -1052,7 +1177,7 @@
                 </div>
             </a>
 
-            <!-- User Menu -->
+            <!-- User Menu ATUALIZADO -->
             <div class="user-section">
                 <div class="user-dropdown">
                     <div class="user-profile" data-bs-toggle="dropdown" aria-expanded="false">
@@ -1068,7 +1193,7 @@
                             </span>
                         </div>
                         <button class="dropdown-btn" type="button">
-                            <i class="fas fa-chevron-down"></i>
+                            <i class="fas fa-chevron-down dropdown-arrow"></i>
                         </button>
                     </div>
                     <ul class="dropdown-menu clean-dropdown">
@@ -1179,6 +1304,34 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Controlar animações do user menu
+            const userProfile = document.querySelector('.user-profile');
+            const dropdownMenu = document.querySelector('.clean-dropdown');
+            
+            if (userProfile && dropdownMenu) {
+                userProfile.addEventListener('click', function() {
+                    this.classList.toggle('active');
+                });
+                
+                // Fechar dropdown ao clicar fora
+                document.addEventListener('click', function(e) {
+                    if (!userProfile.contains(e.target)) {
+                        userProfile.classList.remove('active');
+                        dropdownMenu.classList.remove('show');
+                    }
+                });
+                
+                // Bootstrap dropdown events para sincronizar com nossas animações
+                dropdownMenu.addEventListener('show.bs.dropdown', function() {
+                    this.classList.add('show');
+                });
+                
+                dropdownMenu.addEventListener('hide.bs.dropdown', function() {
+                    this.classList.remove('show');
+                    userProfile.classList.remove('active');
+                });
+            }
+
             // Logout button
             const logoutBtn = document.getElementById('logoutBtn');
             if (logoutBtn) {
