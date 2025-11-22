@@ -127,32 +127,49 @@ const postController = {
         const { title, content } = req.body;
         const userId = req.user.id;
         
+        console.log('✏️ DEBUG EDIÇÃO:');
+        console.log('• Post ID:', postId);
+        console.log('• User ID:', userId);
+        
         if (!title || !content) {
             return res.status(400).json({ message: 'Título e conteúdo são obrigatórios' });
         }
         
-        const post = await Post.findById(postId);
+        // ✅ CORREÇÃO: Usar populate igual no delete
+        const post = await Post.findById(postId).populate('author', '_id name');
+        
         if (!post) {
             return res.status(404).json({ message: 'Post não encontrado' });
         }
         
-        // ✅ MESMA CORREÇÃO AQUI
-        if (post.author.toString() !== userId) {
+        console.log('• Autor do post:', post.author);
+        console.log('• ID do autor:', post.author._id);
+        console.log('• Nome do autor:', post.author.name);
+        
+        // ✅ CORREÇÃO: Mesma verificação do delete
+        const isAuthor = post.author._id.toString() === userId;
+        console.log('• É autor?', isAuthor);
+        
+        if (!isAuthor) {
             return res.status(403).json({ 
                 message: 'Você não tem permissão para editar este post' 
             });
         }
         
+        // Atualizar o post
         post.title = title;
         post.content = content;
         await post.save();
         
+        // Buscar post atualizado com populate para avatar
         const updatedPost = await Post.findById(postId)
             .populate('author', 'name avatar')
             .lean();
 
         const authorName = updatedPost.author ? updatedPost.author.name : 'Usuário';
         const authorAvatar = updatedPost.author ? updatedPost.author.avatar : 'https://ui-avatars.com/api/?name=Usuario&background=6b7280&color=fff&size=150';
+        
+        console.log('✅ Post atualizado com sucesso');
         
         res.json({ 
             message: 'Post atualizado com sucesso',
@@ -169,8 +186,11 @@ const postController = {
             }
         });
     } catch (error) {
-        console.error('Erro ao atualizar post:', error);
-        res.status(500).json({ message: 'Erro ao atualizar post' });
+        console.error('❌ Erro ao atualizar post:', error);
+        res.status(500).json({ 
+            message: 'Erro ao atualizar post',
+            error: error.message 
+        });
     }
 },
 
