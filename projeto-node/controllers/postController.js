@@ -259,26 +259,36 @@ const postController = {
   
   delete: async (req, res) => {
     try {
-      const postId = req.params.id;
-      const userId = req.user.id;
-      
-      const post = await Post.findById(postId);
-      if (!post) {
-        return res.status(404).json({ message: 'Post não encontrado' });
-      }
-      
-      if (post.author.toString() !== userId) {
-        return res.status(403).json({ message: 'Você não tem permissão para excluir este post' });
-      }
-      
-      await Post.findByIdAndDelete(postId);
-      
-      res.json({ message: 'Post excluído com sucesso' });
+        const postId = req.params.id;
+        const userId = req.user.id;
+        
+        console.log('🗑️ Tentando excluir post:', postId);
+        console.log('👤 ID do usuário logado:', userId);
+        
+        const post = await Post.findById(postId);
+        if (!post) {
+            return res.status(404).json({ message: 'Post não encontrado' });
+        }
+        
+        console.log('📝 Autor do post:', post.author);
+        console.log('🔍 Comparação:', post.author.toString(), '===', userId);
+        
+        // ✅ CORREÇÃO: Verificação correta de ObjectId
+        if (post.author.toString() !== userId) {
+            console.log('❌ PERMISSÃO NEGADA: Usuário não é o autor');
+            return res.status(403).json({ 
+                message: 'Você não tem permissão para excluir este post' 
+            });
+        }
+        
+        await Post.findByIdAndDelete(postId);
+        console.log('✅ Post excluído com sucesso');
+        
+        res.json({ message: 'Post excluído com sucesso' });
     } catch (error) {
-      console.error('Erro ao excluir post:', error);
-      res.status(500).json({ message: 'Erro ao excluir post' });
+        console.error('❌ Erro ao excluir post:', error);
+        res.status(500).json({ message: 'Erro ao excluir post' });
     }
-  }
-};
+}};
 
 module.exports = postController;
