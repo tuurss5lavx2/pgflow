@@ -262,20 +262,26 @@ const postController = {
         const postId = req.params.id;
         const userId = req.user.id;
         
-        console.log('🗑️ Tentando excluir post:', postId);
-        console.log('👤 ID do usuário logado:', userId);
+        console.log('🗑️ DEBUG EXCLUSÃO:');
+        console.log('• Post ID:', postId);
+        console.log('• User ID:', userId);
         
-        const post = await Post.findById(postId);
+        // ✅ BUSCAR POST COM POPULATE PARA VER O AUTOR
+        const post = await Post.findById(postId).populate('author', '_id name');
+        
         if (!post) {
             return res.status(404).json({ message: 'Post não encontrado' });
         }
         
-        console.log('📝 Autor do post:', post.author);
-        console.log('🔍 Comparação:', post.author.toString(), '===', userId);
+        console.log('• Autor do post:', post.author);
+        console.log('• ID do autor:', post.author._id);
+        console.log('• Nome do autor:', post.author.name);
         
-        // ✅ CORREÇÃO: Verificação correta de ObjectId
-        if (post.author.toString() !== userId) {
-            console.log('❌ PERMISSÃO NEGADA: Usuário não é o autor');
+        // ✅ CORREÇÃO: Comparar ObjectIds corretamente
+        const isAuthor = post.author._id.toString() === userId;
+        console.log('• É autor?', isAuthor);
+        
+        if (!isAuthor) {
             return res.status(403).json({ 
                 message: 'Você não tem permissão para excluir este post' 
             });
@@ -287,7 +293,10 @@ const postController = {
         res.json({ message: 'Post excluído com sucesso' });
     } catch (error) {
         console.error('❌ Erro ao excluir post:', error);
-        res.status(500).json({ message: 'Erro ao excluir post' });
+        res.status(500).json({ 
+            message: 'Erro ao excluir post',
+            error: error.message 
+        });
     }
 }};
 
