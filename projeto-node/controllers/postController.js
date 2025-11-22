@@ -123,54 +123,56 @@ const postController = {
   
   update: async (req, res) => {
     try {
-      const postId = req.params.id;
-      const { title, content } = req.body;
-      const userId = req.user.id;
-      
-      if (!title || !content) {
-        return res.status(400).json({ message: 'Título e conteúdo são obrigatórios' });
-      }
-      
-      const post = await Post.findById(postId);
-      if (!post) {
-        return res.status(404).json({ message: 'Post não encontrado' });
-      }
-      
-      if (post.author.toString() !== userId) {
-        return res.status(403).json({ message: 'Você não tem permissão para editar este post' });
-      }
-      
-      post.title = title;
-      post.content = content;
-      await post.save();
-      
-      const updatedPost = await Post.findById(postId)
-        .populate('author', 'name avatar')
-        .lean();
-      
-      // Verificar se autor existe
-      const authorName = updatedPost.author ? updatedPost.author.name : 'Usuário';
-      const authorAvatar = updatedPost.author ? updatedPost.author.avatar : 'https://ui-avatars.com/api/?name=Usuario&background=6b7280&color=fff&size=150';
-      
-      res.json({ 
-        message: 'Post atualizado com sucesso',
-        post: {
-          _id: updatedPost._id,
-          title: updatedPost.title,
-          content: updatedPost.content,
-          author: authorName,
-          authorAvatar: authorAvatar,
-          likes: updatedPost.likes || [],
-          likesCount: updatedPost.likes ? updatedPost.likes.length : 0,
-          createdAt: updatedPost.createdAt,
-          updatedAt: updatedPost.updatedAt
+        const postId = req.params.id;
+        const { title, content } = req.body;
+        const userId = req.user.id;
+        
+        if (!title || !content) {
+            return res.status(400).json({ message: 'Título e conteúdo são obrigatórios' });
         }
-      });
+        
+        const post = await Post.findById(postId);
+        if (!post) {
+            return res.status(404).json({ message: 'Post não encontrado' });
+        }
+        
+        // ✅ MESMA CORREÇÃO AQUI
+        if (post.author.toString() !== userId) {
+            return res.status(403).json({ 
+                message: 'Você não tem permissão para editar este post' 
+            });
+        }
+        
+        post.title = title;
+        post.content = content;
+        await post.save();
+        
+        const updatedPost = await Post.findById(postId)
+            .populate('author', 'name avatar')
+            .lean();
+
+        const authorName = updatedPost.author ? updatedPost.author.name : 'Usuário';
+        const authorAvatar = updatedPost.author ? updatedPost.author.avatar : 'https://ui-avatars.com/api/?name=Usuario&background=6b7280&color=fff&size=150';
+        
+        res.json({ 
+            message: 'Post atualizado com sucesso',
+            post: {
+                _id: updatedPost._id,
+                title: updatedPost.title,
+                content: updatedPost.content,
+                author: authorName,
+                authorAvatar: authorAvatar,
+                likes: updatedPost.likes || [],
+                likesCount: updatedPost.likes ? updatedPost.likes.length : 0,
+                createdAt: updatedPost.createdAt,
+                updatedAt: updatedPost.updatedAt
+            }
+        });
     } catch (error) {
-      console.error('Erro ao atualizar post:', error);
-      res.status(500).json({ message: 'Erro ao atualizar post' });
+        console.error('Erro ao atualizar post:', error);
+        res.status(500).json({ message: 'Erro ao atualizar post' });
     }
-  },
+},
 
   getByUser: async (req, res) => {
     try {
