@@ -1,6 +1,47 @@
 const Post = require('../models/post');
 
 const postController = {
+  getAll: async (req, res) => {
+    try {
+      console.log('🔍 Buscando posts...');
+      
+      // ✅ CORREÇÃO: Usar await e tratamento de erro no populate
+      const posts = await Post.find()
+        .populate('author', 'name avatar')
+        .sort({ createdAt: -1 })
+        .lean(); // Adicionar lean() para melhor performance
+      
+      console.log(`✅ ${posts.length} posts encontrados`);
+      
+      // ✅ CORREÇÃO: Verificar se o autor existe antes de acessar
+      const formattedPosts = posts.map(post => {
+        // Se o autor foi removido, usar valores padrão
+        const authorName = post.author ? post.author.name : 'Usuário Removido';
+        const authorAvatar = post.author ? post.author.avatar : 'https://ui-avatars.com/api/?name=Usuario&background=6b7280&color=fff&size=150';
+        
+        return {
+          _id: post._id,
+          title: post.title,
+          content: post.content,
+          author: authorName,
+          authorAvatar: authorAvatar,
+          likes: post.likes || [],
+          likesCount: post.likes ? post.likes.length : 0,
+          createdAt: post.createdAt,
+          updatedAt: post.updatedAt
+        };
+      });
+      
+      res.json(formattedPosts);
+    } catch (error) {
+      console.error('❌ ERRO AO BUSCAR POSTS:', error);
+      res.status(500).json({ 
+        message: 'Erro interno ao buscar posts',
+        error: error.message 
+      });
+    }
+  },
+
   create: async (req, res) => {
     try {
       const { title, content } = req.body;
@@ -16,7 +57,14 @@ const postController = {
         author: userId 
       });
       
-      const newPost = await Post.findById(post._id).populate('author', 'name avatar');
+      // ✅ CORREÇÃO: Buscar post com populate seguro
+      const newPost = await Post.findById(post._id)
+        .populate('author', 'name avatar')
+        .lean();
+      
+      // Verificar se autor existe
+      const authorName = newPost.author ? newPost.author.name : 'Usuário';
+      const authorAvatar = newPost.author ? newPost.author.avatar : 'https://ui-avatars.com/api/?name=Usuario&background=6b7280&color=fff&size=150';
       
       res.status(201).json({ 
         message: 'Post criado com sucesso',
@@ -24,10 +72,10 @@ const postController = {
           _id: newPost._id,
           title: newPost.title,
           content: newPost.content,
-          author: newPost.author.name,
-          authorAvatar: newPost.author.avatar,
+          author: authorName,
+          authorAvatar: authorAvatar,
           likes: newPost.likes || [],
-          likesCount: newPost.likes.length,
+          likesCount: newPost.likes ? newPost.likes.length : 0,
           createdAt: newPost.createdAt,
           updatedAt: newPost.updatedAt
         }
@@ -38,48 +86,30 @@ const postController = {
     }
   },
   
-  getAll: async (req, res) => {
-    try {
-      const posts = await Post.find()
-        .populate('author', 'name avatar')
-        .sort({ createdAt: -1 });
-      
-      const formattedPosts = posts.map(post => ({
-        _id: post._id,
-        title: post.title,
-        content: post.content,
-        author: post.author.name,
-        authorAvatar: post.author.avatar,
-        likes: post.likes || [],
-        likesCount: post.likes.length,
-        createdAt: post.createdAt,
-        updatedAt: post.updatedAt
-      }));
-      
-      res.json(formattedPosts);
-    } catch (error) {
-      console.error('Erro ao buscar posts:', error);
-      res.status(500).json({ message: 'Erro ao buscar posts' });
-    }
-  },
-  
   getById: async (req, res) => {
     try {
       const postId = req.params.id;
       
-      const post = await Post.findById(postId).populate('author', 'name avatar');
+      const post = await Post.findById(postId)
+        .populate('author', 'name avatar')
+        .lean();
+      
       if (!post) {
         return res.status(404).json({ message: 'Post não encontrado' });
       }
+      
+      // Verificar se autor existe
+      const authorName = post.author ? post.author.name : 'Usuário Removido';
+      const authorAvatar = post.author ? post.author.avatar : 'https://ui-avatars.com/api/?name=Usuario&background=6b7280&color=fff&size=150';
       
       const formattedPost = {
         _id: post._id,
         title: post.title,
         content: post.content,
-        author: post.author.name,
-        authorAvatar: post.author.avatar,
+        author: authorName,
+        authorAvatar: authorAvatar,
         likes: post.likes || [],
-        likesCount: post.likes.length,
+        likesCount: post.likes ? post.likes.length : 0,
         createdAt: post.createdAt,
         updatedAt: post.updatedAt
       };
@@ -106,7 +136,7 @@ const postController = {
         return res.status(404).json({ message: 'Post não encontrado' });
       }
       
-      if (post.author._id.toString() !== userId) {
+      if (post.author.toString() !== userId) {
         return res.status(403).json({ message: 'Você não tem permissão para editar este post' });
       }
       
@@ -114,7 +144,13 @@ const postController = {
       post.content = content;
       await post.save();
       
-      const updatedPost = await Post.findById(postId).populate('author', 'name avatar');
+      const updatedPost = await Post.findById(postId)
+        .populate('author', 'name avatar')
+        .lean();
+      
+      // Verificar se autor existe
+      const authorName = updatedPost.author ? updatedPost.author.name : 'Usuário';
+      const authorAvatar = updatedPost.author ? updatedPost.author.avatar : 'https://ui-avatars.com/api/?name=Usuario&background=6b7280&color=fff&size=150';
       
       res.json({ 
         message: 'Post atualizado com sucesso',
@@ -122,10 +158,10 @@ const postController = {
           _id: updatedPost._id,
           title: updatedPost.title,
           content: updatedPost.content,
-          author: updatedPost.author.name,
-          authorAvatar: updatedPost.author.avatar,
+          author: authorName,
+          authorAvatar: authorAvatar,
           likes: updatedPost.likes || [],
-          likesCount: updatedPost.likes.length,
+          likesCount: updatedPost.likes ? updatedPost.likes.length : 0,
           createdAt: updatedPost.createdAt,
           updatedAt: updatedPost.updatedAt
         }
@@ -135,27 +171,37 @@ const postController = {
       res.status(500).json({ message: 'Erro ao atualizar post' });
     }
   },
-  
-  delete: async (req, res) => {
+
+  getByUser: async (req, res) => {
     try {
-      const postId = req.params.id;
       const userId = req.user.id;
       
-      const post = await Post.findById(postId);
-      if (!post) {
-        return res.status(404).json({ message: 'Post não encontrado' });
-      }
+      const posts = await Post.find({ author: userId })
+        .populate('author', 'name avatar')
+        .sort({ createdAt: -1 })
+        .lean();
       
-      if (post.author._id.toString() !== userId) {
-        return res.status(403).json({ message: 'Você não tem permissão para excluir este post' });
-      }
+      const formattedPosts = posts.map(post => {
+        const authorName = post.author ? post.author.name : 'Usuário';
+        const authorAvatar = post.author ? post.author.avatar : 'https://ui-avatars.com/api/?name=Usuario&background=6b7280&color=fff&size=150';
+        
+        return {
+          _id: post._id,
+          title: post.title,
+          content: post.content,
+          author: authorName,
+          authorAvatar: authorAvatar,
+          likes: post.likes || [],
+          likesCount: post.likes ? post.likes.length : 0,
+          createdAt: post.createdAt,
+          updatedAt: post.updatedAt
+        };
+      });
       
-      await Post.findByIdAndDelete(postId);
-      
-      res.json({ message: 'Post excluído com sucesso' });
+      res.json(formattedPosts);
     } catch (error) {
-      console.error('Erro ao excluir post:', error);
-      res.status(500).json({ message: 'Erro ao excluir post' });
+      console.error('Erro ao buscar posts do usuário:', error);
+      res.status(500).json({ message: 'Erro ao buscar posts' });
     }
   },
 
@@ -211,30 +257,26 @@ const postController = {
     }
   },
   
-  getByUser: async (req, res) => {
+  delete: async (req, res) => {
     try {
+      const postId = req.params.id;
       const userId = req.user.id;
       
-      const posts = await Post.find({ author: userId })
-        .populate('author', 'name avatar')
-        .sort({ createdAt: -1 });
+      const post = await Post.findById(postId);
+      if (!post) {
+        return res.status(404).json({ message: 'Post não encontrado' });
+      }
       
-      const formattedPosts = posts.map(post => ({
-        _id: post._id,
-        title: post.title,
-        content: post.content,
-        author: post.author.name,
-        authorAvatar: post.author.avatar,
-        likes: post.likes || [],
-        likesCount: post.likes.length,
-        createdAt: post.createdAt,
-        updatedAt: post.updatedAt
-      }));
+      if (post.author.toString() !== userId) {
+        return res.status(403).json({ message: 'Você não tem permissão para excluir este post' });
+      }
       
-      res.json(formattedPosts);
+      await Post.findByIdAndDelete(postId);
+      
+      res.json({ message: 'Post excluído com sucesso' });
     } catch (error) {
-      console.error('Erro ao buscar posts do usuário:', error);
-      res.status(500).json({ message: 'Erro ao buscar posts' });
+      console.error('Erro ao excluir post:', error);
+      res.status(500).json({ message: 'Erro ao excluir post' });
     }
   }
 };
