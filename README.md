@@ -2,7 +2,7 @@
 
 **PGFlow** é uma aplicação full-stack que demonstra um **sistema básico de rede social** com autenticação JWT, CRUD de posts, comentários e sistema de interações.
 
-![PGFlow Demo](https://via.placeholder.com/1200x400/10b981/ffffff?text=PGFlow+-+CRUD+Social+Moderno)
+![PGFlow Demo](https://raw.githubusercontent.com/PabloG-7/pgflow/refs/heads/main/pgflow-linkedin.png)
 
 ---
 
@@ -230,24 +230,6 @@ Contribuições são bem-vindas! Fluxo sugerido:
 ## 📄 Licença
 
 Este projeto está sob a licença MIT. Veja o arquivo LICENSE para detalhes.
-
----
-
-## 👨‍💻 Autor
-
-Pablo Gomes
-
-- GitHub: https://github.com/PabloG-7
-- LinkedIn: https://www.linkedin.com/in/pablogomess/
-- Instagram: https://www.instagram.com/pablog.dev/
-
----
-
-## 🎉 Agradecimentos
-
-- MongoDB - Banco de dados NoSQL
-- Cloudinary - Gestão de mídia
-- Render - Plataforma de deploy
 - Bootstrap - Framework CSS
 
 <div align="center">
