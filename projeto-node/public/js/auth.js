@@ -45,17 +45,14 @@ function getStoredUser() {
 }
 
 // ✅ SALVAR DADOS DE AUTENTICAÇÃO
-function saveAuthData(token, user, rememberMe = true) {
-    if (rememberMe) {
-        // Persistente (localStorage)
-        localStorage.setItem('token', token);
-        localStorage.setItem('user', JSON.stringify(user));
-    } else {
-        // Sessão (sessionStorage)
-        sessionStorage.setItem('token', token);
-        sessionStorage.setItem('user', JSON.stringify(user));
-    }
+// Função para salvar dados de autenticação
+function saveAuthData(token, user) {
+    localStorage.setItem('token', token);
+    localStorage.setItem('user', JSON.stringify(user));
+    sessionStorage.setItem('token', token);
+    sessionStorage.setItem('user', JSON.stringify(user));
 }
+
 
 // ✅ LIMPAR DADOS
 function clearAuthData() {
@@ -136,7 +133,7 @@ async function handleLogin(e) {
     }
 }
 
-// ✅ HANDLE REGISTER ATUALIZADO
+// No arquivo auth.js - função handleRegister atualizada
 async function handleRegister(e) {
     e.preventDefault();
     
@@ -166,7 +163,8 @@ async function handleRegister(e) {
         spinner.style.display = 'inline-block';
         submitButton.disabled = true;
 
-        const response = await fetch('/api/auth/register', {
+        // 1. Primeiro cria a conta
+        const registerResponse = await fetch('/api/auth/register', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -174,16 +172,44 @@ async function handleRegister(e) {
             body: JSON.stringify({ name, email, password })
         });
         
-        const data = await response.json();
+        const registerData = await registerResponse.json();
         
-        if (response.ok) {
-            showAlert('Conta criada com sucesso! Redirecionando para login...', 'success');
+        if (registerResponse.ok) {
+            // ✅ CONTA CRIADA COM SUCESSO - AGORA FAZ LOGIN AUTOMÁTICO
+            console.log('✅ Conta criada, fazendo login automático...');
             
-            setTimeout(() => {
-                window.location.href = '/login';
-            }, 2000);
+            // 2. Faz login automaticamente
+            const loginResponse = await fetch('/api/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email, password })
+            });
+            
+            const loginData = await loginResponse.json();
+            
+            if (loginResponse.ok) {
+                // ✅ LOGIN BEM-SUCEDIDO - SALVA OS DADOS E REDIRECIONA
+                saveAuthData(loginData.token, loginData.user);
+                
+                showAlert('Conta criada e login realizado com sucesso!', 'success');
+                
+                // Redireciona para o dashboard
+                setTimeout(() => {
+                    window.location.href = '/dashboard';
+                }, 1500);
+                
+            } else {
+                // ❌ ERRO NO LOGIN AUTOMÁTICO - REDIRECIONA PARA LOGIN NORMAL
+                showAlert('Conta criada! Faça login para continuar.', 'success');
+                setTimeout(() => {
+                    window.location.href = '/login';
+                }, 2000);
+            }
+            
         } else {
-            showAlert(data.message, 'danger');
+            showAlert(registerData.message, 'danger');
             // Restaurar botão
             btnText.style.display = 'inline-block';
             spinner.style.display = 'none';
