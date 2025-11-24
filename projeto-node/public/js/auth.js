@@ -1,4 +1,4 @@
-// auth.js ATUALIZADO com persistência de login
+// auth.js ATUALIZADO com registro automático para dashboard
 document.addEventListener('DOMContentLoaded', function() {
     const loginForm = document.getElementById('loginForm');
     const registerForm = document.getElementById('registerForm');
@@ -136,7 +136,7 @@ async function handleLogin(e) {
     }
 }
 
-// ✅ HANDLE REGISTER ATUALIZADO
+// ✅ HANDLE REGISTER ATUALIZADO - Login automático após registro
 async function handleRegister(e) {
     e.preventDefault();
     
@@ -144,6 +144,7 @@ async function handleRegister(e) {
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
     const confirmPassword = document.getElementById('confirmPassword').value;
+    const rememberMe = true; // Pode adicionar um checkbox depois
     
     // Validações
     if (password !== confirmPassword) {
@@ -177,11 +178,15 @@ async function handleRegister(e) {
         const data = await response.json();
         
         if (response.ok) {
-            showAlert('Conta criada com sucesso! Redirecionando para login...', 'success');
+            // 🔥 **NOVO** - Login automático após registro
+            saveAuthData(data.token, data.user, rememberMe);
             
+            showAlert('Conta criada com sucesso! Redirecionando...', 'success');
+            
+            // 🔥 **NOVO** - Redirecionar para DASHBOARD em vez de login
             setTimeout(() => {
-                window.location.href = '/login';
-            }, 2000);
+                window.location.href = '/dashboard';
+            }, 1500);
         } else {
             showAlert(data.message, 'danger');
             // Restaurar botão
@@ -286,7 +291,7 @@ function getAlertIcon(type) {
     }
 }
 
-// ✅ SOM DE NOTIFICAÇÃO (mantido)
+// ✅ SOM DE NOTIFICAÇÃO
 function playNotificationSound() {
     try {
         const audioContext = new (window.AudioContext || window.webkitAudioContext)();

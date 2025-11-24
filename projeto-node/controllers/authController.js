@@ -19,9 +19,22 @@ const authController = {
       
       const user = await User.create({ name, email, password });
       
+      // 🔥 **NOVO** - Criar token JWT automaticamente após registro
+      const token = jwt.sign(
+        { id: user._id, email: user.email },
+        process.env.JWT_SECRET,
+        { expiresIn: '24h' }
+      );
+      
       res.status(201).json({ 
         message: 'Usuário criado com sucesso',
-        userId: user._id 
+        token, // 🔥 Enviar o token
+        user: { // 🔥 Enviar dados do usuário
+          id: user._id,
+          name: user.name,
+          email: user.email,
+          avatar: user.avatar
+        }
       });
     } catch (error) {
       res.status(500).json({ message: 'Erro ao criar usuário' });
